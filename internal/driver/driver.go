@@ -15,6 +15,8 @@ func Bootstrap(f func(*context.Ctx)) int {
 	FindQueries(ctx)
 
 	var returnCode int = 0
+
+	// TODO add this later on
 	//	defer func() {
 	//		if r := recover(); r != nil {
 	//			returnCode = 1
