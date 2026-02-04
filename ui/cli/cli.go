@@ -14,11 +14,16 @@ var cli struct {
 // internal cli commands
 // -- TEST -- //
 type TestCmd struct {
-	Name string `arg:"" name:"name" help:"Your name :)"`
+	FName string `arg:"" name:"fname" help:"Your first name :)"`
+	LName string `arg:"" name:"lname" help:"Your last name :)"`
 }
 
 func (t *TestCmd) Run(c *context.Ctx) error {
-	fmt.Println(c.Queries.Test.Get("Test", t.Name))
+	c.LogDebug("TEST!")
+	c.LogInfo("info")
+	c.LogWarning("warning!")
+	c.LogError("errror1!!1!!!!")
+	fmt.Println(c.Queries.Test.Get("Test", context.MultiKey2[string, string]{K1: t.FName, K2: t.LName}))
 	return nil
 }
 
