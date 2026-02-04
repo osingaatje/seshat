@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/MatusOllah/slogcolor"
+	"github.com/fatih/color"
 )
 
 type Ctx struct {
@@ -33,6 +34,14 @@ func New() *Ctx {
 	// configure logging
 	opts := slogcolor.DefaultOptions
 	opts.SrcFileMode = slogcolor.Nop
+	opts.Level = slog.LevelDebug
+
+	opts.LevelTags = map[slog.Level]string{
+		slog.LevelDebug: color.New(color.BgBlack, color.Faint).Sprint("DEBUG"),
+		slog.LevelInfo:  color.New(color.BgGreen, color.FgBlack).Sprint("INFO"),
+		slog.LevelWarn:  color.New(color.BgYellow, color.FgBlack).Sprint("WARN"),
+	}
+
 	slog.SetDefault(slog.New(slogcolor.NewHandler(os.Stderr, opts)))
 
 	return &c
