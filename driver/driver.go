@@ -1,8 +1,8 @@
 package driver
 
 import (
-	"seshat/context"
-	"seshat/tryout"
+	"github.com/osingaatje/seshat/context"
+	"github.com/osingaatje/seshat/queryable/tryout"
 )
 
 // Add your own FindQueries to this method!

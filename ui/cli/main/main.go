@@ -1,9 +1,9 @@
 package main
 
 import (
+	"github.com/osingaatje/seshat/driver"
+	"github.com/osingaatje/seshat/ui/cli"
 	"os"
-	"seshat/driver"
-	"seshat/ui/cli"
 )
 
 func main() {
