@@ -1,5 +1,9 @@
 package context
 
+//----------------------------------------//
+// Logic for defining and caching queries //
+//----------------------------------------//
+
 import (
 	"fmt"
 	"slices"
@@ -37,26 +41,27 @@ func (q *Query[K, V]) Get(nameOfQuery string, k K) V {
 }
 
 func cacheQuery[K comparable, V any](q *Query[K, V], k K) V {
+	if q == nil {
+		panic("Query was nil in cacheQuery!")
+	}
+
 	// caching
 	if val, ok := q.Cache[k]; ok {
 		return val
 	}
 
-	ctx := (*q).Context
+	ctx := q.Context
 	var trace *[]Trace = &ctx.Trace
 
-	// cycle detection for Query system
-	if trace == nil {
-		panic("Trace cannot be nil in Queries!")
-	}
-
+	// detect query loops
 	if slices.ContainsFunc(*trace, func(t Trace) bool { return t.Funcname == q.Name && t.Arg == k }) {
-		panic(fmt.Sprintf("Caching did not work! Func '%s' with arg '%+v' was already in trace!", q.Name, k))
+		panic(fmt.Sprintf("Query loop! Caching did not work or your queries are ill-defined. Func '%s' with arg '%+v' was already in trace!", q.Name, k))
 	}
 
 	// actual function calling:
 	res := q.Func(q.Context, k)
 
+	// make sure we log that this query has been called and with which args.
 	*trace = append(*trace, Trace{Funcname: q.Name, Arg: k})
 
 	q.Cache[k] = res

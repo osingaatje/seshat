@@ -1,5 +1,10 @@
 package context
 
+//---------------------------//
+//   Central Queries struct  //
+// - add your queries here - //
+//---------------------------//
+
 import (
 	"github.com/osingaatje/seshat/context/data"
 )

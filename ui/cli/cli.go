@@ -8,22 +8,22 @@ import (
 	"github.com/alecthomas/kong"
 )
 
-// - testcommand
+// Example command that uses the test query
 type TestCmd struct {
 	FName string `arg:"" name:"fname" help:"Your first name :)"`
 	LName string `arg:"" name:"lname" help:"Your last name :)"`
 }
 
-var cli struct {
-	Test TestCmd `cmd:"" name:"test" help:"Print a test message using the Query system."`
-}
-
+// method that binds to the test command
 func (t *TestCmd) Run(c *context.Ctx) error {
 	fmt.Println(c.Queries.Test.Get("Test", data.NameCmd{FName: t.FName, LName: t.LName}))
 	return nil
 }
 
-// --------- //
+// available options in the CLI
+var cli struct {
+	Test TestCmd `cmd:"" name:"test" help:"Print a test message using the Query system."`
+}
 
 // main method
 func RunCli(c *context.Ctx) {

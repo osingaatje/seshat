@@ -1,5 +1,9 @@
 package test
 
+//-----------------//
+// An example test //
+//-----------------//
+
 import (
 	"testing"
 

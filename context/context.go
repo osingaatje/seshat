@@ -1,5 +1,9 @@
 package context
 
+//-----------------------------------//
+// Context struct and helper methods //
+//-----------------------------------//
+
 import (
 	"log/slog"
 	"os"

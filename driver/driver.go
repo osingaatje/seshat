@@ -1,5 +1,9 @@
 package driver
 
+//-------------------------------------------//
+// Constructs and handles the Context object //
+//-------------------------------------------//
+
 import (
 	"github.com/osingaatje/seshat/context"
 	"github.com/osingaatje/seshat/queryable/tryout"
@@ -24,7 +28,7 @@ func Bootstrap(f func(*context.Ctx)) int {
 
 	var returnCode int = 0
 
-	// TODO add this later on
+	// TODO add this error handling later on maybe?
 	//	defer func() {
 	//		if r := recover(); r != nil {
 	//			returnCode = 1

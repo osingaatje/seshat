@@ -1,5 +1,9 @@
 package tryout
 
+//-------------------------------------//
+// An example module that uses queries //
+//-------------------------------------//
+
 import (
 	"fmt"
 	"github.com/osingaatje/seshat/context"
