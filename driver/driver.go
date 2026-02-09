@@ -10,6 +10,14 @@ func FindQueries(c *context.Ctx) {
 	tryout.FindQueries(c)
 }
 
+// should be used for testing
+func NewContext() *context.Ctx {
+	ctx := context.New()
+	FindQueries(ctx)
+	return ctx
+}
+
+// should be used for UIs, CLIs, finished programs
 func Bootstrap(f func(*context.Ctx)) int {
 	ctx := context.New()
 	FindQueries(ctx)

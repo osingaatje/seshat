@@ -6,6 +6,7 @@ require (
 	github.com/MatusOllah/slogcolor v1.7.0
 	github.com/alecthomas/kong v1.14.0
 	github.com/fatih/color v1.18.0
+	github.com/go-openapi/testify/v2 v2.3.0
 )
 
 require (
