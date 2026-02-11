@@ -5,8 +5,10 @@ package context
 //-----------------------------------//
 
 import (
+	"io"
 	"log/slog"
 	"os"
+	"strings"
 
 	"github.com/MatusOllah/slogcolor"
 	"github.com/fatih/color"
@@ -16,7 +18,27 @@ type Ctx struct {
 	Queries Queries
 	Trace   []Trace // records the order of queries
 
-	// TODO perhaps centrally collect logs? meh.
+	Logger ContextLogger
+}
+
+type ContextLogger struct {
+	log []string
+	out io.Writer
+}
+
+func (l *ContextLogger) Write(b []byte) (n int, err error) {
+	l.log = append(l.log, string(b))
+	l.out.Write(b) // also write to 'out'
+
+	return len(b), nil
+}
+
+func (l *ContextLogger) GetLogStrings() []string {
+	return l.log
+}
+
+func (l *ContextLogger) GetLogString() string {
+	return strings.Join(l.log, "")
 }
 
 type Trace struct {
@@ -25,7 +47,7 @@ type Trace struct {
 }
 
 func (c *Ctx) Error() string {
-	return "TODO error ctx"
+	return c.Logger.GetLogString()
 }
 
 func New() *Ctx {
@@ -34,21 +56,26 @@ func New() *Ctx {
 		ctx: &c,
 	}
 	c.Trace = []Trace{}
+	c.Logger = ContextLogger{log: []string{}, out: os.Stderr}
 
 	// configure logging
+	slog.SetDefault(slog.New(slogcolor.NewHandler(&c.Logger, logOpts())))
+
+	return &c
+}
+
+func logOpts() *slogcolor.Options {
 	opts := slogcolor.DefaultOptions
 	opts.SrcFileMode = slogcolor.Nop
 	opts.Level = slog.LevelDebug
 
 	opts.LevelTags = map[slog.Level]string{
 		slog.LevelDebug: color.New(color.BgBlack, color.Faint).Sprint("DEBUG"),
-		slog.LevelInfo:  color.New(color.BgGreen, color.FgBlack).Sprint("INFO"),
-		slog.LevelWarn:  color.New(color.BgYellow, color.FgBlack).Sprint("WARN"),
+		slog.LevelInfo:  color.New(color.BgGreen, color.FgBlack).Sprint("INFO "),
+		slog.LevelWarn:  color.New(color.BgYellow, color.FgBlack).Sprint("WARN "),
 	}
 
-	slog.SetDefault(slog.New(slogcolor.NewHandler(os.Stderr, opts)))
-
-	return &c
+	return opts
 }
 
 func (c *Ctx) LogDebug(msg string, args ...any) {
@@ -57,9 +84,9 @@ func (c *Ctx) LogDebug(msg string, args ...any) {
 func (c *Ctx) LogInfo(msg string, args ...any) {
 	slog.Info(msg, args...)
 }
-func (c *Ctx) LogWarning(msg string, args ...any) {
+func (c *Ctx) LogWarn(msg string, args ...any) {
 	slog.Warn(msg, args...)
 }
-func (c *Ctx) LogError(msg string, args ...any) {
+func (c *Ctx) LogErr(msg string, args ...any) {
 	slog.Error(msg, args...)
 }

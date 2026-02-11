@@ -35,40 +35,44 @@ func (p *ParseResultUTML) String() string {
 }
 
 type ParseResultUTML struct {
-	Edges []struct {
-		StartPosition int `json:"startPosition"`
-		EndPosition   int `json:"endPosition"`
+	Edges []ParseResultUTMLEdge `json:"edges"`
 
-		StartLabel      *UTMLEdgeLabel `json:"startLabel,omitempty"`  // text
-		MiddleLabel     *UTMLEdgeLabel `json:"middleLabel,omitempty"` // text
-		EndLabel        *UTMLEdgeLabel `json:"endLabel,omitempty"`    // text
-		StartStyle      *int           `json:"startStyle,omitempty"`  // arrow head style?
-		EndStyle        *int           `json:"endStyle,omitempty"`    // arrow head style?
-		LineStyle       *int           `json:"lineStyle,omitempty"`   // line styling
-		LineType        *int           `json:"lineType,omitempty"`    // line styling
-		MiddlePositions []UTMLXY       `json:"middlePositions"`       // no clue what this is
-		StartNodeId     *int           `json:"startNodeId,omitempty"` // node pointer
-		EndNodeId       *int           `json:"endNodeId,omitempty"`   // node pointer
-	} `json:"edges"`
+	Nodes []ParseResultUTMLNode `json:"nodes"`
+}
 
-	Nodes []struct {
-		Type            *UTMLClassType `json:"type,omitempty"`
-		Width           *int           `json:"width,omitempty"`
-		Height          *int           `json:"height,omitempty"`
-		Position        *UTMLXY        `json:"position,omitempty"`
-		Text            *string        `json:"text,omitempty"`
-		HasDoubleBorder *bool          `json:"hasDoubleBorder,omitempty"`
-		StyleObject     *struct {
-			Fill          string  `json:"fill"`
-			Stroke        string  `json:"stroke"`
-			StrokeWidth   float32 `json:"stroke-width"`
-			FillOpacity   float32 `json:"fill-opacity"`
-			StrokeOpacity float32 `json:"stroke-opacity"`
-		} `json:"styleObject,omitempty"`
-		ClassType  *string             `json:"classType,omitempty"`
-		Attributes []UTMLFieldOrMethod `json:"attributes,omitempty"`
-		Methods    []UTMLFieldOrMethod `json:"methods,omitempty"`
-	} `json:"nodes"`
+type ParseResultUTMLEdge struct {
+	StartPosition int `json:"startPosition"`
+	EndPosition   int `json:"endPosition"`
+
+	StartLabel      *UTMLEdgeLabel `json:"startLabel,omitempty"`  // text
+	MiddleLabel     *UTMLEdgeLabel `json:"middleLabel,omitempty"` // text
+	EndLabel        *UTMLEdgeLabel `json:"endLabel,omitempty"`    // text
+	StartStyle      *int           `json:"startStyle,omitempty"`  // arrow head style?
+	EndStyle        *int           `json:"endStyle,omitempty"`    // arrow head style?
+	LineStyle       *int           `json:"lineStyle,omitempty"`   // line styling
+	LineType        *int           `json:"lineType,omitempty"`    // line styling
+	MiddlePositions []UTMLXY       `json:"middlePositions"`       // no clue what this is
+	StartNodeId     int            `json:"startNodeId"`           // node pointer
+	EndNodeId       int            `json:"endNodeId"`             // node pointer
+}
+
+type ParseResultUTMLNode struct {
+	Type            *UTMLClassType `json:"type,omitempty"`
+	Width           *int           `json:"width,omitempty"`
+	Height          *int           `json:"height,omitempty"`
+	Position        *UTMLXY        `json:"position,omitempty"`
+	Text            *string        `json:"text,omitempty"`
+	HasDoubleBorder *bool          `json:"hasDoubleBorder,omitempty"`
+	StyleObject     *struct {
+		Fill          string  `json:"fill"`
+		Stroke        string  `json:"stroke"`
+		StrokeWidth   float32 `json:"stroke-width"`
+		FillOpacity   float32 `json:"fill-opacity"`
+		StrokeOpacity float32 `json:"stroke-opacity"`
+	} `json:"styleObject,omitempty"`
+	ClassType  *string             `json:"classType,omitempty"`
+	Attributes []UTMLFieldOrMethod `json:"attributes,omitempty"`
+	Methods    []UTMLFieldOrMethod `json:"methods,omitempty"`
 }
 
 type UTMLEdgeLabel struct {
