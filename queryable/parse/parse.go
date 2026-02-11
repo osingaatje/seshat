@@ -13,11 +13,12 @@ func FindQueries(c *context.Ctx) {
 }
 
 // general method that switches based on context
-func parseFile(c *context.Ctx, cmd data.ParseCmd) data.ParseResult {
+func parseFile(c *context.Ctx, cmd data.ParseCmd) *data.ParseResult {
 	switch cmd.DiagramFormat {
 
 	case data.DiagramFormatUTML:
-		return c.Queries.ParseUTML.Get("Parse UTML", data.ParseUTMLCmd{Filepath: cmd.Filepath})
+		utmlRes := c.Queries.ParseUTML.Get("Parse UTML", data.ParseUTMLCmd{Filepath: cmd.Filepath})
+		return parseToParseResult(utmlRes)
 
 	default:
 		panic(fmt.Sprintf("Format '%s' not implemented for parsing!", cmd.DiagramFormat))

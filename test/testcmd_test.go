@@ -12,9 +12,9 @@ import (
 	"github.com/osingaatje/seshat/driver"
 )
 
-var ctx = driver.NewContext()
-
 func TestTestCmd(t *testing.T) {
-	res := ctx.Queries.Test.Get("Test", data.NameCmd{FName: "Douwe", LName: "O"})
+	c := driver.NewContext()
+
+	res := c.Queries.Test.Get("Test", data.NameCmd{FName: "Douwe", LName: "O"})
 	assert.Equal(t, "Hello Douwe O!", res)
 }

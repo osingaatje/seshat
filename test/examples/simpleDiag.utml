@@ -1,0 +1,96 @@
+{
+    "edges": [
+        {
+            "startPosition": 2,
+            "endPosition": 6,
+            "middleLabel": {
+                "offset": {
+                    "x": 0,
+                    "y": 0
+                },
+                "edgeLocation": 1,
+                "value": "teaches >"
+            },
+            "startStyle": 0,
+            "endStyle": 0,
+            "lineStyle": 0,
+            "lineType": 5,
+            "middlePositions": [],
+            "startNodeId": 0,
+            "endNodeId": 1
+        }
+    ],
+    "nodes": [
+        {
+            "type": "ClassNode",
+            "width": 190,
+            "height": 114,
+            "position": {
+                "x": 470,
+                "y": 330
+            },
+            "text": "Teacher",
+            "hasDoubleBorder": false,
+            "styleObject": {
+                "fill": "white",
+                "stroke": "black",
+                "stroke-width": 2,
+                "fill-opacity": 1,
+                "stroke-opacity": 0.75
+            },
+            "classType": "class",
+            "attributes": [
+                {
+                    "name": "secretHobbies",
+                    "type": "string[]",
+                    "visibility": "private"
+                },
+                {
+                    "name": "name",
+                    "type": "Name",
+                    "visibility": "public"
+                }
+            ],
+            "methods": [
+                {
+                    "name": "DrinkCoffee()",
+                    "type": "burp?",
+                    "visibility": "public"
+                }
+            ]
+        },
+        {
+            "type": "ClassNode",
+            "width": 190,
+            "height": 90,
+            "position": {
+                "x": 810,
+                "y": 340
+            },
+            "text": "Student",
+            "hasDoubleBorder": false,
+            "styleObject": {
+                "fill": "white",
+                "stroke": "black",
+                "stroke-width": 2,
+                "fill-opacity": 1,
+                "stroke-opacity": 0.75
+            },
+            "classType": "class",
+            "attributes": [
+                {
+                    "name": "name",
+                    "type": "Name",
+                    "visibility": "public"
+                }
+            ],
+            "methods": [
+                {
+                    "name": "avoidStudying",
+                    "type": "bool",
+                    "visibility": "public"
+                }
+            ]
+        }
+    ]
+}

@@ -6,12 +6,14 @@ package driver
 
 import (
 	"github.com/osingaatje/seshat/context"
+	"github.com/osingaatje/seshat/queryable/parse"
 	"github.com/osingaatje/seshat/queryable/tryout"
 )
 
 // Add your own FindQueries to this method!
 func FindQueries(c *context.Ctx) {
 	tryout.FindQueries(c)
+	parse.FindQueries(c)
 }
 
 // should be used for testing

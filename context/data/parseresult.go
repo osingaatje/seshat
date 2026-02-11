@@ -20,6 +20,7 @@ type ParsedEdge struct {
 	FromId         uint64
 	ToId           uint64
 	FromProperties map[EdgeEndProperty]string // things like multiplicity and arrow head style
+	LabelText      string                     // for things like relation text
 	ToProperties   map[EdgeEndProperty]string
 
 	Properties map[EdgeProperty]string // general properties such as edge label text etc.
