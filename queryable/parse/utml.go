@@ -2,12 +2,17 @@ package parse
 
 import (
 	"encoding/json"
+	"errors"
+	"fmt"
 	"os"
+	"reflect"
 
 	"github.com/osingaatje/seshat/context"
 	"github.com/osingaatje/seshat/context/data"
+	. "github.com/osingaatje/seshat/context/data/parse-result-datatypes"
 )
 
+// Parsing raw file to UTML
 func parseUTML(c *context.Ctx, cmd data.ParseUTMLCmd) *data.ParseResultUTML {
 	r, err := os.ReadFile(cmd.Filepath)
 	if err != nil {
@@ -26,6 +31,7 @@ func parseUTML(c *context.Ctx, cmd data.ParseUTMLCmd) *data.ParseResultUTML {
 	return jsonRes
 }
 
+// Converting to internal representation
 func convertUTMLToParseRes(c *context.Ctx, utml *data.ParseResultUTML) *data.ParseResult {
 	if utml == nil {
 		c.LogErr("Nil UTML parse result when converting to generic ParseResult.")
@@ -34,7 +40,7 @@ func convertUTMLToParseRes(c *context.Ctx, utml *data.ParseResultUTML) *data.Par
 
 	res := data.NewParseResult()
 	for i, n := range utml.Nodes {
-		vertex := convertUTMLVertex(i, &n)
+		vertex := convertUTMLVertex(c, i, &n)
 		if vertex == nil { // errors are logged in function
 			return nil
 		}
@@ -52,19 +58,54 @@ func convertUTMLToParseRes(c *context.Ctx, utml *data.ParseResultUTML) *data.Par
 	return res
 }
 
-func convertUTMLVertex(index int, n *data.ParseResultUTMLNode) *data.ParsedVertex {
+func convertUTMLVertex(ctx *context.Ctx, index int, n *data.ParseResultUTMLNode) *data.ParsedVertex {
 	titleText := ""
 	if n.Text != nil {
 		titleText = *n.Text
 	}
 
-	return &data.ParsedVertex{
-		Id:         uint64(index),
-		Title:      titleText,
-		Properties: map[data.VertexProperty]string{}, // TODO
-		Values:     map[string]data.ParsedValue{},    // TODO
-		Location:   data.Location2D{X: n.Position.X, Y: n.Position.Y},
+	extractedProps, err := extractUTMLVertexProperties(ctx, index, n)
+	if err != nil {
+		ctx.LogErr("Could not extract properties for node - err=%s", err.Error())
+		return nil
 	}
+	extractedVals, err := map[string]data.ParsedValue{}, nil // TODO!
+	ctx.LogDebug("TODO EXTRACT VALS FROM NODE")
+
+	return &data.ParsedVertex{
+		Id:         uint64(index), // location in the original UTML array
+		Title:      titleText,
+		Properties: extractedProps,
+		Values:     extractedVals,
+		Location:   data.Vector2D{X: n.Position.X, Y: n.Position.Y},
+	}
+}
+func extractUTMLVertexProperties(ctx *context.Ctx, index int, n *data.ParseResultUTMLNode) (map[VertexProperty]any, error) {
+	res := map[VertexProperty]any{}
+
+	for prop, typ := range VertexPropertyAll {
+		switch prop {
+
+		case VertexPropClassType:
+			if n.ClassType == nil {
+				ctx.LogWarn("No valid class type for node index '%d'", index)
+				continue
+			}
+			if reflect.TypeOf(*n.ClassType) != typ {
+				ctx.LogErr("Data types for VertexPropClassType and UTML ClassType do not match! %T != %T", typ, reflect.TypeOf(*n.ClassType))
+				return res, errors.New("Data type mismatch between VertexPropClassType and UTML ClassType")
+			}
+			res[VertexPropClassType] = n.ClassType
+			break
+
+		default:
+			errMsg := fmt.Sprintf("The property '%s' with type '%s' is not supported for UTML conversion! Make this!", prop, typ)
+			ctx.LogErr(errMsg)
+			return res, errors.New(errMsg)
+		}
+	}
+
+	return res, nil
 }
 
 func convertUTMLEdge(c *context.Ctx, index int, e *data.ParseResultUTMLEdge) *data.ParsedEdge {
@@ -73,11 +114,11 @@ func convertUTMLEdge(c *context.Ctx, index int, e *data.ParseResultUTMLEdge) *da
 	}
 
 	res := data.ParsedEdge{
-		FromId:         uint64(e.StartNodeId),
-		ToId:           uint64(e.EndNodeId),
-		FromProperties: map[data.EdgeEndProperty]string{}, // TODO
-		Label:          data.ParsedLabel{},                // TODO
-		ToProperties:   map[data.EdgeEndProperty]string{}, // TODO
+		FromId:         uint64(e.StartNodeId),        // location in the array
+		ToId:           uint64(e.EndNodeId),          // location in the array
+		FromProperties: map[EdgeEndProperty]string{}, // TODO
+		Label:          data.ParsedLabel{},           // TODO
+		ToProperties:   map[EdgeEndProperty]string{}, // TODO
 	}
 
 	return &res
