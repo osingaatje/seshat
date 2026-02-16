@@ -5,6 +5,7 @@ package context
 //-----------------------------------//
 
 import (
+	"fmt"
 	"io"
 	"log/slog"
 	"os"
@@ -79,14 +80,14 @@ func logOpts() *slogcolor.Options {
 }
 
 func (c *Ctx) LogDebug(msg string, args ...any) {
-	slog.Debug(msg, args...)
+	slog.Debug(fmt.Sprintf(msg, args...))
 }
 func (c *Ctx) LogInfo(msg string, args ...any) {
-	slog.Info(msg, args...)
+	slog.Info(fmt.Sprintf(msg, args...))
 }
 func (c *Ctx) LogWarn(msg string, args ...any) {
-	slog.Warn(msg, args...)
+	slog.Warn(fmt.Sprintf(msg, args...))
 }
 func (c *Ctx) LogErr(msg string, args ...any) {
-	slog.Error(msg, args...)
+	slog.Error(fmt.Sprintf(msg, args...))
 }

@@ -1,7 +1,7 @@
 package data
 
 import (
-	. "github.com/osingaatje/seshat/context/data/parse-result-datatypes"
+	. "github.com/osingaatje/seshat/types/parse-result-datatypes"
 )
 
 type ParseResult struct {

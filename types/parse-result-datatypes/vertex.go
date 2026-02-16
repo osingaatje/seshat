@@ -6,18 +6,19 @@ import (
 )
 
 // VERTICES
-type VertexProperty string
-type VertexStyleProperty string
+type VertexProperty int
 
 const (
-	VertexPropClassType       VertexProperty = "Class Type"
-	VertexPropClassVisibility VertexProperty = "Visibility" // "public", "private", "protected", ...
-	// TODO: add more if needed.
+	VertexPropClassType       VertexProperty = iota
+	VertexPropClassVisibility                // "public", "private", "protected", ...
+)
 
-	//styling:
-	VertexStyleFillHex     VertexStyleProperty = "Fill"   // hex color!
-	VertexStyleStrokeHex   VertexStyleProperty = "Stroke" // hex color!
-	VertexStyleStrokeWidth VertexStyleProperty = "Stroke Width"
+type VertexStyleProperty int
+
+const (
+	VertexStyleFillHex   VertexStyleProperty = iota // hex color!
+	VertexStyleStrokeHex                            // hex color!
+	VertexStyleStrokeWidth
 )
 
 // maps allowed properties to their data type

@@ -3,8 +3,8 @@ package parse
 import (
 	"fmt"
 
-	"github.com/osingaatje/seshat/context"
-	"github.com/osingaatje/seshat/context/data"
+	"github.com/osingaatje/seshat/src/context"
+	"github.com/osingaatje/seshat/types"
 )
 
 func FindQueries(c *context.Ctx) {
@@ -22,6 +22,6 @@ func parseFile(c *context.Ctx, cmd data.ParseCmd) *data.ParseResult {
 		return convertUTMLToParseRes(c, utmlRes)
 
 	default:
-		panic(fmt.Sprintf("Format '%s' not implemented for parsing!", cmd.DiagramFormat))
+		panic(fmt.Sprintf("Format '%v' not implemented for parsing!", cmd.DiagramFormat))
 	}
 }

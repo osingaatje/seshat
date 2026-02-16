@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	"github.com/go-openapi/testify/v2/assert"
-	"github.com/osingaatje/seshat/context/data"
-	"github.com/osingaatje/seshat/driver"
+	"github.com/osingaatje/seshat/src/driver"
 	"github.com/osingaatje/seshat/test/helpers"
+	"github.com/osingaatje/seshat/types"
 )
 
 func TestUTMLParseSimple(t *testing.T) {

@@ -3,13 +3,12 @@ package parse
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"os"
 	"reflect"
 
-	"github.com/osingaatje/seshat/context"
-	"github.com/osingaatje/seshat/context/data"
-	. "github.com/osingaatje/seshat/context/data/parse-result-datatypes"
+	"github.com/osingaatje/seshat/src/context"
+	"github.com/osingaatje/seshat/types"
+	. "github.com/osingaatje/seshat/types/parse-result-datatypes"
 )
 
 // Parsing raw file to UTML
@@ -98,10 +97,8 @@ func extractUTMLVertexProperties(ctx *context.Ctx, index int, n *data.ParseResul
 			res[VertexPropClassType] = n.ClassType
 			break
 
-		default:
-			errMsg := fmt.Sprintf("The property '%s' with type '%s' is not supported for UTML conversion! Make this!", prop, typ)
-			ctx.LogErr(errMsg)
-			return res, errors.New(errMsg)
+			//case VertexPropClassVisibility:
+			//	break
 		}
 	}
 

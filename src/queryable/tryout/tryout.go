@@ -6,8 +6,8 @@ package tryout
 
 import (
 	"fmt"
-	"github.com/osingaatje/seshat/context"
-	"github.com/osingaatje/seshat/context/data"
+	"github.com/osingaatje/seshat/src/context"
+	"github.com/osingaatje/seshat/types"
 )
 
 func FindQueries(c *context.Ctx) {

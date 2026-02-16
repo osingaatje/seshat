@@ -7,6 +7,7 @@ import (
 )
 
 type UTMLClassType string
+
 type UTMLVisibility string
 
 const (

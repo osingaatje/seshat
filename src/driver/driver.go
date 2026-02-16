@@ -5,9 +5,9 @@ package driver
 //-------------------------------------------//
 
 import (
-	"github.com/osingaatje/seshat/context"
-	"github.com/osingaatje/seshat/queryable/parse"
-	"github.com/osingaatje/seshat/queryable/tryout"
+	"github.com/osingaatje/seshat/src/context"
+	"github.com/osingaatje/seshat/src/queryable/parse"
+	"github.com/osingaatje/seshat/src/queryable/tryout"
 )
 
 // Add your own FindQueries to this method!

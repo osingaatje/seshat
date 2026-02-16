@@ -1,9 +1,10 @@
 package data
 
-type DiagramFormat string
+// go:exhaustive
+type DiagramFormat int
 
 const (
-	DiagramFormatUTML DiagramFormat = "utml" // extension name
+	DiagramFormatUTML DiagramFormat = iota
 )
 
 type ParseCmd struct {

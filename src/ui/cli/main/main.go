@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/osingaatje/seshat/driver"
-	"github.com/osingaatje/seshat/ui/cli"
+	"github.com/osingaatje/seshat/src/driver"
+	"github.com/osingaatje/seshat/src/ui/cli"
 	"os"
 )
 

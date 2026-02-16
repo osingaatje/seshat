@@ -5,11 +5,11 @@ import (
 )
 
 // Properties of values, e.g.: "field" : Visibility=private, Type=string
-type ValueProperty string
+type ValueProperty int
 
 const (
-	ValuePropVisibility ValueProperty = "Visibility"
-	ValuePropType       ValueProperty = "Type"
+	ValuePropVisibility ValueProperty = iota
+	ValuePropType
 )
 
 var ValuePropertyAll map[ValueProperty]reflect.Type = map[ValueProperty]reflect.Type{
@@ -18,11 +18,11 @@ var ValuePropertyAll map[ValueProperty]reflect.Type = map[ValueProperty]reflect.
 }
 
 // More detailed datatypes
-type ValuePropVisibilityVar string
+type ValuePropVisibilityVar int
 
 const (
-	VisibilityPublic    ValuePropVisibilityVar = "Public"
-	VisibilityProtected ValuePropVisibilityVar = "Protected"
-	VisibilityPrivate   ValuePropVisibilityVar = "Private"
-	VisibilityUnknown   ValuePropVisibilityVar = "?"
+	VisibilityPublic ValuePropVisibilityVar = iota
+	VisibilityProtected
+	VisibilityPrivate
+	VisibilityUnknown
 )

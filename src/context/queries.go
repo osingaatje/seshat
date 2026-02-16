@@ -6,7 +6,7 @@ package context
 //---------------------------//
 
 import (
-	"github.com/osingaatje/seshat/context/data"
+	"github.com/osingaatje/seshat/types"
 )
 
 type Queries struct {
