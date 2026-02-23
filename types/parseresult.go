@@ -1,23 +1,29 @@
-package data
+package types
 
 import (
 	. "github.com/osingaatje/seshat/types/parse-result-datatypes"
 )
 
 type ParseResult struct {
-	Vertices map[uint64]*ParsedVertex `json:"vertices"`
-	Edges    map[uint64]*ParsedEdge   `json:"edges"`
+	Vertices map[VertexIdentifier]*ParsedVertex `json:"vertices"`
+	Edges    map[EdgeIdentifier]*ParsedEdge     `json:"edges"`
+}
+
+type VertexIdentifier uint64
+type EdgeIdentifier struct {
+	FromId VertexIdentifier
+	ToId   VertexIdentifier
 }
 
 func NewParseResult() *ParseResult {
 	res := ParseResult{}
-	res.Vertices = map[uint64]*ParsedVertex{}
-	res.Edges = map[uint64]*ParsedEdge{}
+	res.Vertices = map[VertexIdentifier]*ParsedVertex{}
+	res.Edges = map[EdgeIdentifier]*ParsedEdge{}
 	return &res
 }
 
 type ParsedVertex struct {
-	Id         uint64                 `json:"id"`         // unique ID to refer to from edges
+	Id         VertexIdentifier       `json:"id"`         // unique ID to refer to from edges
 	Title      string                 `json:"title"`      // in UML, the classname
 	Properties map[VertexProperty]any `json:"properties"` // things like the visibility, inheritance properties etc.
 	Values     map[string]ParsedValue `json:"values"`     // raw values (in UML, the fields)
@@ -28,13 +34,13 @@ type ParsedVertex struct {
 }
 
 type ParsedEdge struct {
-	FromId         uint64                     `json:"fromId"`
-	ToId           uint64                     `json:"toId"`
-	FromProperties map[EdgeEndProperty]string `json:"fromProperties"` // things like multiplicity and arrow head style
-	Label          ParsedLabel                `json:"label"`          // for ex.: "teaches >"
-	ToProperties   map[EdgeEndProperty]string `json:"toProperties"`
+	FromId         VertexIdentifier        `json:"fromId"`
+	ToId           VertexIdentifier        `json:"toId"`
+	FromProperties map[EdgeEndProperty]any `json:"fromProperties"` // things like multiplicity and arrow head style
+	Label          ParsedLabel             `json:"label"`          // for ex.: "teaches >"
+	ToProperties   map[EdgeEndProperty]any `json:"toProperties"`
 
-	Properties map[EdgeProperty]string `json:"properties"` // general properties such as edge label text etc.
+	StyleProperties map[EdgeStyleProperty]any `json:"styleProperties"` // general properties such as edge label text etc.
 }
 
 // contains value along with optional properties

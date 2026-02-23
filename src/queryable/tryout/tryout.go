@@ -14,7 +14,7 @@ func FindQueries(c *context.Ctx) {
 	c.Queries.Test = context.DefineQuery(c, "Test", Test)
 }
 
-func Test(c *context.Ctx, name data.NameCmd) string {
+func Test(c *context.Ctx, name types.NameCmd) string {
 	greeting := fmt.Sprintf("Hello %s %s!", name.FName, name.LName)
 	return greeting
 }

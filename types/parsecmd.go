@@ -1,4 +1,4 @@
-package data
+package types
 
 // go:exhaustive
 type DiagramFormat int

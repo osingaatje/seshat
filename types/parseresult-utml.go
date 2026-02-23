@@ -1,4 +1,4 @@
-package data
+package types
 
 import (
 	"bytes"
@@ -50,12 +50,20 @@ type ParseResultUTMLEdge struct {
 	EndLabel        *UTMLEdgeLabel `json:"endLabel,omitempty"`    // text
 	StartStyle      *int           `json:"startStyle,omitempty"`  // arrow head style?
 	EndStyle        *int           `json:"endStyle,omitempty"`    // arrow head style?
-	LineStyle       *int           `json:"lineStyle,omitempty"`   // line styling
+	LineStyle       *UTMLLineStyle `json:"lineStyle,omitempty"`   // line styling
 	LineType        *int           `json:"lineType,omitempty"`    // line styling
 	MiddlePositions []UTMLXY       `json:"middlePositions"`       // no clue what this is
 	StartNodeId     int            `json:"startNodeId"`           // node pointer
 	EndNodeId       int            `json:"endNodeId"`             // node pointer
 }
+
+type UTMLLineStyle int
+
+const (
+	UTMLLineStyleFilled UTMLLineStyle = 0
+	UTMLLineStyleDotted               = iota
+	UTMLLineStyleDashed
+)
 
 type ParseResultUTMLNode struct {
 	Type            *UTMLClassType `json:"type,omitempty"`

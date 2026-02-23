@@ -1,3 +1,12 @@
 package parse
 
-// TODO Make conversion maps from UTML data structures like "public"/"private" to internal data structure names
+import (
+	. "github.com/osingaatje/seshat/types"
+	. "github.com/osingaatje/seshat/types/parse-result-datatypes"
+)
+
+var UTMLLineStyleToParsedStyle map[UTMLLineStyle]EdgeLineStyle = map[UTMLLineStyle]EdgeLineStyle{
+	UTMLLineStyleDashed: EdgeLineStyleDotted,
+	UTMLLineStyleDotted: EdgeLineStyleDotted,
+	UTMLLineStyleFilled: EdgeLineStyleSolid,
+}

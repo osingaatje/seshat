@@ -21,7 +21,7 @@ func (t *TestCmd) Run(c *context.Ctx) error {
 	c.LogWarn("test 123 warn")
 	c.LogErr("test 123 error")
 
-	fmt.Println(c.Queries.Test.Get("Test", data.NameCmd{FName: t.FName, LName: t.LName}))
+	fmt.Println(c.Queries.Test.Get("Test", types.NameCmd{FName: t.FName, LName: t.LName}))
 	return nil
 }
 

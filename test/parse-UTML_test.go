@@ -28,7 +28,7 @@ func TestUTMLParseSimple(t *testing.T) {
 	}
 
 	// run query
-	res := c.Queries.ParseUTML.Get("Parse UTML", data.ParseUTMLCmd{Filepath: FILEPATH})
+	res := c.Queries.ParseUTML.Get("Parse UTML", types.ParseUTMLCmd{Filepath: FILEPATH})
 	actualJson, err := helpers.IndentJSON([]byte(res.String()))
 	if err != nil {
 		t.Errorf("Could not indent JSON for parsed UTML, err=%s", err.Error())

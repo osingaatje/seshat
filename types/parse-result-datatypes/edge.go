@@ -8,8 +8,8 @@ import (
 type EdgeEndProperty int // the properties for the end of an edge ( <>------> )
 
 const (
-	EdgeEndPropArrowStyle   EdgeEndProperty = 1
-	EdgeEndPropMultiplicity EdgeEndProperty = 2
+	EdgeEndPropArrowStyle EdgeEndProperty = iota
+	EdgeEndPropMultiplicity
 )
 
 var EdgeEndPropertyAll map[EdgeEndProperty]reflect.Type = map[EdgeEndProperty]reflect.Type{
@@ -17,19 +17,12 @@ var EdgeEndPropertyAll map[EdgeEndProperty]reflect.Type = map[EdgeEndProperty]re
 	EdgeEndPropMultiplicity: reflect.TypeOf(""),
 }
 
-type EdgeProperty int      // general properties of the edge
 type EdgeStyleProperty int // styling specifics (for visualisation)
 const (
-	// core properties
-	EdgePropLabelText EdgeProperty = iota
-
 	// styling
 	EdgeStyleLine EdgeStyleProperty = iota
 )
 
-var EdgePropertyAll map[EdgeProperty]reflect.Type = map[EdgeProperty]reflect.Type{
-	EdgePropLabelText: reflect.TypeOf(""),
-}
 var EdgeStylePropertyAll map[EdgeStyleProperty]reflect.Type = map[EdgeStyleProperty]reflect.Type{
 	EdgeStyleLine: reflect.TypeOf(EdgeLineStyleSolid),
 }

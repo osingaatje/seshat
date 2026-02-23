@@ -14,11 +14,11 @@ func FindQueries(c *context.Ctx) {
 }
 
 // general method that switches based on context
-func parseFile(c *context.Ctx, cmd data.ParseCmd) *data.ParseResult {
+func parseFile(c *context.Ctx, cmd types.ParseCmd) *types.ParseResult {
 	switch cmd.DiagramFormat {
 
-	case data.DiagramFormatUTML:
-		utmlRes := c.Queries.ParseUTML.Get("Parse UTML", data.ParseUTMLCmd{Filepath: cmd.Filepath})
+	case types.DiagramFormatUTML:
+		utmlRes := c.Queries.ParseUTML.Get("Parse UTML", types.ParseUTMLCmd{Filepath: cmd.Filepath})
 		return convertUTMLToParseRes(c, utmlRes)
 
 	default:
