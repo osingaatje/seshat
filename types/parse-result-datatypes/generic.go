@@ -1,28 +1,17 @@
 package parseresultdatatypes
 
-import (
-	"reflect"
-)
-
 // Properties of values, e.g.: "field" : Visibility=private, Type=string
-type ValueProperty int
-
-const (
-	ValuePropVisibility ValueProperty = iota
-	ValuePropType
-)
-
-var ValuePropertyAll map[ValueProperty]reflect.Type = map[ValueProperty]reflect.Type{
-	ValuePropVisibility: reflect.TypeOf(VisibilityPublic),
-	ValuePropType:       reflect.TypeOf(""), // we allow anything here, class, inherited, ...
+type ValueProperties struct {
+	Visibility ValuePropVisibilityVar `json:"visibility,omitempty"`
+	Type       string                 `json:"type,omitempty"` // type string,class,bool,etc.
 }
 
 // More detailed datatypes
-type ValuePropVisibilityVar int
+type ValuePropVisibilityVar string
 
 const (
-	VisibilityPublic ValuePropVisibilityVar = iota
-	VisibilityProtected
-	VisibilityPrivate
-	VisibilityUnknown
+	VisibilityPublic    ValuePropVisibilityVar = "public"
+	VisibilityProtected ValuePropVisibilityVar = "protected"
+	VisibilityPrivate   ValuePropVisibilityVar = "private"
+	VisibilityUnknown   ValuePropVisibilityVar = "unknown"
 )

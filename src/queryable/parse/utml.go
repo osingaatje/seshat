@@ -2,12 +2,11 @@ package parse
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"os"
-	"reflect"
 	"strings"
 
+	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types"
 	. "github.com/osingaatje/seshat/types/parse-result-datatypes"
@@ -69,13 +68,8 @@ func convertUTMLVertex(ctx *context.Ctx, index int, n *ParseResultUTMLNode) *Par
 		titleText = *n.Text
 	}
 
-	extractedProps, err := extractUTMLVertexProperties(ctx, index, n)
-	if err != nil {
-		ctx.LogErr("Could not extract properties for node - err=%s", err.Error())
-		return nil
-	}
-	extractedVals, err := map[string]ParsedValue{}, nil // TODO!
-	ctx.LogDebug("TODO EXTRACT VALS FROM NODE")
+	extractedProps := extractUTMLVertexProperties(ctx, index, n)
+	extractedVals := extractUTMLVals(n)
 
 	return &ParsedVertex{
 		Id:         VertexIdentifier(index), // location in the original UTML array
@@ -85,29 +79,38 @@ func convertUTMLVertex(ctx *context.Ctx, index int, n *ParseResultUTMLNode) *Par
 		Location:   Vector2D{X: n.Position.X, Y: n.Position.Y},
 	}
 }
-func extractUTMLVertexProperties(ctx *context.Ctx, index int, n *ParseResultUTMLNode) (map[VertexProperty]any, error) {
-	res := map[VertexProperty]any{}
+func extractUTMLVertexProperties(ctx *context.Ctx, index int, n *ParseResultUTMLNode) VertexProperties {
+	res := VertexProperties{
+		Type:       "",
+		Visibility: "",
+	}
 
-	for prop, typ := range VertexPropertyAll {
-		switch prop {
+	// Type:
+	if n.ClassType == nil {
+		ctx.LogWarn("No valid class type for node index '%d'", index)
+		return res
+	}
 
-		case VertexPropClassType:
-			if n.ClassType == nil {
-				ctx.LogWarn("No valid class type for node index '%d'", index)
-				continue
-			}
-			if reflect.TypeOf(*n.ClassType) != typ {
-				ctx.LogErr("types for VertexPropClassType and UTML ClassType do not match! %T != %T", typ, reflect.TypeOf(*n.ClassType))
-				return res, errors.New("type mismatch between VertexPropClassType and UTML ClassType")
-			}
-			res[VertexPropClassType] = n.ClassType
+	res.Type = *n.ClassType
+	// Visibility: not present for nodes in UTML :(
 
-		case VertexPropClassVisibility:
-			// nodes do not have visibility :(
+	return res
+}
+
+func extractUTMLVals(n *ParseResultUTMLNode) map[string]ParsedValue {
+	res := map[string]ParsedValue{}
+
+	for _, a := range n.Attributes {
+		res[a.Name] = ParsedValue{
+			Value: "", // utml cannot have (default) values
+			Properties: ValueProperties{
+				Visibility: UTMLVisibilityToInternalVisibility[a.Visibility],
+				Type:       a.Type,
+			},
 		}
 	}
 
-	return res, nil
+	return res
 }
 
 func convertUTMLEdge(c *context.Ctx, e *ParseResultUTMLEdge) *ParsedEdge {
@@ -118,62 +121,62 @@ func convertUTMLEdge(c *context.Ctx, e *ParseResultUTMLEdge) *ParsedEdge {
 	res := ParsedEdge{
 		FromId:          VertexIdentifier(e.StartNodeId), // location in the array
 		ToId:            VertexIdentifier(e.EndNodeId),   // location in the array
-		FromProperties:  extractUTMLEdgeFromProps(c, e),
-		Label:           ParsedLabel{}, // TODO
-		ToProperties:    extractUTMLEdgeToProps(c, e),
-		StyleProperties: extractUTMLEdgeProps(c, e),
+		FromProperties:  extractUTMLEdgeEndProps(c, e, true),
+		Label:           extractUTMLEdgeLabel(e),
+		ToProperties:    extractUTMLEdgeEndProps(c, e, false),
+		StyleProperties: extractUTMLEdgeProps(e),
 	}
 
 	return &res
 }
 
-func extractUTMLEdgeFromProps(c *context.Ctx, e *ParseResultUTMLEdge) map[EdgeEndProperty]any {
-	res := map[EdgeEndProperty]any{}
-
-	for prop, _ := range EdgeEndPropertyAll {
-		switch prop {
-		case EdgeEndPropArrowStyle:
-			// e.StartStyle
-			c.LogErr("TODO ARROW STYLE")
-		case EdgeEndPropMultiplicity: // inspect the code for a VertexStartStyle that looks like "*", "0..1", "0..*" etc.
-			c.LogErr("TODO PROP MULTIPLICITY")
-		}
+func extractUTMLEdgeEndProps(c *context.Ctx, e *ParseResultUTMLEdge, start bool) EdgeEndProperties {
+	res := EdgeEndProperties{
+		ArrowStyle:   ArrowStyleNoArrow, // default
+		Multiplicity: nil,
 	}
+
+	var style *UTMLArrowHeadStyle = e.StartStyle
+	var lbl *UTMLEdgeLabel = e.StartLabel
+	if !start {
+		style = e.EndStyle
+		lbl = e.EndLabel
+	}
+
+	if style != nil {
+		res.ArrowStyle = UTMLArrowStyleToInteral[*style]
+	}
+
+	if lbl != nil {
+		mult, ok := helper.GetMultiplicity(lbl.Value)
+		if !ok {
+			c.LogDebug("Could not parse UTML StartLabel ('from') '%s' into a multiplicity.", e.StartLabel.Value)
+		}
+		res.Multiplicity = mult
+	}
+
 	return res
 }
 
-func extractUTMLEdgeToProps(c *context.Ctx, e *ParseResultUTMLEdge) map[EdgeEndProperty]any {
-	res := map[EdgeEndProperty]any{}
-
-	for prop := range EdgeEndPropertyAll {
-		switch prop {
-		case EdgeEndPropArrowStyle:
-			c.LogErr("TODO ARROW STYLE")
-		case EdgeEndPropMultiplicity: // inspect the code for a VertexStartStyle that looks like "*", "0..1", "0..*" etc.
-			c.LogErr("TODO MULTIPLICITY")
-		}
+func extractUTMLEdgeProps(e *ParseResultUTMLEdge) EdgeStyleProperties {
+	res := EdgeStyleProperties{
+		LineStyle: EdgeLineStyleSolid,
 	}
+
+	if e.LineStyle != nil {
+		res.LineStyle = UTMLLineStyleToParsedStyle[*e.LineStyle]
+	}
+
 	return res
 }
 
-func extractUTMLEdgeProps(c *context.Ctx, e *ParseResultUTMLEdge) map[EdgeStyleProperty]any {
-	res := map[EdgeStyleProperty]any{}
+func extractUTMLEdgeLabel(e *ParseResultUTMLEdge) ParsedLabel {
+	res := ParsedLabel{Text: "", Location: Vector2D{X: 0, Y: 0}}
 
-	for prop := range EdgeStylePropertyAll {
-		switch prop {
-		case EdgeStyleLine:
-			if e.LineStyle == nil {
-				continue
-			}
-
-			lineStyle, ok := UTMLLineStyleToParsedStyle[*e.LineStyle]
-			if !ok {
-				c.LogErr("Unknown UTML line style '%d'! Please make a translation for this", *e.LineStyle)
-				continue
-			}
-
-			res[EdgeStyleLine] = lineStyle
-		}
+	if e.MiddleLabel != nil {
+		res.Text = e.MiddleLabel.Value
+		res.Location.X = e.MiddleLabel.Offset.X
+		res.Location.Y = e.MiddleLabel.Offset.Y
 	}
 	return res
 }

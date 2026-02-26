@@ -1,9 +1,7 @@
 package types
 
 import (
-	"bytes"
-	"encoding/json"
-	"io"
+	"github.com/osingaatje/seshat/helper"
 )
 
 type UTMLClassType string
@@ -22,17 +20,11 @@ const (
 )
 
 func (p *ParseResultUTML) String() string {
-	var buf bytes.Buffer
-	writer := io.Writer(&buf)
-
-	enc := json.NewEncoder(writer)
-	enc.SetEscapeHTML(false) // this is why we need a custom encoder. Stupid automatic HTML escaping.
-
-	err := enc.Encode(p)
+	res, err := helper.MarshalJSON(p)
 	if err != nil {
 		panic("somehow I can't marshal UTML parse results to JSON? FIX!")
 	}
-	return buf.String()
+	return string(res)
 }
 
 type ParseResultUTML struct {
@@ -45,16 +37,16 @@ type ParseResultUTMLEdge struct {
 	StartPosition int `json:"startPosition"`
 	EndPosition   int `json:"endPosition"`
 
-	StartLabel      *UTMLEdgeLabel `json:"startLabel,omitempty"`  // text
-	MiddleLabel     *UTMLEdgeLabel `json:"middleLabel,omitempty"` // text
-	EndLabel        *UTMLEdgeLabel `json:"endLabel,omitempty"`    // text
-	StartStyle      *int           `json:"startStyle,omitempty"`  // arrow head style?
-	EndStyle        *int           `json:"endStyle,omitempty"`    // arrow head style?
-	LineStyle       *UTMLLineStyle `json:"lineStyle,omitempty"`   // line styling
-	LineType        *int           `json:"lineType,omitempty"`    // line styling
-	MiddlePositions []UTMLXY       `json:"middlePositions"`       // no clue what this is
-	StartNodeId     int            `json:"startNodeId"`           // node pointer
-	EndNodeId       int            `json:"endNodeId"`             // node pointer
+	StartLabel      *UTMLEdgeLabel      `json:"startLabel,omitempty"`  // text
+	MiddleLabel     *UTMLEdgeLabel      `json:"middleLabel,omitempty"` // text
+	EndLabel        *UTMLEdgeLabel      `json:"endLabel,omitempty"`    // text
+	StartStyle      *UTMLArrowHeadStyle `json:"startStyle,omitempty"`  // arrow head style?
+	EndStyle        *UTMLArrowHeadStyle `json:"endStyle,omitempty"`    // arrow head style?
+	LineStyle       *UTMLLineStyle      `json:"lineStyle,omitempty"`   // line styling
+	LineType        *int                `json:"lineType,omitempty"`    // line styling
+	MiddlePositions []UTMLXY            `json:"middlePositions"`       // no clue what this is
+	StartNodeId     int                 `json:"startNodeId"`           // node pointer
+	EndNodeId       int                 `json:"endNodeId"`             // node pointer
 }
 
 type UTMLLineStyle int
@@ -63,6 +55,16 @@ const (
 	UTMLLineStyleFilled UTMLLineStyle = 0
 	UTMLLineStyleDotted               = iota
 	UTMLLineStyleDashed
+)
+
+type UTMLArrowHeadStyle int
+
+const (
+	UTMLArrowStyleNone UTMLArrowHeadStyle = iota
+	UTMLArrowStyleSmallFilledArrow
+	UTMLArrowStyleFilledDiamond
+	UTMLArrowStyleUnfilledDiamond
+	UTMLArrowStyleLargeUnfilledArrow
 )
 
 type ParseResultUTMLNode struct {

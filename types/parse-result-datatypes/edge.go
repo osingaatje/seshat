@@ -1,30 +1,17 @@
 package parseresultdatatypes
 
 import (
-	"reflect"
+	"github.com/osingaatje/seshat/helper"
 )
 
 // EDGES
-type EdgeEndProperty int // the properties for the end of an edge ( <>------> )
-
-const (
-	EdgeEndPropArrowStyle EdgeEndProperty = iota
-	EdgeEndPropMultiplicity
-)
-
-var EdgeEndPropertyAll map[EdgeEndProperty]reflect.Type = map[EdgeEndProperty]reflect.Type{
-	EdgeEndPropArrowStyle:   reflect.TypeOf(ArrowStyleNoArrow),
-	EdgeEndPropMultiplicity: reflect.TypeOf(""),
+type EdgeEndProperties struct { // the properties for the end of an edge ( <>------> )
+	ArrowStyle   ArrowStyleVariant    `json:"arrowstyle,omitempty"`
+	Multiplicity *helper.Multiplicity `json:"multiplicity,omitempty"`
 }
 
-type EdgeStyleProperty int // styling specifics (for visualisation)
-const (
-	// styling
-	EdgeStyleLine EdgeStyleProperty = iota
-)
-
-var EdgeStylePropertyAll map[EdgeStyleProperty]reflect.Type = map[EdgeStyleProperty]reflect.Type{
-	EdgeStyleLine: reflect.TypeOf(EdgeLineStyleSolid),
+type EdgeStyleProperties struct {
+	LineStyle EdgeLineStyle `json:"line_style,omitempty"`
 }
 
 // more detailed datatypes
