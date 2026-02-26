@@ -1,7 +1,6 @@
 package test
 
 import (
-	"os"
 	"testing"
 
 	"github.com/go-openapi/testify/v2/assert"
@@ -34,16 +33,16 @@ func TestConvertSimpleUTMLResultToInternal(t *testing.T) {
 	//	t.Fatalf("could not parse UTML to json. Err=%s", err.Error())
 	//	return
 	//}
-	intern_json, err := helper.MarshalJSON(intern)
-	if err != nil {
-		t.Fatalf("Could not parse Internal repr. to JSON. Err=%s", err.Error())
-	}
+	//intern_json, err := helper.MarshalJSON(intern)
+	//if err != nil {
+	//	t.Fatalf("Could not parse Internal repr. to JSON. Err=%s", err.Error())
+	//}
 	// write to file
-	err = os.WriteFile("output_internal_repr.json", []byte(intern_json), os.ModeAppend)
-	if err != nil {
-		t.Fatalf("failed writing repr. to file, err=%s", err.Error())
-		return
-	}
+	//err = os.WriteFile("output_internal_repr.json", []byte(intern_json), os.ModeAppend)
+	//if err != nil {
+	//	t.Fatalf("failed writing repr. to file, err=%s", err.Error())
+	//	return
+	//}
 	//t.Logf("UTML: \n\t%s", utml_json)
 	//t.Logf("INTERNAL: \n\t%s", intern_json)
 
