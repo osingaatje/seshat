@@ -1,6 +1,5 @@
 package types
 
-// go:exhaustive
 type DiagramFormat int
 
 const (
