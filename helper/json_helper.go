@@ -49,3 +49,13 @@ func marshJson(v any, setIndent bool) ([]byte, error) {
 	err := enc.Encode(v)
 	return buf.Bytes(), err
 }
+
+// stores result in "res" which needs to be a POINTER!, gives error "error" if error occurred.
+func UnmarshalJSON(data []byte, res any) error {
+	reader := bytes.NewReader(data)
+
+	dec := json.NewDecoder(reader)
+	dec.DisallowUnknownFields() // FORCE ERROR ON ANY UNKNOWN FIELDS!
+
+	return dec.Decode(res)
+}

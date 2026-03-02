@@ -6,7 +6,8 @@ import (
 	"github.com/go-openapi/testify/v2/assert"
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/driver"
-	"github.com/osingaatje/seshat/types"
+	"github.com/osingaatje/seshat/types/command"
+	types "github.com/osingaatje/seshat/types/parse-result-utml"
 )
 
 func TestConvertSimpleUTMLResultToInternal(t *testing.T) {
@@ -14,7 +15,7 @@ func TestConvertSimpleUTMLResultToInternal(t *testing.T) {
 
 	const FILEPATH = "./examples/simpleDiag-formatted.utml"
 
-	utml := c.Queries.ParseUTML.Get("Parse UTML", types.ParseUTMLCmd{Filepath: FILEPATH})
+	utml := c.Queries.ParseUTML.Get("Parse UTML", command.ParseUTMLCmd{Filepath: FILEPATH})
 	intern := c.Queries.ParseUTMLToInternal.Get("UTML -> internal repr.", utml)
 
 	if utml == nil {
@@ -75,8 +76,15 @@ func TestConvertSimpleUTMLResultToInternal(t *testing.T) {
 		uVertex := utml.Nodes[i]
 
 		assert.Equal(t, iVertex.Id, i)
-		assert.Equal(t, iVertex.Location.X, uVertex.Position.X)
-		assert.Equal(t, iVertex.Location.Y, uVertex.Position.Y)
+
+		// height / width/ location
+		assert.Equal(t, iVertex.VisualProperties.Location.X, uVertex.Position.X)
+		assert.Equal(t, iVertex.VisualProperties.Location.Y, uVertex.Position.Y)
+
+		assert.Equal(t, iVertex.VisualProperties.Size.X, float64(uVertex.Width))
+		assert.Equal(t, iVertex.VisualProperties.Size.Y, float64(uVertex.Height))
+
+		// class type
 		if uVertex.ClassType != nil {
 			assert.Equal(t, iVertex.Properties.Type, *uVertex.ClassType)
 		} else {

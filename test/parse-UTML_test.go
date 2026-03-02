@@ -7,16 +7,15 @@ import (
 	"github.com/go-openapi/testify/v2/assert"
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/driver"
-	"github.com/osingaatje/seshat/types"
+	"github.com/osingaatje/seshat/test/helpers"
+	"github.com/osingaatje/seshat/types/command"
 )
 
+// Tests whether the parsed and JSONified file and the formatted input file is literally, to the character, the exact same.
 func TestUTMLParseSimple(t *testing.T) {
 	c := driver.NewContext()
 
-	var FilePaths []string = []string{
-		"./examples/simpleDiag-formatted.utml",
-		"./examples/multiplicities.utml",
-	}
+	var FilePaths []string = helpers.AllUTMLFiles("./examples")
 
 	for _, path := range FilePaths {
 
@@ -33,7 +32,7 @@ func TestUTMLParseSimple(t *testing.T) {
 		}
 
 		// run query
-		res := c.Queries.ParseUTML.Get("Parse UTML", types.ParseUTMLCmd{Filepath: path})
+		res := c.Queries.ParseUTML.Get("Parse UTML", command.ParseUTMLCmd{Filepath: path})
 		actualJson, err := helper.IndentJSON([]byte(res.String()))
 		if err != nil {
 			t.Errorf("Could not indent JSON for parsed UTML, err=%s", err.Error())

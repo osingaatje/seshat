@@ -1,10 +1,9 @@
-package types
+package parseresult
 
 import (
 	"fmt"
 
 	"github.com/osingaatje/seshat/helper"
-	. "github.com/osingaatje/seshat/types/parse-result-datatypes"
 )
 
 // Because we cannot marshal structs in map keys, we convert them to strings for json marshalling.
@@ -49,9 +48,7 @@ type ParsedVertex struct {
 	Properties VertexProperties       `json:"properties"` // things like the visibility, inheritance properties etc.
 	Values     map[string]ParsedValue `json:"values"`     // raw values (in UML, the fields)
 
-	// additional stuff for possible visualisation later on:
-	Location Vector2D `json:"location"`
-	Size     Vector2D `json:"size"`
+	VisualProperties VertexVisualProperties `json:"visual_properties"`
 }
 
 type ParsedEdge struct {

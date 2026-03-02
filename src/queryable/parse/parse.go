@@ -4,7 +4,8 @@ import (
 	"fmt"
 
 	"github.com/osingaatje/seshat/src/context"
-	"github.com/osingaatje/seshat/types"
+	. "github.com/osingaatje/seshat/types/command"
+	. "github.com/osingaatje/seshat/types/parse-result"
 )
 
 func FindQueries(c *context.Ctx) {
@@ -14,11 +15,11 @@ func FindQueries(c *context.Ctx) {
 }
 
 // general method that switches based on context
-func parseFile(c *context.Ctx, cmd types.ParseCmd) *types.ParseResult {
+func parseFile(c *context.Ctx, cmd ParseCmd) *ParseResult {
 	switch cmd.DiagramFormat {
 
-	case types.DiagramFormatUTML:
-		utmlRes := c.Queries.ParseUTML.Get("Parse UTML", types.ParseUTMLCmd{Filepath: cmd.Filepath})
+	case DiagramFormatUTML:
+		utmlRes := c.Queries.ParseUTML.Get("Parse UTML", ParseUTMLCmd{Filepath: cmd.Filepath})
 		return convertUTMLToParseRes(c, utmlRes)
 
 	default:

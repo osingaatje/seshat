@@ -68,12 +68,12 @@ const (
 )
 
 type ParseResultUTMLNode struct {
-	Type            *UTMLClassType `json:"type,omitempty"`
-	Width           *int           `json:"width,omitempty"`
-	Height          *int           `json:"height,omitempty"`
-	Position        *UTMLXY        `json:"position,omitempty"`
-	Text            *string        `json:"text,omitempty"`
-	HasDoubleBorder *bool          `json:"hasDoubleBorder,omitempty"`
+	Type            UTMLClassType `json:"type"`
+	Width           int           `json:"width"`
+	Height          int           `json:"height"`
+	Position        UTMLXY        `json:"position"`
+	Text            string        `json:"text"`
+	HasDoubleBorder bool          `json:"hasDoubleBorder"`
 	StyleObject     *struct {
 		Fill          string  `json:"fill"`
 		Stroke        string  `json:"stroke"`

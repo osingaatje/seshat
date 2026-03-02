@@ -1,4 +1,4 @@
-package parseresultdatatypes
+package parseresult
 
 // Properties of values, e.g.: "field" : Visibility=private, Type=string
 type ValueProperties struct {

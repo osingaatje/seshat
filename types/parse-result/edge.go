@@ -1,4 +1,4 @@
-package parseresultdatatypes
+package parseresult
 
 import (
 	"github.com/osingaatje/seshat/helper"

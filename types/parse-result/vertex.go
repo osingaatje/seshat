@@ -1,4 +1,4 @@
-package parseresultdatatypes
+package parseresult
 
 import (
 	"image/color"
@@ -10,7 +10,10 @@ type VertexProperties struct {
 	Visibility ValuePropVisibilityVar `json:"visibility,omitempty"` // public, private, protected, ...
 }
 
-type VertexStyleProperties struct {
+type VertexVisualProperties struct {
+	// additional stuff for possible visualisation later on:
+	Location               Vector2D   `json:"location"`
+	Size                   Vector2D   `json:"size"`
 	VertexStyleFillHex     color.RGBA `json:"fill_col"`
 	VertexStyleStrokeHex   color.RGBA `json:"stroke_col"`
 	VertexStyleStrokeWidth uint16     `json:"stroke_width"`

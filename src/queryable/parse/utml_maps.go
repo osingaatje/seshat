@@ -1,8 +1,8 @@
 package parse
 
 import (
-	. "github.com/osingaatje/seshat/types"
-	. "github.com/osingaatje/seshat/types/parse-result-datatypes"
+	. "github.com/osingaatje/seshat/types/parse-result"
+	. "github.com/osingaatje/seshat/types/parse-result-utml"
 )
 
 var UTMLClassTypeToInternal map[UTMLClassType]string = map[UTMLClassType]string{

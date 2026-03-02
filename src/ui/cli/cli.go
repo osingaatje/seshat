@@ -7,7 +7,7 @@ import (
 
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
-	"github.com/osingaatje/seshat/types"
+	"github.com/osingaatje/seshat/types/command"
 
 	"github.com/alecthomas/kong"
 )
@@ -25,7 +25,7 @@ func (t *TestCmd) Run(c *context.Ctx) error {
 	c.LogWarn("test 123 warn")
 	c.LogErr("test 123 error")
 
-	fmt.Println(c.Queries.Test.Get("Test", types.NameCmd{FName: t.FName, LName: t.LName}))
+	fmt.Println(c.Queries.Test.Get("Test", command.NameCmd{FName: t.FName, LName: t.LName}))
 	return nil
 }
 
@@ -35,7 +35,7 @@ type InternalRepCmd struct {
 }
 
 func (cmd *InternalRepCmd) Run(c *context.Ctx) error {
-	utml := c.Queries.ParseUTML.Get("Parse UTML", types.ParseUTMLCmd{Filepath: cmd.Input})
+	utml := c.Queries.ParseUTML.Get("Parse UTML", command.ParseUTMLCmd{Filepath: cmd.Input})
 	if utml == nil {
 		errMsg := fmt.Sprintf("No UTML parse result for '%s'", cmd.Input)
 		c.LogErr("%s", errMsg)

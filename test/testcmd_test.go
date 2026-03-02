@@ -9,12 +9,12 @@ import (
 
 	"github.com/go-openapi/testify/v2/assert"
 	"github.com/osingaatje/seshat/src/driver"
-	"github.com/osingaatje/seshat/types"
+	"github.com/osingaatje/seshat/types/command"
 )
 
 func TestTestCmd(t *testing.T) {
 	c := driver.NewContext()
 
-	res := c.Queries.Test.Get("Test", types.NameCmd{FName: "Douwe", LName: "O"})
+	res := c.Queries.Test.Get("Test", command.NameCmd{FName: "Douwe", LName: "O"})
 	assert.Equal(t, "Hello Douwe O!", res)
 }

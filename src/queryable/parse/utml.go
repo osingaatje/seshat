@@ -1,15 +1,16 @@
 package parse
 
 import (
-	"encoding/json"
 	"fmt"
+	"image/color"
 	"os"
 	"strings"
 
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
-	. "github.com/osingaatje/seshat/types"
-	. "github.com/osingaatje/seshat/types/parse-result-datatypes"
+	. "github.com/osingaatje/seshat/types/command"
+	. "github.com/osingaatje/seshat/types/parse-result"
+	. "github.com/osingaatje/seshat/types/parse-result-utml"
 )
 
 // Parsing raw file to UTML
@@ -22,7 +23,7 @@ func parseUTML(c *context.Ctx, cmd ParseUTMLCmd) *ParseResultUTML {
 
 	var jsonRes *ParseResultUTML
 
-	err = json.Unmarshal(r, &jsonRes)
+	err = helper.UnmarshalJSON(r, &jsonRes)
 	if err != nil {
 		c.LogErr("Could not marshal file '%s' to a UTML Parse Result! Err=%s", cmd.Filepath, err.Error())
 		return nil
@@ -63,20 +64,16 @@ func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *ParseResult {
 }
 
 func convertUTMLVertex(ctx *context.Ctx, index int, n *ParseResultUTMLNode) *ParsedVertex {
-	titleText := ""
-	if n.Text != nil {
-		titleText = *n.Text
-	}
-
 	extractedProps := extractUTMLVertexProperties(ctx, index, n)
 	extractedVals := extractUTMLVals(n)
+	extractedVisualProps := extractVisualProps(n)
 
 	return &ParsedVertex{
-		Id:         VertexIdentifier(index), // location in the original UTML array
-		Title:      titleText,
-		Properties: extractedProps,
-		Values:     extractedVals,
-		Location:   Vector2D{X: n.Position.X, Y: n.Position.Y},
+		Id:               VertexIdentifier(index), // location in the original UTML array
+		Title:            n.Text,
+		Properties:       extractedProps,
+		Values:           extractedVals,
+		VisualProperties: extractedVisualProps,
 	}
 }
 func extractUTMLVertexProperties(ctx *context.Ctx, index int, n *ParseResultUTMLNode) VertexProperties {
@@ -109,6 +106,27 @@ func extractUTMLVals(n *ParseResultUTMLNode) map[string]ParsedValue {
 			},
 		}
 	}
+
+	return res
+}
+
+func extractVisualProps(n *ParseResultUTMLNode) VertexVisualProperties {
+	res := VertexVisualProperties{
+		Location:               Vector2D{X: n.Position.X, Y: n.Position.Y},
+		Size:                   Vector2D{X: float64(n.Width), Y: float64(n.Height)},
+		VertexStyleFillHex:     color.RGBA{R: 255, G: 255, B: 255, A: 255}, // transparent white
+		VertexStyleStrokeHex:   color.RGBA{R: 0, G: 0, B: 0, A: 0},         // black
+		VertexStyleStrokeWidth: 1,
+	}
+
+	if n.HasDoubleBorder {
+		res.VertexStyleStrokeWidth = 2 // idk do something fun I guess
+	}
+
+	// ignored, because we don't really need it (now) -2026-03-02
+	// if n.StyleObject != nil {
+	// 	res.VertexStyleStrokeWidth = n.StyleObject.StrokeWidth
+	// }
 
 	return res
 }

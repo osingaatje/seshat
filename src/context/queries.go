@@ -6,16 +6,18 @@ package context
 //---------------------------//
 
 import (
-	"github.com/osingaatje/seshat/types"
+	. "github.com/osingaatje/seshat/types/command"
+	. "github.com/osingaatje/seshat/types/parse-result"
+	. "github.com/osingaatje/seshat/types/parse-result-utml"
 )
 
 type Queries struct {
 	ctx *Ctx
 
 	// queries are placed here. Note that you need to add this query to DefineQueries() and then let the Driver call the function in order to use it!
-	Parse               *Query[types.ParseCmd, *types.ParseResult]
-	ParseUTML           *Query[types.ParseUTMLCmd, *types.ParseResultUTML]
-	ParseUTMLToInternal *Query[*types.ParseResultUTML, *types.ParseResult]
+	Parse               *Query[ParseCmd, *ParseResult]
+	ParseUTML           *Query[ParseUTMLCmd, *ParseResultUTML]
+	ParseUTMLToInternal *Query[*ParseResultUTML, *ParseResult]
 
-	Test *Query[types.NameCmd, string]
+	Test *Query[NameCmd, string]
 }

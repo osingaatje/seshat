@@ -1,4 +1,4 @@
-package types
+package command
 
 // - testcommand
 type NameCmd struct {

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/fs"
 	"os"
+	"path"
 )
 
 func AllUTMLFiles(dirname string) []string {
@@ -13,5 +14,10 @@ func AllUTMLFiles(dirname string) []string {
 	if err != nil {
 		panic(fmt.Sprintf("CANNOT FIND FILES fuck!!!! err=%s", err.Error()))
 	}
+
+	for i, file := range utmlFiles {
+		utmlFiles[i] = path.Join(dirname, file)
+	}
+
 	return utmlFiles
 }
