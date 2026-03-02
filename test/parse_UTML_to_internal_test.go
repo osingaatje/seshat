@@ -38,7 +38,7 @@ func TestConvertSimpleUTMLResultToInternal(t *testing.T) {
 	//	t.Fatalf("Could not parse Internal repr. to JSON. Err=%s", err.Error())
 	//}
 	// write to file
-	//err = os.WriteFile("output_internal_repr.json", []byte(intern_json), os.ModeAppend)
+	//err = os.WriteFile("output_internal_repr.json", []byte(intern_json), os.ModePerm)
 	//if err != nil {
 	//	t.Fatalf("failed writing repr. to file, err=%s", err.Error())
 	//	return
