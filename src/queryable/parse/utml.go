@@ -107,6 +107,16 @@ func extractUTMLVals(n *ParseResultUTMLNode) map[string]ParsedValue {
 		}
 	}
 
+	for _, m := range n.Methods {
+		res[m.Name] = ParsedValue{
+			Value: "",
+			Properties: ValueProperties{
+				Visibility: UTMLVisibilityToInternalVisibility[m.Visibility],
+				Type:       m.Type,
+			},
+		}
+	}
+
 	return res
 }
 
@@ -150,19 +160,13 @@ func convertUTMLEdge(c *context.Ctx, e *ParseResultUTMLEdge) *ParsedEdge {
 
 func extractUTMLEdgeEndProps(c *context.Ctx, e *ParseResultUTMLEdge, start bool) EdgeEndProperties {
 	res := EdgeEndProperties{
-		ArrowStyle:   ArrowStyleNoArrow, // default
+		ArrowStyle:   UTMLArrowStyleToInteral[e.StartStyle], // default
 		Multiplicity: nil,
 	}
 
-	var style *UTMLArrowHeadStyle = e.StartStyle
 	var lbl *UTMLEdgeLabel = e.StartLabel
 	if !start {
-		style = e.EndStyle
 		lbl = e.EndLabel
-	}
-
-	if style != nil {
-		res.ArrowStyle = UTMLArrowStyleToInteral[*style]
 	}
 
 	if lbl != nil {
@@ -178,11 +182,7 @@ func extractUTMLEdgeEndProps(c *context.Ctx, e *ParseResultUTMLEdge, start bool)
 
 func extractUTMLEdgeProps(e *ParseResultUTMLEdge) EdgeStyleProperties {
 	res := EdgeStyleProperties{
-		LineStyle: EdgeLineStyleSolid,
-	}
-
-	if e.LineStyle != nil {
-		res.LineStyle = UTMLLineStyleToParsedStyle[*e.LineStyle]
+		LineStyle: UTMLLineStyleToParsedStyle[e.LineStyle],
 	}
 
 	return res
@@ -211,7 +211,7 @@ func verifyEdgesLinkToVertices(c *context.Ctx, r *ParseResult) {
 		if len(incorrectEdges) > 0 {
 			errMsg := "Some edges were not connected to any nodes! Edges: "
 			errMsg += strings.Join(incorrectEdges, ",")
-			c.LogErr(errMsg)
+			c.LogErr("%s", errMsg)
 		}
 	}
 }

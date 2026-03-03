@@ -37,16 +37,16 @@ type ParseResultUTMLEdge struct {
 	StartPosition int `json:"startPosition"`
 	EndPosition   int `json:"endPosition"`
 
-	StartLabel      *UTMLEdgeLabel      `json:"startLabel,omitempty"`  // text
-	MiddleLabel     *UTMLEdgeLabel      `json:"middleLabel,omitempty"` // text
-	EndLabel        *UTMLEdgeLabel      `json:"endLabel,omitempty"`    // text
-	StartStyle      *UTMLArrowHeadStyle `json:"startStyle,omitempty"`  // arrow head style?
-	EndStyle        *UTMLArrowHeadStyle `json:"endStyle,omitempty"`    // arrow head style?
-	LineStyle       *UTMLLineStyle      `json:"lineStyle,omitempty"`   // line styling
-	LineType        *int                `json:"lineType,omitempty"`    // line styling
-	MiddlePositions []UTMLXY            `json:"middlePositions"`       // no clue what this is
-	StartNodeId     int                 `json:"startNodeId"`           // node pointer
-	EndNodeId       int                 `json:"endNodeId"`             // node pointer
+	StartLabel      *UTMLEdgeLabel     `json:"startLabel,omitempty"`  // text
+	MiddleLabel     *UTMLEdgeLabel     `json:"middleLabel,omitempty"` // text
+	EndLabel        *UTMLEdgeLabel     `json:"endLabel,omitempty"`    // text
+	StartStyle      UTMLArrowHeadStyle `json:"startStyle"`            // arrow head style?
+	EndStyle        UTMLArrowHeadStyle `json:"endStyle"`              // arrow head style?
+	LineStyle       UTMLLineStyle      `json:"lineStyle"`             // line styling
+	LineType        int                `json:"lineType"`              // line styling
+	MiddlePositions []UTMLXY           `json:"middlePositions"`       // no clue what this is
+	StartNodeId     int                `json:"startNodeId"`           // node pointer
+	EndNodeId       int                `json:"endNodeId"`             // node pointer
 }
 
 type UTMLLineStyle int

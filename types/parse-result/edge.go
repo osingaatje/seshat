@@ -6,12 +6,12 @@ import (
 
 // EDGES
 type EdgeEndProperties struct { // the properties for the end of an edge ( <>------> )
-	ArrowStyle   ArrowStyleVariant    `json:"arrowstyle,omitempty"`
+	ArrowStyle   ArrowStyleVariant    `json:"arrowstyle"`
 	Multiplicity *helper.Multiplicity `json:"multiplicity,omitempty"`
 }
 
 type EdgeStyleProperties struct {
-	LineStyle EdgeLineStyle `json:"line_style,omitempty"`
+	LineStyle EdgeLineStyle `json:"line_style"`
 }
 
 // more detailed datatypes
