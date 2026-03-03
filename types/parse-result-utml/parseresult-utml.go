@@ -82,8 +82,8 @@ type ParseResultUTMLNode struct {
 		StrokeOpacity float32 `json:"stroke-opacity"`
 	} `json:"styleObject,omitempty"`
 	ClassType  *string             `json:"classType,omitempty"`
-	Attributes []UTMLFieldOrMethod `json:"attributes,omitempty"`
-	Methods    []UTMLFieldOrMethod `json:"methods,omitempty"`
+	Attributes []UTMLFieldOrMethod `json:"attributes"`
+	Methods    []UTMLFieldOrMethod `json:"methods"`
 }
 
 type UTMLEdgeLabel struct {
