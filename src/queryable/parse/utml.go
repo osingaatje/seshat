@@ -35,6 +35,8 @@ func parseUTML(c *context.Ctx, cmd ParseUTMLCmd) *ParseResultUTML {
 
 // Converting to internal representation
 func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *ParseResult {
+	const LOGPREFIX = "Could not convert UTML -> internal: "
+
 	if utml == nil {
 		c.LogErr("Nil UTML parse result when converting to generic ParseResult.")
 		return nil
@@ -55,12 +57,22 @@ func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *ParseResult {
 		if edge == nil { // inner errors are logged. no error logging here.
 			return nil
 		}
-		res.Edges[EdgeIdentifier{FromId: VertexIdentifier(edge.FromId), ToId: VertexIdentifier(edge.ToId)}] = edge
+
+		var eId EdgeIdentifier
+		res.Edges[eId.New(edge.FromId, edge.ToId)] = edge
+	}
+
+	// EXTRA METHODS FOR EDGES:
+	err := finaliseEdgeProperties(utml, res)
+	if err != nil {
+		c.LogErr("%s%s", LOGPREFIX, err.Error())
+		return nil
 	}
 
 	// SANITY CHECKS:
-	err := verifyEdgesLinkToVertices(c, res)
+	err = verifyEdgesLinkToVertices(res)
 	if err != nil {
+		c.LogErr("%s%s", LOGPREFIX, err.Error())
 		return nil
 	}
 
@@ -153,19 +165,19 @@ func convertUTMLEdge(c *context.Ctx, e *ParseResultUTMLEdge) *ParsedEdge {
 	res := ParsedEdge{
 		FromId:          VertexIdentifier(e.StartNodeId), // location in the array
 		ToId:            VertexIdentifier(e.EndNodeId),   // location in the array
-		FromProperties:  extractUTMLEdgeEndProps(c, e, true),
+		FromProperties:  extractUTMLEdgeEndProps(e, true),
 		Label:           extractUTMLEdgeLabel(e),
-		ToProperties:    extractUTMLEdgeEndProps(c, e, false),
+		ToProperties:    extractUTMLEdgeEndProps(e, false),
 		StyleProperties: extractUTMLEdgeProps(e),
 	}
 
 	return &res
 }
 
-func extractUTMLEdgeEndProps(c *context.Ctx, e *ParseResultUTMLEdge, start bool) EdgeEndProperties {
+func extractUTMLEdgeEndProps(e *ParseResultUTMLEdge, start bool) EdgeEndProperties {
 	res := EdgeEndProperties{
-		ArrowStyle:   UTMLArrowStyleToInteral[e.StartStyle], // default
-		Multiplicity: nil,
+		ArrowStyle: UTMLArrowStyleToInteral[e.StartStyle], // default
+		Label:      nil,
 	}
 
 	var lbl *UTMLEdgeLabel = e.StartLabel
@@ -174,14 +186,77 @@ func extractUTMLEdgeEndProps(c *context.Ctx, e *ParseResultUTMLEdge, start bool)
 	}
 
 	if lbl != nil {
-		mult, ok := helper.GetMultiplicity(lbl.Value)
-		if !ok {
-			c.LogDebug("Could not parse UTML StartLabel ('from') '%s' into a multiplicity.", e.StartLabel.Value)
+		res.Label = &ParsedLabel{
+			Text:     lbl.Value,
+			Location: Vector2D{}, // THIS IS DONE AFTER PARSING!
 		}
-		res.Multiplicity = mult
 	}
 
 	return res
+}
+
+func finaliseEdgeProperties(utml *ParseResultUTML, res *ParseResult) error {
+	for _, uE := range utml.Edges {
+		nFromId := uE.StartNodeId
+		nToId := uE.EndNodeId
+
+		var eId EdgeIdentifier
+
+		iE, ok := res.Edges[eId.New(VertexIdentifier(nFromId), VertexIdentifier(nToId))]
+		if !ok {
+			errMsg := fmt.Sprintf("MISSING EDGE - bug in UTML -> Internal conversion. (from,to) = (%d,%d)", uE.StartNodeId, uE.EndNodeId)
+			return errors.New(errMsg)
+		}
+
+		if nFromId < 0 || nToId < 0 || nFromId >= len(utml.Nodes) || nToId >= len(utml.Nodes) {
+			errMsg := fmt.Sprintf("EDGE (%d,%d) HAS INVALID NODE ID(s)", nFromId, nToId)
+			return errors.New(errMsg)
+		}
+		uNodeFrom := utml.Nodes[nFromId]
+		uNodeTo := utml.Nodes[nFromId]
+
+		if uE.StartLabel != nil {
+			if iE.FromProperties.Label == nil {
+				errMsg := fmt.Sprintf("EDGE (%d,%d) HAS BROKEN MIDDLE LABEL", uE.StartNodeId, uE.EndNodeId)
+				return errors.New(errMsg)
+			}
+			_addLocationToLabel(&uNodeFrom, &uNodeTo, &uE, uE.StartLabel, iE.FromProperties.Label)
+		}
+	}
+
+	return nil
+}
+
+type EdgeLabelPos int
+
+const (
+	EdgeLabelPosStart EdgeLabelPos = iota
+	EdgeLabelPosMiddle
+	EdgeLabelPosEnd
+)
+
+func _addLocationToLabel(
+	nFrom *ParseResultUTMLNode,
+	nTo *ParseResultUTMLNode,
+	e *ParseResultUTMLEdge,
+	uL *UTMLEdgeLabel,
+	labelPos EdgeLabelPos,
+	resL *ParsedLabel) {
+	if nFrom == nil || nTo == nil || uL == nil || resL == nil {
+		panic("Internal bug, something is nil.")
+	}
+
+	// Edging in progress
+
+	// UTML handles locations very weirdly with a clock-like structure
+	// (see UTMLEdgeEndPosition)
+
+	// position depends on
+	// - position of label (start/middle/end)
+	// - connecting points to the node
+	// - offset of that particular edge (if present)
+
+	panic("TODO!")
 }
 
 func extractUTMLEdgeProps(e *ParseResultUTMLEdge) EdgeStyleProperties {
@@ -192,18 +267,22 @@ func extractUTMLEdgeProps(e *ParseResultUTMLEdge) EdgeStyleProperties {
 	return res
 }
 
-func extractUTMLEdgeLabel(e *ParseResultUTMLEdge) ParsedLabel {
-	res := ParsedLabel{Text: "", Location: Vector2D{X: 0, Y: 0}}
+func extractUTMLEdgeLabel(e *ParseResultUTMLEdge) *ParsedLabel {
+	if e.MiddleLabel == nil {
+		return nil
+	}
 
-	if e.MiddleLabel != nil {
-		res.Text = e.MiddleLabel.Value
-		res.Location.X = e.MiddleLabel.Offset.X
-		res.Location.Y = e.MiddleLabel.Offset.Y
+	res := &ParsedLabel{
+		Text: e.MiddleLabel.Value,
+		Location: Vector2D{
+			X: e.MiddleLabel.Offset.X,
+			Y: e.MiddleLabel.Offset.Y,
+		},
 	}
 	return res
 }
 
-func verifyEdgesLinkToVertices(c *context.Ctx, r *ParseResult) error {
+func verifyEdgesLinkToVertices(r *ParseResult) error {
 	const PREFIX = "Could not convert UTML to internal representation: "
 
 	incorrectEdges := []string{}
@@ -219,7 +298,6 @@ func verifyEdgesLinkToVertices(c *context.Ctx, r *ParseResult) error {
 			errMsg += strings.Join(incorrectEdges, ",")
 			errMsg += "]"
 
-			c.LogErr("%s", errMsg)
 			return errors.New(errMsg)
 		}
 	}

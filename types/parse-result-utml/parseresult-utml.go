@@ -34,8 +34,8 @@ type ParseResultUTML struct {
 }
 
 type ParseResultUTMLEdge struct {
-	StartPosition int `json:"startPosition"`
-	EndPosition   int `json:"endPosition"`
+	StartPosition UTMLEdgeEndPosition `json:"startPosition"` // indicates to which end of the node the edge connects
+	EndPosition   UTMLEdgeEndPosition `json:"endPosition"`   // indicates to which end of the node the edge connects
 
 	StartLabel      *UTMLEdgeLabel     `json:"startLabel,omitempty"`  // text
 	MiddleLabel     *UTMLEdgeLabel     `json:"middleLabel,omitempty"` // text
@@ -104,90 +104,24 @@ type UTMLXY struct {
 	Y float64 `json:"y"`
 }
 
-/* EXAMPLE
-{
-  "edges": [
-    {
-      "startPosition": 6,
-      "endPosition": 2,
-      "startLabel": {
-        "offset": {
-          "x": -19.970314158618923,
-          "y": -1.0892898631973957
-        },
-        "edgeLocation": 0,
-        "value": "1"
-      },
-      "middleLabel": {
-        "offset": {
-          "x": 0,
-          "y": 0
-        },
-        "edgeLocation": 1,
-        "value": "< commisions"
-      },
-      "endLabel": {
-        "offset": {
-          "x": 19.970314158618923,
-          "y": 1.0892898631973957
-        },
-        "edgeLocation": 2,
-        "value": "1..*"
-      },
-      "startStyle": 0,
-      "endStyle": 0,
-      "lineStyle": 0,
-      "lineType": 5,
-      "middlePositions": [],
-      "startNodeId": 1,
-      "endNodeId": 0
-    },
-		...
-	],
-	"nodes": [
-    {
-      "type": "ClassNode",
-      "width": 190,
-      "height": 128,
-      "position": {
-        "x": 1010,
-        "y": 240
-      },
-      "text": "Project",
-      "hasDoubleBorder": false,
-      "styleObject": {
-        "fill": "white",
-        "stroke": "black",
-        "stroke-width": 2,
-        "fill-opacity": 1,
-        "stroke-opacity": 0.75
-      },
-      "classType": "class",
-      "attributes": [
-        {
-          "name": "startDate",
-          "type": "String",
-          "visibility": "private"
-        },
-        {
-          "name": "deadline",
-          "type": "String",
-          "visibility": "private"
-        },
-        {
-          "name": "budget",
-          "type": "double",
-          "visibility": "private"
-        },
-        {
-          "name": "id",
-          "type": "int",
-          "visibility": "private"
-        }
-      ],
-      "methods": []
-    },
-		...
-	]
-}
-*/
+/*
+ *     7     0     1
+ *     |----------|
+ *     |          |
+ *   6 |          | 2
+ *     |          |
+ *     |----------|
+ *    5     4      3
+ */
+type UTMLEdgeEndPosition int
+
+const (
+	EdgePosTopCenter UTMLEdgeEndPosition = iota
+	EdgePosTopRight
+	EdgePosMiddleRight
+	EdgePosBottomRight
+	EdgePosBottomCenter
+	EdgePosBottomLeft
+	EdgePosMiddleLeft
+	EdgePosTopLeft
+)

@@ -16,7 +16,7 @@ import (
 func TestConvertSimpleUTMLResultToInternal(t *testing.T) {
 	c := driver.NewContext()
 
-	filePaths := helpers.AllUTMLFiles("./examples")
+	filePaths := helpers.AllUTMLFiles("./examples/correct")
 
 	for _, path := range filePaths {
 		verifyRes(c, t, path)

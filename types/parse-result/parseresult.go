@@ -13,8 +13,8 @@ func (pr ParseResult) MarshalJSON() ([]byte, error) {
 		Edges:    map[string]*ParsedEdge{},
 	}
 
-	for id, edge := range pr.Edges {
-		r.Edges[fmt.Sprintf("%d-%d", id.FromId, id.ToId)] = edge
+	for _, edge := range pr.Edges {
+		r.Edges[fmt.Sprintf("%d-%d", edge.FromId, edge.ToId)] = edge
 	}
 	return helper.MarshalJSON(r)
 }
@@ -29,10 +29,14 @@ type ParseResult struct {
 	Edges    map[EdgeIdentifier]*ParsedEdge     `json:"edges"`
 }
 
-type VertexIdentifier uint64
-type EdgeIdentifier struct {
-	FromId VertexIdentifier
-	ToId   VertexIdentifier
+type VertexIdentifier uint32
+type EdgeIdentifier uint64
+
+func NewEdgeIdentifier(vId1 VertexIdentifier, vId2 VertexIdentifier) EdgeIdentifier {
+	return EdgeIdentifier(uint64(vId1)<<32 | uint64(vId2))
+}
+func (e EdgeIdentifier) New(vId1 VertexIdentifier, vId2 VertexIdentifier) EdgeIdentifier {
+	return NewEdgeIdentifier(vId1, vId2)
 }
 
 func NewParseResult() *ParseResult {
@@ -54,8 +58,8 @@ type ParsedVertex struct {
 type ParsedEdge struct {
 	FromId         VertexIdentifier  `json:"fromId"`
 	ToId           VertexIdentifier  `json:"toId"`
-	FromProperties EdgeEndProperties `json:"fromProperties"` // things like multiplicity and arrow head style
-	Label          ParsedLabel       `json:"label"`          // for ex.: "teaches >"
+	FromProperties EdgeEndProperties `json:"fromProperties"`  // things like multiplicity and arrow head style
+	Label          *ParsedLabel      `json:"label,omitempty"` // for ex.: "teaches >"
 	ToProperties   EdgeEndProperties `json:"toProperties"`
 
 	StyleProperties EdgeStyleProperties `json:"styleProperties"` // general properties such as edge label text etc.

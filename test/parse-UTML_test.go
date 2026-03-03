@@ -16,7 +16,7 @@ import (
 func TestUTMLParseSimple(t *testing.T) {
 	c := driver.NewContext()
 
-	var FilePaths []string = helpers.AllUTMLFiles("./examples")
+	var FilePaths []string = helpers.AllUTMLFiles("./examples/correct")
 
 	for _, path := range FilePaths {
 

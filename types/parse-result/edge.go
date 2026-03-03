@@ -1,13 +1,10 @@
 package parseresult
 
-import (
-	"github.com/osingaatje/seshat/helper"
-)
-
 // EDGES
 type EdgeEndProperties struct { // the properties for the end of an edge ( <>------> )
-	ArrowStyle   ArrowStyleVariant    `json:"arrowstyle"`
-	Multiplicity *helper.Multiplicity `json:"multiplicity,omitempty"`
+	ArrowStyle ArrowStyleVariant `json:"arrowstyle"`
+	Label      *ParsedLabel      `json:"label,omitempty"` // don't convert to stricter representation (multiplicity or something) yet, as we want to repair swapped labels etc.
+	// multiplicity conversion should happen later! Multiplicity *helper.Multiplicity `json:"multiplicity,omitempty"`
 }
 
 type EdgeStyleProperties struct {
