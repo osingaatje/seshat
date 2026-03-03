@@ -1,6 +1,7 @@
 package parse
 
 import (
+	"errors"
 	"fmt"
 	"image/color"
 	"os"
@@ -58,7 +59,10 @@ func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *ParseResult {
 	}
 
 	// SANITY CHECKS:
-	verifyEdgesLinkToVertices(c, res)
+	err := verifyEdgesLinkToVertices(c, res)
+	if err != nil {
+		return nil
+	}
 
 	return res
 }
@@ -199,7 +203,9 @@ func extractUTMLEdgeLabel(e *ParseResultUTMLEdge) ParsedLabel {
 	return res
 }
 
-func verifyEdgesLinkToVertices(c *context.Ctx, r *ParseResult) {
+func verifyEdgesLinkToVertices(c *context.Ctx, r *ParseResult) error {
+	const PREFIX = "Could not convert UTML to internal representation: "
+
 	incorrectEdges := []string{}
 	for _, e := range r.Edges {
 		_, okFrom := r.Vertices[e.FromId]
@@ -209,9 +215,14 @@ func verifyEdgesLinkToVertices(c *context.Ctx, r *ParseResult) {
 		}
 
 		if len(incorrectEdges) > 0 {
-			errMsg := "Some edges were not connected to any nodes! Edges: "
+			errMsg := PREFIX + "Some edge(s) was/were not connected to any nodes! Edge(s): ["
 			errMsg += strings.Join(incorrectEdges, ",")
+			errMsg += "]"
+
 			c.LogErr("%s", errMsg)
+			return errors.New(errMsg)
 		}
 	}
+
+	return nil
 }

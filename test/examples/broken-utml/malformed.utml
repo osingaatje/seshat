@@ -1,0 +1,40 @@
+{
+  "edging": {
+    "startPosition": 6,
+    "endPosition": 2,
+    "startLabel": {
+      "offset": { "x": -20, "y": 0 },
+      "edgeLocation": 0,
+      "value": "*"
+    },
+    "middleLabel": {
+      "offset": { "x": 0, "y": 0 },
+      "edgeLocation": 1,
+      "value": "AAAAAAAA"
+    },
+    "endLabel": {
+      "offset": { "x": 20, "y": 0 },
+      "edgeLocation": 2,
+      "value": "1..5"
+    }
+  },
+  "nodes": [
+    {
+      "height": 90,
+      SDLFKJSDFKLJSDFLKJSDFLKSJDFLKSDJFSLDKFJLK%,
+      "position": { "x": 1810, "y": 480 },
+      "text": "2",
+      "stroke": "black",
+      "stroke-width": 2,
+      "fill-opacity": 1,
+      "stroke-opacity": 0.75,
+      "classType": "class",
+      "attributes": [
+        { "name": "field2", "type": "str2", "visibility": "private" }
+      ],
+      "methods": [
+        { "name": "grr()", "type": "string", "visibility": "private" }
+      ]
+    }
+  ]
+}

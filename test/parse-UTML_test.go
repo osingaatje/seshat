@@ -2,6 +2,7 @@ package test
 
 import (
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/go-openapi/testify/v2/assert"
@@ -46,5 +47,29 @@ func TestUTMLParseSimple(t *testing.T) {
 		//	}
 
 		assert.Equal(t, expectedJson, actualJson, "Parsing UTML diagram and stringifying the result does not yield the exact same result for file '%s'", path)
+	}
+}
+
+func TestUTMLBroken(t *testing.T) {
+
+	var filePaths []string = helpers.AllUTMLFiles("./examples/broken-utml")
+
+	for _, path := range filePaths {
+		// init fresh context without existing logs
+		c := driver.NewContext()
+
+		// run query
+		res := c.Queries.ParseUTML.Get("Parse UTML", command.ParseUTMLCmd{Filepath: path})
+
+		assert.Nil(t, res) // query should fail
+		if res != nil {
+			r, err := helper.MarshalJSONWithIndent(res)
+			if err != nil {
+				return
+			}
+			t.Logf("Produced graph: \n%s", r)
+		}
+
+		strings.Contains(c.Logger.GetLogString(), "Could not marshal file")
 	}
 }
