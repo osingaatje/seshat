@@ -99,29 +99,41 @@
       "toId": 0,
       "fromProperties": {
         "arrowstyle": 0,
-        "multiplicity": {
-          "Start": -1,
-          "End": 0,
-          "HasEndMult": false
+        "label": {
+          "text": "*",
+          "location": {
+            "x": 1810,
+            "y": 560
+          }
         }
       },
       "label": {
         "text": "AAAAAAAA",
         "location": {
-          "x": 0,
-          "y": 0
+          "x": 1705,
+          "y": 340
         }
       },
       "toProperties": {
         "arrowstyle": 0,
-        "multiplicity": {
-          "Start": 1,
-          "End": 5,
-          "HasEndMult": true
+        "label": {
+          "text": "1..5",
+          "location": {
+            "x": 1920,
+            "y": 560
+          }
         }
       },
       "styleProperties": {
-        "line_style": 0
+        "line_style": 0,
+        "start_location": {
+          "x": 1810,
+          "y": 560
+        },
+        "end_location": {
+          "x": 1900,
+          "y": 560
+        }
       }
     }
   }

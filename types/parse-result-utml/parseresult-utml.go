@@ -100,8 +100,8 @@ type UTMLFieldOrMethod struct {
 }
 
 type UTMLXY struct {
-	X float64 `json:"x"`
-	Y float64 `json:"y"`
+	X int32 `json:"x"`
+	Y int32 `json:"y"`
 }
 
 /*

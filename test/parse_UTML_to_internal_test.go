@@ -10,7 +10,8 @@ import (
 	"github.com/osingaatje/seshat/src/driver"
 	"github.com/osingaatje/seshat/test/helpers"
 	"github.com/osingaatje/seshat/types/command"
-	types "github.com/osingaatje/seshat/types/parse-result-utml"
+	. "github.com/osingaatje/seshat/types/parse-result"
+	. "github.com/osingaatje/seshat/types/parse-result-utml"
 )
 
 func TestConvertSimpleUTMLResultToInternal(t *testing.T) {
@@ -58,7 +59,7 @@ func verifyRes(c *context.Ctx, t *testing.T, inputFilePath string) {
 
 	// MORE ADVANCED CHECKS
 	for _, iEdge := range intern.Edges {
-		uEdge, ok := helper.Find(utml.Edges, func(e *types.ParseResultUTMLEdge) bool {
+		uEdge, ok := helper.Find(utml.Edges, func(e *ParseResultUTMLEdge) bool {
 			return e.StartNodeId == int(iEdge.FromId) && e.EndNodeId == int(iEdge.ToId)
 		})
 		if !ok {
@@ -88,11 +89,8 @@ func verifyRes(c *context.Ctx, t *testing.T, inputFilePath string) {
 		assert.Equal(t, iVertex.Id, i)
 
 		// height / width/ location
-		assert.Equal(t, iVertex.VisualProperties.Location.X, uVertex.Position.X)
-		assert.Equal(t, iVertex.VisualProperties.Location.Y, uVertex.Position.Y)
-
-		assert.Equal(t, iVertex.VisualProperties.Size.X, float64(uVertex.Width))
-		assert.Equal(t, iVertex.VisualProperties.Size.Y, float64(uVertex.Height))
+		assert.Equal(t, iVertex.VisualProperties.Location, Vector2D{}.New(uVertex.Position))
+		assert.Equal(t, iVertex.VisualProperties.Size, Vector2D{}.NewInt(uVertex.Width, uVertex.Height))
 
 		// class type
 		if uVertex.ClassType != nil {

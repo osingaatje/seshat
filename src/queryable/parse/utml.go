@@ -138,7 +138,7 @@ func extractUTMLVals(n *ParseResultUTMLNode) map[string]ParsedValue {
 
 func extractVisualProps(n *ParseResultUTMLNode) VertexVisualProperties {
 	res := VertexVisualProperties{
-		Location:               Vector2D{X: n.Position.X, Y: n.Position.Y},
+		Location:               Vector2D{}.New(n.Position),
 		Size:                   Vector2D{X: float64(n.Width), Y: float64(n.Height)},
 		VertexStyleFillHex:     color.RGBA{R: 255, G: 255, B: 255, A: 255}, // transparent white
 		VertexStyleStrokeHex:   color.RGBA{R: 0, G: 0, B: 0, A: 0},         // black
@@ -215,37 +215,92 @@ func finaliseEdgeProperties(utml *ParseResultUTML, res *ParseResult) error {
 		uNodeFrom := utml.Nodes[nFromId]
 		uNodeTo := utml.Nodes[nFromId]
 
+		// add start/end location
+		_addEdgeStartEndLocation(&uNodeFrom, &uNodeTo, &uE, iE)
+
 		if uE.StartLabel != nil {
 			if iE.FromProperties.Label == nil {
+				errMsg := fmt.Sprintf("EDGE (%d,%d) HAS BROKEN START LABEL", uE.StartNodeId, uE.EndNodeId)
+				return errors.New(errMsg)
+			}
+			_addLocationToLabel(&uNodeFrom, &uNodeTo, &uE, uE.StartLabel, iE, EdgeLabelPosStart, iE.FromProperties.Label)
+		}
+		if uE.MiddleLabel != nil {
+			if iE.Label == nil {
 				errMsg := fmt.Sprintf("EDGE (%d,%d) HAS BROKEN MIDDLE LABEL", uE.StartNodeId, uE.EndNodeId)
 				return errors.New(errMsg)
 			}
-			_addLocationToLabel(&uNodeFrom, &uNodeTo, &uE, uE.StartLabel, iE.FromProperties.Label)
+			_addLocationToLabel(&uNodeFrom, &uNodeTo, &uE, uE.MiddleLabel, iE, EdgeLabelPosMiddle, iE.Label)
+		}
+		if uE.EndLabel != nil {
+			if iE.ToProperties.Label == nil {
+				errMsg := fmt.Sprintf("EDGE (%d,%d) HAS BROKEN START LABEL", uE.StartNodeId, uE.EndNodeId)
+				return errors.New(errMsg)
+			}
+			_addLocationToLabel(&uNodeFrom, &uNodeTo, &uE, uE.EndLabel, iE, EdgeLabelPosEnd, iE.ToProperties.Label)
 		}
 	}
 
 	return nil
 }
 
-type EdgeLabelPos int
+// determine the offset of an edge / label based on edge position
+// assumption: we draw nodes/vertices from the top-left.
+func _determineXYOffsetBasedOnEdgePos(nodeSize Vector2D, edgePos UTMLEdgeEndPosition) Vector2D {
+	var res Vector2D
+	switch edgePos {
+	case EdgePosTopCenter:
+		res = Vector2D{X: nodeSize.X / 2, Y: 0}
+	case EdgePosTopRight:
+		res = Vector2D{X: nodeSize.X, Y: 0}
+	case EdgePosMiddleRight:
+		res = Vector2D{X: nodeSize.X, Y: nodeSize.Y / 2}
+	case EdgePosBottomRight:
+		res = nodeSize
+	case EdgePosBottomCenter:
+		res = Vector2D{X: nodeSize.X / 2, Y: nodeSize.Y}
+	case EdgePosBottomLeft:
+		res = Vector2D{X: 0, Y: nodeSize.Y}
+	case EdgePosMiddleLeft:
+		res = Vector2D{X: 0, Y: nodeSize.Y / 2}
+	case EdgePosTopLeft:
+		res = Vector2D{X: 0, Y: 0}
+	}
+	return res
+}
 
-const (
-	EdgeLabelPosStart EdgeLabelPos = iota
-	EdgeLabelPosMiddle
-	EdgeLabelPosEnd
-)
-
-func _addLocationToLabel(
+func _addEdgeStartEndLocation(
 	nFrom *ParseResultUTMLNode,
 	nTo *ParseResultUTMLNode,
 	e *ParseResultUTMLEdge,
+	res *ParsedEdge) {
+	if nFrom == nil || nTo == nil || e == nil || res == nil {
+		panic("you stupid?")
+	}
+	fromPos := Vector2D{}.New(nFrom.Position)
+	fromSize := Vector2D{}.NewInt(nFrom.Height, nFrom.Width)
+	toPos := Vector2D{}.New(nTo.Position)
+	toSize := Vector2D{}.NewInt(nTo.Height, nTo.Width)
+
+	offsetStart := _determineXYOffsetBasedOnEdgePos(fromSize, e.StartPosition)
+	offsetEnd := _determineXYOffsetBasedOnEdgePos(toSize, e.EndPosition)
+	res.StyleProperties.StartLocation = fromPos.Add(offsetStart)
+	res.StyleProperties.EndLocation = toPos.Add(offsetEnd)
+}
+
+// Translates relative position of a UTML label into an absolute position for internal repr.
+// ..and adds text etc.
+func _addLocationToLabel(
+	nFrom *ParseResultUTMLNode,
+	nTo *ParseResultUTMLNode,
+	uE *ParseResultUTMLEdge,
 	uL *UTMLEdgeLabel,
+	iE *ParsedEdge,
 	labelPos EdgeLabelPos,
 	resL *ParsedLabel) {
-	if nFrom == nil || nTo == nil || uL == nil || resL == nil {
+	if nFrom == nil || nTo == nil || uE == nil || uL == nil || resL == nil {
 		panic("Internal bug, something is nil.")
 	}
-
 	// Edging in progress
 
 	// UTML handles locations very weirdly with a clock-like structure
@@ -255,13 +310,58 @@ func _addLocationToLabel(
 	// - position of label (start/middle/end)
 	// - connecting points to the node
 	// - offset of that particular edge (if present)
+	var position Vector2D
+	switch labelPos {
+	case EdgeLabelPosStart:
+		offset := Vector2D{}.New(uL.Offset)
+		// solid base case. We can make it pretty later
+		position = iE.StyleProperties.StartLocation
+		position.Add(offset)
 
-	panic("TODO!")
+	case EdgeLabelPosMiddle:
+		nFromPos := Vector2D{}.New(nFrom.Position)
+		nToPos := Vector2D{}.New(nTo.Position)
+
+		// if we don't have 'middle positions' then position it between two nodes
+		// otherwise take the center-most middle pos.
+		if len(uE.MiddlePositions) == 0 {
+			position = Vector2D{
+				X: (nToPos.X - nFromPos.X) / 2,
+				Y: (nToPos.Y - nFromPos.Y) / 2,
+			}
+		} else {
+			var centerPos Vector2D
+			middlePosLen := len(uE.MiddlePositions)
+			if middlePosLen%2 == 0 {
+				rMiddlePos := Vector2D{}.New(uE.MiddlePositions[middlePosLen/2])
+				lMiddlePos := Vector2D{}.New(uE.MiddlePositions[middlePosLen/2-1])
+
+				centerPos = Vector2D{
+					X: (rMiddlePos.X - lMiddlePos.X) / 2,
+					Y: (rMiddlePos.Y - lMiddlePos.Y) / 2,
+				}
+			} else {
+				centerPos = Vector2D{}.New(uE.MiddlePositions[middlePosLen/2])
+			}
+
+			offset := Vector2D{}.New(uL.Offset)
+			position = centerPos.Add(offset)
+		}
+
+	case EdgeLabelPosEnd:
+		offset := Vector2D{}.New(uL.Offset)
+		// solid base case. We can make it pretty later
+		position = iE.StyleProperties.EndLocation.Add(offset)
+	}
+
+	resL.Location = position
 }
 
 func extractUTMLEdgeProps(e *ParseResultUTMLEdge) EdgeStyleProperties {
 	res := EdgeStyleProperties{
 		LineStyle: UTMLLineStyleToParsedStyle[e.LineStyle],
+		// StartLocation done later
+		// EndLocation done later
 	}
 
 	return res
@@ -273,11 +373,8 @@ func extractUTMLEdgeLabel(e *ParseResultUTMLEdge) *ParsedLabel {
 	}
 
 	res := &ParsedLabel{
-		Text: e.MiddleLabel.Value,
-		Location: Vector2D{
-			X: e.MiddleLabel.Offset.X,
-			Y: e.MiddleLabel.Offset.Y,
-		},
+		Text:     e.MiddleLabel.Value,
+		Location: Vector2D{}.New(e.MiddleLabel.Offset),
 	}
 	return res
 }

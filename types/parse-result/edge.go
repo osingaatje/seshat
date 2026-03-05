@@ -8,7 +8,9 @@ type EdgeEndProperties struct { // the properties for the end of an edge ( <>---
 }
 
 type EdgeStyleProperties struct {
-	LineStyle EdgeLineStyle `json:"line_style"`
+	LineStyle     EdgeLineStyle `json:"line_style"`
+	StartLocation Vector2D      `json:"start_location"`
+	EndLocation   Vector2D      `json:"end_location"`
 }
 
 // more detailed datatypes
@@ -27,4 +29,12 @@ type EdgeLineStyle int
 const (
 	EdgeLineStyleSolid EdgeLineStyle = iota
 	EdgeLineStyleDotted
+)
+
+type EdgeLabelPos int
+
+const (
+	EdgeLabelPosStart EdgeLabelPos = iota
+	EdgeLabelPosMiddle
+	EdgeLabelPosEnd
 )

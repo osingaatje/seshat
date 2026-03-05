@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/osingaatje/seshat/helper"
+	utml "github.com/osingaatje/seshat/types/parse-result-utml"
 )
 
 // Because we cannot marshal structs in map keys, we convert them to strings for json marshalling.
@@ -81,4 +82,23 @@ type ParsedLabel struct {
 type Vector2D struct {
 	X float64 `json:"x"`
 	Y float64 `json:"y"`
+}
+
+func (v Vector2D) New(utmlPos utml.UTMLXY) Vector2D {
+	return Vector2D{
+		X: float64(utmlPos.X),
+		Y: float64(utmlPos.Y),
+	}
+}
+func (v Vector2D) NewInt(x int, y int) Vector2D {
+	return Vector2D{
+		X: float64(x),
+		Y: float64(y),
+	}
+}
+func (v Vector2D) Add(vO Vector2D) Vector2D {
+	return Vector2D{
+		X: v.X + vO.X,
+		Y: v.Y + vO.Y,
+	}
 }
