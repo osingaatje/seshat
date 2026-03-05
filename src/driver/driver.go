@@ -6,6 +6,7 @@ package driver
 
 import (
 	"github.com/osingaatje/seshat/src/context"
+	"github.com/osingaatje/seshat/src/queryable/display"
 	"github.com/osingaatje/seshat/src/queryable/parse"
 	"github.com/osingaatje/seshat/src/queryable/tryout"
 )
@@ -14,6 +15,7 @@ import (
 func FindQueries(c *context.Ctx) {
 	tryout.FindQueries(c)
 	parse.FindQueries(c)
+	display.FindQueries(c)
 }
 
 // should be used for testing

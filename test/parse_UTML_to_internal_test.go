@@ -10,7 +10,7 @@ import (
 	"github.com/osingaatje/seshat/src/driver"
 	"github.com/osingaatje/seshat/test/helpers"
 	"github.com/osingaatje/seshat/types/command"
-	. "github.com/osingaatje/seshat/types/parse-result"
+	. "github.com/osingaatje/seshat/types/generic"
 	. "github.com/osingaatje/seshat/types/parse-result-utml"
 )
 

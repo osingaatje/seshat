@@ -1,5 +1,9 @@
 package parseresult
 
+import (
+	. "github.com/osingaatje/seshat/types/generic"
+)
+
 // EDGES
 type EdgeEndProperties struct { // the properties for the end of an edge ( <>------> )
 	ArrowStyle ArrowStyleVariant `json:"arrowstyle"`

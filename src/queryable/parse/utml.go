@@ -10,6 +10,7 @@ import (
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/command"
+	. "github.com/osingaatje/seshat/types/generic"
 	. "github.com/osingaatje/seshat/types/parse-result"
 	. "github.com/osingaatje/seshat/types/parse-result-utml"
 )

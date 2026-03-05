@@ -2,6 +2,8 @@ package parseresult
 
 import (
 	"image/color"
+
+	. "github.com/osingaatje/seshat/types/generic"
 )
 
 // VERTICES

@@ -1,6 +1,7 @@
 package parse
 
 import (
+	. "github.com/osingaatje/seshat/types/generic"
 	. "github.com/osingaatje/seshat/types/parse-result"
 	. "github.com/osingaatje/seshat/types/parse-result-utml"
 )
