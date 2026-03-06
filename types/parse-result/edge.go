@@ -11,6 +11,17 @@ type EdgeEndProperties struct { // the properties for the end of an edge ( <>---
 	// multiplicity conversion should happen later! Multiplicity *helper.Multiplicity `json:"multiplicity,omitempty"`
 }
 
+func (p EdgeEndProperties) Copy() EdgeEndProperties {
+	res := EdgeEndProperties{
+		ArrowStyle: p.ArrowStyle,
+		Label:      nil, // since it's a pointer we need to carefully copy it
+	}
+	if p.Label != nil {
+		res.Label = p.Label.Copy()
+	}
+	return res
+}
+
 type EdgeStyleProperties struct {
 	LineStyle     EdgeLineStyle `json:"line_style"`
 	StartLocation Vector2D      `json:"start_location"`

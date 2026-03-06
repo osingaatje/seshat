@@ -1,5 +1,5 @@
 package result
 
-type InternalRepresentationResult struct {
+type GradingRepresentationResult struct {
 	// TODO!
 }

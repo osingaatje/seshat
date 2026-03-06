@@ -20,8 +20,8 @@ type Queries struct {
 	ParseUTML           *Query[ParseUTMLCmd, *ParseResultUTML]
 	ParseUTMLToInternal *Query[*ParseResultUTML, *ParseResult]
 
-	// display
-	DisplayInternalReprToDot *Query[*ParseResult, *DotGraph]
+	DisplayDiagramAsDot *Query[*ParseResult, *DotGraph]
+	RepairDiagram       *Query[RepairCmd /* parse result + config */, *ParseResult]
 
 	Test *Query[NameCmd, string]
 }

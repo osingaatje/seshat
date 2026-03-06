@@ -78,7 +78,7 @@ func (cmd *PrintGraphCmd) Run(c *context.Ctx) error {
 		return fmt.Errorf("Could not convert '%s' to internal result", cmd.Input)
 	}
 
-	dot := c.Queries.DisplayInternalReprToDot.Get("Internal -> .dot", intern)
+	dot := c.Queries.DisplayDiagramAsDot.Get("Internal -> .dot", intern)
 	if dot == nil {
 		return fmt.Errorf("Could not convert '%s' from internal to .dot file", cmd.Input)
 	}

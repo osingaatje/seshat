@@ -30,6 +30,20 @@ type ParseResult struct {
 	Edges    map[EdgeIdentifier]*ParsedEdge     `json:"edges"`
 }
 
+func (p *ParseResult) Copy() *ParseResult {
+	if p == nil {
+		return nil
+	}
+
+	res := NewParseResult()
+	for k, v := range p.Vertices {
+		res.Vertices[k] = v.Copy()
+	}
+	for k, e := range p.Edges {
+		res.Edges[k] = e.Copy()
+	}
+}
+
 type VertexIdentifier uint32
 type EdgeIdentifier uint64
 
@@ -56,6 +70,20 @@ type ParsedVertex struct {
 	VisualProperties VertexVisualProperties `json:"visual_properties"`
 }
 
+func (p *ParsedVertex) Copy() *ParsedVertex {
+	res := &ParsedVertex{
+		Id:               p.Id,
+		Title:            p.Title,
+		Properties:       p.Properties,
+		Values:           map[string]ParsedValue{}, // fill in manually to avoid having to DeepCopy
+		VisualProperties: p.VisualProperties,
+	}
+	for k, v := range p.Values {
+		res.Values[k] = v.Copy()
+	}
+	return res
+}
+
 type ParsedEdge struct {
 	FromId         VertexIdentifier  `json:"fromId"`
 	ToId           VertexIdentifier  `json:"toId"`
@@ -66,14 +94,44 @@ type ParsedEdge struct {
 	StyleProperties EdgeStyleProperties `json:"styleProperties"` // general properties such as edge label text etc.
 }
 
+func (e *ParsedEdge) Copy() *ParsedEdge {
+	if e == nil {
+		return nil
+	}
+
+	res := &ParsedEdge{
+		FromId:         e.FromId,
+		ToId:           e.ToId,
+		FromProperties: e.FromProperties.Copy(),
+	}
+	return res
+}
+
 // contains value along with optional properties
 type ParsedValue struct {
 	Value      string          `json:"value"`      // raw value (i.e. the fieldValue in "fieldName: fieldValue"
 	Properties ValueProperties `json:"properties"` // things like visibility etc.
 }
 
+func (p ParsedValue) Copy() ParsedValue {
+	return ParsedValue{
+		Value:      p.Value,
+		Properties: p.Properties.Copy(),
+	}
+}
+
 // like in the UML text along an edge. Also contains a location so we can route the edge along this label
 type ParsedLabel struct {
 	Text     string   `json:"text"`
 	Location Vector2D `json:"location"`
+}
+
+func (l *ParsedLabel) Copy() *ParsedLabel {
+	if l == nil {
+		return nil
+	}
+	return &ParsedLabel{
+		Text:     l.Text,
+		Location: l.Location,
+	}
 }

@@ -10,6 +10,13 @@ type ValueProperties struct {
 	Type       string                 `json:"type,omitempty"` // type string,class,bool,etc.
 }
 
+func (p ValueProperties) Copy() ValueProperties {
+	return ValueProperties{
+		Visibility: p.Visibility,
+		Type:       p.Type,
+	}
+}
+
 // More detailed datatypes
 type ValuePropVisibilityVar string
 

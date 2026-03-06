@@ -13,7 +13,7 @@ import (
 const POSITION_SCALE_FACTOR float64 = float64(1) / 8
 
 func FindQueries(c *context.Ctx) {
-	c.Queries.DisplayInternalReprToDot = context.DefineQuery(
+	c.Queries.DisplayDiagramAsDot = context.DefineQuery(
 		c,
 		"Display internal graph representation as a .dot file",
 		convertInternalToDot,
