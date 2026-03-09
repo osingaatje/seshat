@@ -43,16 +43,24 @@ func (cmd *InternalRepCmd) Run(c *context.Ctx) error {
 	intern := c.Queries.ParseUTMLToInternal.Get("UTML -> Internal representation", utml)
 	if intern == nil {
 		c.LogWarn("Internal representation is nil!")
-		return nil
+		return fmt.Errorf("Failed conversion to internal representation.")
 	}
 
-	intern_bytes, err := helper.MarshalJSONWithIndent(intern)
+	fixed := c.Queries.RepairDiagram.Get("Repair internal repr.", command.NewRepairCmdDefOpt(
+		intern,
+	))
+	if fixed == nil {
+		c.LogErr("Failed fixing diagram '%s'!", cmd.Input)
+		return fmt.Errorf("Failed fixing diagram '%s'!", cmd.Input)
+	}
+
+	byt, err := helper.MarshalJSONWithIndent(fixed)
 	if err != nil {
 		c.LogErr("Could not marshal internal repr. to JSON")
-		return err
+		return fmt.Errorf("Could not marshal internal representation to JSON")
 	}
 
-	err = os.WriteFile(cmd.Output, intern_bytes, os.ModePerm)
+	err = os.WriteFile(cmd.Output, byt, os.ModePerm)
 	if err != nil {
 		c.LogErr("Could not write to file :( err=%s", err.Error())
 		return err
@@ -77,8 +85,12 @@ func (cmd *PrintGraphCmd) Run(c *context.Ctx) error {
 	if intern == nil {
 		return fmt.Errorf("Could not convert '%s' to internal result", cmd.Input)
 	}
+	fix := c.Queries.RepairDiagram.Get("Repair diag.", command.NewRepairCmdDefOpt(intern))
+	if fix == nil {
+		return fmt.Errorf("Could not fix diagram!")
+	}
 
-	dot := c.Queries.DisplayDiagramAsDot.Get("Internal -> .dot", intern)
+	dot := c.Queries.DisplayDiagramAsDot.Get("Internal -> .dot", fix)
 	if dot == nil {
 		return fmt.Errorf("Could not convert '%s' from internal to .dot file", cmd.Input)
 	}

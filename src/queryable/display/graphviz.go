@@ -57,7 +57,7 @@ func extractTextFromNode(v *ParsedVertex) string {
 		if val.Value != "" {
 			value = " default='" + val.Value + "'"
 		}
-		vals = append(vals, fmt.Sprintf("%s%s\ntype='%s',vis='%s'", key, value, val.Properties.Type, val.Properties.Visibility))
+		vals = append(vals, fmt.Sprintf("%s%s type='%s',vis='%s'", key, value, val.Properties.Type, val.Properties.Visibility))
 	}
 	slices.Sort(vals) // otherwise the element ordering is random and graphviz doesn't recognise it as the same node
 
