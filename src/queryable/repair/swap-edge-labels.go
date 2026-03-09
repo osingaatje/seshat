@@ -95,37 +95,37 @@ func swapEdgeLabelsForEdge(c *context.Ctx, p *ParseResult, e *ParsedEdge) {
 	// from lbl <--> [mid, to]
 	if fromLblFarAway {
 		if toLblFarAway {
-			swapLabels(c, "From", "To", &fromLbl, &toLbl)
+			swapLabels(c, "From", "To", fromLbl, toLbl)
 		} else if midLblFarAway {
-			swapLabels(c, "From", "Middle", &fromLbl, &midLbl)
+			swapLabels(c, "From", "Middle", fromLbl, midLbl)
 		}
 
 		// mid lbl <--> [to, from]
 	} else if midLblFarAway {
 		if fromLblFarAway {
-			swapLabels(c, "Middle", "From", &midLbl, &fromLbl)
+			swapLabels(c, "Middle", "From", midLbl, fromLbl)
 		} else if toLblFarAway {
-			swapLabels(c, "Middle", "To", &midLbl, &toLbl)
+			swapLabels(c, "Middle", "To", midLbl, toLbl)
 		}
 
 		// to lbl <--> [from, mid]
 	} else if toLblFarAway {
 		if fromLblFarAway {
-			swapLabels(c, "To", "From", &toLbl, &fromLbl)
+			swapLabels(c, "To", "From", toLbl, fromLbl)
 		} else if midLblFarAway {
-			swapLabels(c, "To", "Middle", &toLbl, &midLbl)
+			swapLabels(c, "To", "Middle", toLbl, midLbl)
 		}
 	}
-
 }
 
 func labelTooFarAway(lblPos Vector2D, referencePos Vector2D, lengthOfEdge float64) bool {
-	// we detect a label swapped if its more than 75% of the way to the other side
-	// .. but somehow the offset position is not exactly the same factor, so we'll just do somewhere around 20-40% I guess.
-	return lblPos.Dist(referencePos)/lengthOfEdge > 0.25
+	// we detect a label swapped if its more than X% of the way to the other side
+	return lblPos.Dist(referencePos)/lengthOfEdge > 0.65
 }
 
-func swapLabels(c *context.Ctx, label1Txt string, label2Txt string, lbl1 **ParsedLabel, lbl2 **ParsedLabel) {
+func swapLabels(c *context.Ctx, label1Txt string, label2Txt string, lbl1 *ParsedLabel, lbl2 *ParsedLabel) {
 	c.LogDebug("Swapping labels %s and %s...", label1Txt, label2Txt)
-	*lbl1, *lbl2 = *lbl2, *lbl1
+	tmpLbl1 := *lbl1.Copy()
+	*lbl1 = *lbl2
+	*lbl2 = tmpLbl1
 }

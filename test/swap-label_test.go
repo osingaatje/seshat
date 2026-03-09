@@ -1,13 +1,12 @@
 package test
 
 import (
-	"os"
 	"testing"
 
 	"github.com/go-openapi/testify/v2/assert"
-	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/driver"
 	"github.com/osingaatje/seshat/types/command"
+	. "github.com/osingaatje/seshat/types/parse-result"
 	"github.com/osingaatje/seshat/types/repair"
 )
 
@@ -27,12 +26,6 @@ func TestSwapLabelFromTo(t *testing.T) {
 		t.Fatal("Failed to parse internal repr.")
 		return
 	}
-	byt, err := helper.MarshalJSONWithIndent(intern)
-	if err != nil {
-		t.FailNow()
-		return
-	}
-	os.WriteFile("./EXPORT.json", byt, os.ModePerm)
 
 	// check repairs: swap labels from and to
 	fixed := c.Queries.RepairDiagram.Get("Repair diagram",
@@ -48,11 +41,18 @@ func TestSwapLabelFromTo(t *testing.T) {
 	assert.Equal(t, len(intern.Edges), len(fixed.Edges))
 	assert.Equal(t, len(intern.Vertices), len(fixed.Vertices))
 
-	assert.NotNil(t, intern.Edges[0].FromProperties.Label)
-	assert.NotNil(t, intern.Edges[0].ToProperties.Label)
-	assert.NotNil(t, fixed.Edges[0].FromProperties.Label)
-	assert.NotNil(t, fixed.Edges[0].ToProperties.Label)
+	for _, iE := range intern.Edges {
+		fE /*fixed edge */, ok := fixed.Edges[NewEdgeIdentifier(iE.FromId, iE.ToId)]
+		if !ok {
+			t.FailNow()
+		}
 
-	assert.Equal(t, *intern.Edges[0].FromProperties.Label, *fixed.Edges[0].ToProperties.Label)
-	assert.Equal(t, *intern.Edges[0].ToProperties.Label, *fixed.Edges[0].FromProperties.Label)
+		assert.NotNil(t, iE.FromProperties.Label)
+		assert.NotNil(t, iE.ToProperties.Label)
+		assert.NotNil(t, fE.FromProperties.Label)
+		assert.NotNil(t, fE.ToProperties.Label)
+
+		assert.Equal(t, *iE.FromProperties.Label, *fE.ToProperties.Label)
+		assert.Equal(t, *iE.ToProperties.Label, *fE.FromProperties.Label)
+	}
 }

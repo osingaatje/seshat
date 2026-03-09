@@ -316,8 +316,7 @@ func _addLocationToLabel(
 	case EdgeLabelPosStart:
 		offset := Vector2D{}.New(uL.Offset)
 		// solid base case. We can make it pretty later
-		position = iE.StyleProperties.StartLocation
-		position.Add(offset)
+		position = iE.StyleProperties.StartLocation.Add(offset)
 
 	case EdgeLabelPosMiddle:
 		nFromPos := Vector2D{}.New(nFrom.Position)
