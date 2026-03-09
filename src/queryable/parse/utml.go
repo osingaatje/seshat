@@ -373,8 +373,8 @@ func extractUTMLEdgeLabel(e *ParseResultUTMLEdge) *ParsedLabel {
 	}
 
 	res := &ParsedLabel{
-		Text:     e.MiddleLabel.Value,
-		Location: Vector2D{}.New(e.MiddleLabel.Offset),
+		Text: e.MiddleLabel.Value,
+		//Location: Vector2D{}.New(e.MiddleLabel.Offset), ADDED LATER!
 	}
 	return res
 }

@@ -42,6 +42,9 @@ func swapEdgeLabels(c *context.Ctx, p *ParseResult) {
 	}
 }
 
+const DISTANCE_PERC_THRESHOLD float64 = 0.35
+const DIST_INF float64 = 999999999999
+
 /*
  * Couple cases:
  * Start label swapped with either Middle or End label
@@ -70,62 +73,108 @@ func swapEdgeLabelsForEdge(c *context.Ctx, p *ParseResult, e *ParsedEdge) {
 
 	// center between A ---- B == A + (B-A)/2
 	centerPos := fromNodePos.Add(toNodePos.Sub(fromNodePos).Div(2))
-	// distance between from and to node
-	dist := fromNodePos.Dist(toNodePos)
 
-	fromLbl := e.FromProperties.Label
-	midLbl := e.Label
-	toLbl := e.ToProperties.Label
+	labels := []**ParsedLabel{
+		&e.FromProperties.Label, &e.Label, &e.ToProperties.Label,
+	}
+	labelTexts := []string{
+		"From", "Middle", "To",
+	}
+	referencePosition := []Vector2D{
+		fromNodePos, centerPos, toNodePos,
+	}
+	// we want to punish swapping the center node a bit because that's not often done and the distances are smaller.
+	distance_scale := []float64{
+		1, 1.5, 1,
+	}
+	nodeDist := fromNodePos.Dist(toNodePos)
 
-	fromLblFarAway := fromLbl != nil && labelTooFarAway(
-		fromLbl.Location,
-		fromNodePos,
-		dist)
+	// close to start/middle/end
+	distances := map[int][]float64{}
+	for i, l := range labels {
+		if *l == nil {
+			distances[i] = []float64{DIST_INF, DIST_INF, DIST_INF}
+			continue
+		}
+		distances[i] = []float64{}
+		for j := range len(labels) {
+			distances[i] = append(distances[i], labelDistance((*l).Location, referencePosition[j], distance_scale[j]))
+		}
+	}
 
-	midLblFarAway := midLbl != nil && labelTooFarAway(
-		midLbl.Location,
-		centerPos,
-		dist/2) // (middle label should be at the center, so the distance should be halved to reach either node)
+	possibleSwaps := map[int][]int{
+		0: {1, 2},
+		1: {0, 2},
+		2: {0, 1},
+	}
 
-	toLblFarAway := toLbl != nil && labelTooFarAway(
-		toLbl.Location,
-		toNodePos,
-		dist)
+	for nodeId := range len(labels) {
+		swapIds := possibleSwaps[nodeId]
 
-	// from lbl <--> [mid, to]
-	if fromLblFarAway {
-		if toLblFarAway {
-			swapLabels(c, "From", "To", fromLbl, toLbl)
-		} else if midLblFarAway {
-			swapLabels(c, "From", "Middle", fromLbl, midLbl)
+		_, canSwap := possibleSwaps[nodeId]
+		if !canSwap || *(labels[nodeId]) == nil || distances[nodeId][nodeId] <= DISTANCE_PERC_THRESHOLD {
+			continue // nodes that are nil or close or not swappable do not get swapped!
 		}
 
-		// mid lbl <--> [to, from]
-	} else if midLblFarAway {
-		if fromLblFarAway {
-			swapLabels(c, "Middle", "From", midLbl, fromLbl)
-		} else if toLblFarAway {
-			swapLabels(c, "Middle", "To", midLbl, toLbl)
+		// if node is not close to its own spot,
+		// try to swap with other index:
+		var smallestDist float64 = DIST_INF
+		var nodeToSwap int = -1
+		for _, swapId := range swapIds {
+			// choose smallest distance:
+			_, isSwappable := possibleSwaps[swapId] // check if we can still swap the other node
+			if isSwappable && distances[nodeId][swapId] < smallestDist &&
+				distances[nodeId][swapId]/nodeDist <= DISTANCE_PERC_THRESHOLD &&
+				distances[swapId][swapId]/nodeDist > DISTANCE_PERC_THRESHOLD {
+
+				smallestDist, nodeToSwap = distances[nodeId][swapId], swapId
+			}
+		}
+		if nodeToSwap == -1 {
+			continue
 		}
 
-		// to lbl <--> [from, mid]
-	} else if toLblFarAway {
-		if fromLblFarAway {
-			swapLabels(c, "To", "From", toLbl, fromLbl)
-		} else if midLblFarAway {
-			swapLabels(c, "To", "Middle", toLbl, midLbl)
+		swapLabels(
+			c, labelTexts[nodeId], labelTexts[nodeToSwap],
+			labels[nodeId], labels[nodeToSwap],
+		)
+		// don't forget to swap *back* the labels in our internal datastructure as well:
+		labels[nodeId], labels[nodeToSwap] = labels[nodeToSwap], labels[nodeId]
+
+		// mark as swapped:
+		if labels[nodeId] != nil {
+			delete(possibleSwaps, nodeId)
 		}
+
+		// we can still swap the other label if necessary!
+		//if labels[nodeToSwap] != nil {
+		//	delete(possibleSwaps, nodeToSwap)
+		//}
 	}
 }
 
-func labelTooFarAway(lblPos Vector2D, referencePos Vector2D, lengthOfEdge float64) bool {
+func labelDistance(lblPos Vector2D, referencePos Vector2D, scale float64) float64 { // , lengthOfEdge float64) float64 {
 	// we detect a label swapped if its more than X% of the way to the other side
-	return lblPos.Dist(referencePos)/lengthOfEdge > 0.65
+	return lblPos.Dist(referencePos) * scale
 }
 
-func swapLabels(c *context.Ctx, label1Txt string, label2Txt string, lbl1 *ParsedLabel, lbl2 *ParsedLabel) {
+func swapLabels(c *context.Ctx, label1Txt string, label2Txt string, lbl1 **ParsedLabel, lbl2 **ParsedLabel) {
 	c.LogDebug("Swapping labels %s and %s...", label1Txt, label2Txt)
-	tmpLbl1 := *lbl1.Copy()
-	*lbl1 = *lbl2
-	*lbl2 = tmpLbl1
+
+	if *lbl1 != nil {
+		if *lbl2 != nil {
+			**lbl1, **lbl2 = **lbl2, **lbl1
+
+		} else {
+			tmpLbl1 := (*lbl1).Copy()
+			*lbl1 = nil
+			*lbl2 = tmpLbl1
+		}
+	} else /* lbl1 == nil */ {
+		if *lbl2 != nil {
+			*lbl1 = *lbl2
+			*lbl2 = nil
+		}
+		// else case: both are nil, no swap needed.
+	}
 }
