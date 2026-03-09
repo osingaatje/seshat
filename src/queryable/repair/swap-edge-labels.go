@@ -53,8 +53,6 @@ const DIST_INF float64 = 999999999999
  *
  * conditions:
  * - when the label is farther to one side of the edge than to its own side.
- *
- * NOTE: We limit ourselves to one swap.
  */
 func swapEdgeLabelsForEdge(c *context.Ctx, p *ParseResult, e *ParsedEdge) {
 	if e == nil {
