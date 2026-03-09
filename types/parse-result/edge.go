@@ -28,6 +28,14 @@ type EdgeStyleProperties struct {
 	EndLocation   Vector2D      `json:"end_location"`
 }
 
+func (s *EdgeStyleProperties) Copy() *EdgeStyleProperties {
+	return &EdgeStyleProperties{
+		LineStyle:     s.LineStyle,
+		StartLocation: s.StartLocation,
+		EndLocation:   s.EndLocation,
+	}
+}
+
 // more detailed datatypes
 type ArrowStyleVariant int
 

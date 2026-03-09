@@ -4,7 +4,6 @@ import (
 	"github.com/osingaatje/seshat/src/context"
 	cmd "github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/parse-result"
-	. "github.com/osingaatje/seshat/types/repair"
 )
 
 // swap edge labels if a student has dragged them to a location of where another label would be.
@@ -26,4 +25,8 @@ func performRepairs(c *context.Ctx, conf cmd.RepairCmd) *ParseResult {
 	if conf.RepairOpts.SwapEdgeLabels {
 		swapEdgeLabels(c, res) // swap edge labels if we detect that a student has dragged them to other spots
 	}
+
+	// ADD MORE OPTIONS HERE
+
+	return res
 }

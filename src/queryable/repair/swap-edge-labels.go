@@ -2,6 +2,7 @@ package repair
 
 import (
 	"github.com/osingaatje/seshat/src/context"
+	. "github.com/osingaatje/seshat/types/generic"
 	. "github.com/osingaatje/seshat/types/parse-result"
 )
 
@@ -36,5 +37,95 @@ func swapEdgeLabels(c *context.Ctx, p *ParseResult) {
 		return
 	}
 
-	c.LogErr("TODO MAKE SWAP LABELS")
+	for _, e := range p.Edges {
+		swapEdgeLabelsForEdge(c, p, e)
+	}
+}
+
+/*
+ * Couple cases:
+ * Start label swapped with either Middle or End label
+ * Middle label swapped with Start/End label
+ * End label swapped with Start/Middle label
+ *
+ * conditions:
+ * - when the label is farther to one side of the edge than to its own side.
+ *
+ * NOTE: We limit ourselves to one swap.
+ */
+func swapEdgeLabelsForEdge(c *context.Ctx, p *ParseResult, e *ParsedEdge) {
+	if e == nil {
+		return
+	}
+
+	fromNode, okFrom := p.Vertices[e.FromId]
+	toNode, okTo := p.Vertices[e.ToId]
+	if !okFrom || !okTo {
+		c.LogErr("Invalid Parse Result: missing vertices (trying to swap edge labels)")
+		return
+	}
+
+	fromNodePos := fromNode.VisualProperties.Location.Add(fromNode.VisualProperties.Size.Div(2)) // center of the node
+	toNodePos := toNode.VisualProperties.Location.Add(toNode.VisualProperties.Size.Div(2))       // center of the node
+
+	// center between A ---- B == A + (B-A)/2
+	centerPos := fromNodePos.Add(toNodePos.Sub(fromNodePos).Div(2))
+	// distance between from and to node
+	dist := fromNodePos.Dist(toNodePos)
+
+	fromLbl := e.FromProperties.Label
+	midLbl := e.Label
+	toLbl := e.ToProperties.Label
+
+	fromLblFarAway := fromLbl != nil && labelTooFarAway(
+		fromLbl.Location,
+		fromNodePos,
+		dist)
+
+	midLblFarAway := midLbl != nil && labelTooFarAway(
+		midLbl.Location,
+		centerPos,
+		dist/2) // (middle label should be at the center, so the distance should be halved to reach either node)
+
+	toLblFarAway := toLbl != nil && labelTooFarAway(
+		toLbl.Location,
+		toNodePos,
+		dist)
+
+	// from lbl <--> [mid, to]
+	if fromLblFarAway {
+		if toLblFarAway {
+			swapLabels(c, "From", "To", &fromLbl, &toLbl)
+		} else if midLblFarAway {
+			swapLabels(c, "From", "Middle", &fromLbl, &midLbl)
+		}
+
+		// mid lbl <--> [to, from]
+	} else if midLblFarAway {
+		if fromLblFarAway {
+			swapLabels(c, "Middle", "From", &midLbl, &fromLbl)
+		} else if toLblFarAway {
+			swapLabels(c, "Middle", "To", &midLbl, &toLbl)
+		}
+
+		// to lbl <--> [from, mid]
+	} else if toLblFarAway {
+		if fromLblFarAway {
+			swapLabels(c, "To", "From", &toLbl, &fromLbl)
+		} else if midLblFarAway {
+			swapLabels(c, "To", "Middle", &toLbl, &midLbl)
+		}
+	}
+
+}
+
+func labelTooFarAway(lblPos Vector2D, referencePos Vector2D, lengthOfEdge float64) bool {
+	// we detect a label swapped if its more than 75% of the way to the other side
+	// .. but somehow the offset position is not exactly the same factor, so we'll just do somewhere around 20-40% I guess.
+	return lblPos.Dist(referencePos)/lengthOfEdge > 0.25
+}
+
+func swapLabels(c *context.Ctx, label1Txt string, label2Txt string, lbl1 **ParsedLabel, lbl2 **ParsedLabel) {
+	c.LogDebug("Swapping labels %s and %s...", label1Txt, label2Txt)
+	*lbl1, *lbl2 = *lbl2, *lbl1
 }

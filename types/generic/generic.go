@@ -1,6 +1,8 @@
 package parseresult
 
 import (
+	"math"
+
 	utml "github.com/osingaatje/seshat/types/parse-result-utml"
 )
 
@@ -51,6 +53,12 @@ func (v Vector2D) Add(vO Vector2D) Vector2D {
 		Y: v.Y + vO.Y,
 	}
 }
+func (v Vector2D) Sub(vO Vector2D) Vector2D {
+	return Vector2D{
+		X: v.X - vO.X,
+		Y: v.Y - vO.Y,
+	}
+}
 func (v Vector2D) Div(factor float64) Vector2D {
 	return Vector2D{
 		X: v.X / factor,
@@ -62,4 +70,9 @@ func (v Vector2D) Mul(factor float64) Vector2D {
 		X: v.X * factor,
 		Y: v.Y * factor,
 	}
+}
+
+// euclidean distance. d(p,q) = sqrt((p1 - q1)^2 + (p2 - q2)^2)
+func (v Vector2D) Dist(vO Vector2D) float64 {
+	return math.Sqrt(math.Pow(v.X-vO.X, 2) + math.Pow(v.Y-vO.Y, 2))
 }

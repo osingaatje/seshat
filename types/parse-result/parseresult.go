@@ -7,6 +7,22 @@ import (
 	. "github.com/osingaatje/seshat/types/generic"
 )
 
+/*
+ * We define the parse result visually as this:
+ *     --------> x
+ *     _____________________________________________
+ * |  |
+ * |  |
+ *\/y |   .______             ._____
+ *    |   | v1   | ---------- | v2 |
+ *    |   --------            -----
+ *
+ *  . = position (X,Y)
+ * 	width = X-offset (to the right) for a vertex
+ *  height = Y-offset (to the bottom) for a vertex
+ *
+ */
+
 // Because we cannot marshal structs in map keys, we convert them to strings for json marshalling.
 func (pr ParseResult) MarshalJSON() ([]byte, error) {
 	r := ParseResultJSON{
@@ -42,6 +58,7 @@ func (p *ParseResult) Copy() *ParseResult {
 	for k, e := range p.Edges {
 		res.Edges[k] = e.Copy()
 	}
+	return res
 }
 
 type VertexIdentifier uint32
@@ -100,9 +117,12 @@ func (e *ParsedEdge) Copy() *ParsedEdge {
 	}
 
 	res := &ParsedEdge{
-		FromId:         e.FromId,
-		ToId:           e.ToId,
-		FromProperties: e.FromProperties.Copy(),
+		FromId:          e.FromId,
+		ToId:            e.ToId,
+		FromProperties:  e.FromProperties.Copy(),
+		Label:           e.Label.Copy(),
+		ToProperties:    e.ToProperties.Copy(),
+		StyleProperties: e.StyleProperties,
 	}
 	return res
 }

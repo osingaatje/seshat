@@ -116,12 +116,12 @@ type UTMLXY struct {
 type UTMLEdgeEndPosition int
 
 const (
-	EdgePosTopCenter UTMLEdgeEndPosition = iota
-	EdgePosTopRight
-	EdgePosMiddleRight
-	EdgePosBottomRight
-	EdgePosBottomCenter
-	EdgePosBottomLeft
-	EdgePosMiddleLeft
-	EdgePosTopLeft
+	EdgePosTopCenter    UTMLEdgeEndPosition = 0
+	EdgePosTopRight     UTMLEdgeEndPosition = 1
+	EdgePosMiddleRight  UTMLEdgeEndPosition = 2
+	EdgePosBottomRight  UTMLEdgeEndPosition = 3
+	EdgePosBottomCenter UTMLEdgeEndPosition = 4
+	EdgePosBottomLeft   UTMLEdgeEndPosition = 5
+	EdgePosMiddleLeft   UTMLEdgeEndPosition = 6
+	EdgePosTopLeft      UTMLEdgeEndPosition = 7
 )

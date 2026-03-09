@@ -214,7 +214,7 @@ func finaliseEdgeProperties(utml *ParseResultUTML, res *ParseResult) error {
 			return errors.New(errMsg)
 		}
 		uNodeFrom := utml.Nodes[nFromId]
-		uNodeTo := utml.Nodes[nFromId]
+		uNodeTo := utml.Nodes[nToId]
 
 		// add start/end location
 		_addEdgeStartEndLocation(&uNodeFrom, &uNodeTo, &uE, iE)
@@ -279,9 +279,9 @@ func _addEdgeStartEndLocation(
 		panic("you stupid?")
 	}
 	fromPos := Vector2D{}.New(nFrom.Position)
-	fromSize := Vector2D{}.NewInt(nFrom.Height, nFrom.Width)
+	fromSize := Vector2D{}.NewInt(nFrom.Width, nFrom.Height)
 	toPos := Vector2D{}.New(nTo.Position)
-	toSize := Vector2D{}.NewInt(nTo.Height, nTo.Width)
+	toSize := Vector2D{}.NewInt(nTo.Width, nTo.Height)
 
 	offsetStart := _determineXYOffsetBasedOnEdgePos(fromSize, e.StartPosition)
 	offsetEnd := _determineXYOffsetBasedOnEdgePos(toSize, e.EndPosition)
