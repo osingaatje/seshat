@@ -2,6 +2,7 @@ package parseresult
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/osingaatje/seshat/helper"
 	. "github.com/osingaatje/seshat/types/generic"
@@ -78,6 +79,39 @@ func NewParseResult() *ParseResult {
 	return &res
 }
 
+func (p *ParseResult) ToInternal() (*InternalGraph, error) {
+	if p == nil {
+		return nil, fmt.Errorf("Parse Result was nil!")
+	}
+
+	res := &InternalGraph{
+		Vertices: map[VertexIdentifier]*InternalVertex{},
+		Edges:    map[EdgeIdentifier]*InternalEdge{},
+	}
+	errors := []string{}
+
+	for id, v := range p.Vertices {
+		res.Vertices[id] = v.ToInternal()
+	}
+	for id, e := range p.Edges {
+		iE, err := e.ToInternal()
+		if err != nil {
+			errors = append(errors, err.Error())
+		}
+		res.Edges[id] = iE
+	}
+
+	var err error = nil
+	if len(errors) > 0 {
+		err = fmt.Errorf(
+			"Errors happended while converting to internal result: [%s]",
+			strings.Join(errors, ","),
+		)
+	}
+
+	return res, err
+}
+
 type ParsedVertex struct {
 	Id         VertexIdentifier       `json:"id"`         // unique ID to refer to from edges
 	Title      string                 `json:"title"`      // in UML, the classname
@@ -88,12 +122,31 @@ type ParsedVertex struct {
 }
 
 func (p *ParsedVertex) Copy() *ParsedVertex {
+	if p == nil {
+		return nil
+	}
+
 	res := &ParsedVertex{
 		Id:               p.Id,
 		Title:            p.Title,
 		Properties:       p.Properties,
 		Values:           map[string]ParsedValue{}, // fill in manually to avoid having to DeepCopy
 		VisualProperties: p.VisualProperties,
+	}
+	for k, v := range p.Values {
+		res.Values[k] = v.Copy()
+	}
+	return res
+}
+func (p *ParsedVertex) ToInternal() *InternalVertex {
+	if p == nil {
+		return nil
+	}
+	res := &InternalVertex{
+		Id:         p.Id,
+		Title:      p.Title,
+		Properties: p.Properties,
+		Values:     map[string]ParsedValue{},
 	}
 	for k, v := range p.Values {
 		res.Values[k] = v.Copy()
@@ -108,7 +161,8 @@ type ParsedEdge struct {
 	Label          *ParsedLabel      `json:"label,omitempty"` // for ex.: "teaches >"
 	ToProperties   EdgeEndProperties `json:"toProperties"`
 
-	StyleProperties EdgeStyleProperties `json:"styleProperties"` // general properties such as edge label text etc.
+	StyleProperties  EdgeStyleProperties  `json:"styleProperties"` // general properties such as edge label text etc.
+	VisualProperties EdgeVisualProperties `json:"visualProperties"`
 }
 
 func (e *ParsedEdge) Copy() *ParsedEdge {
@@ -125,6 +179,30 @@ func (e *ParsedEdge) Copy() *ParsedEdge {
 		StyleProperties: e.StyleProperties,
 	}
 	return res
+}
+
+func (e *ParsedEdge) ToInternal() (*InternalEdge, error) {
+	res := &InternalEdge{
+		FromId:          e.FromId,
+		ToId:            e.ToId,
+		Label:           e.Label.Copy(),
+		StyleProperties: e.StyleProperties,
+		// visual props omitted
+
+		// FromProps, ToProps added below
+	}
+
+	fromP, okF := e.FromProperties.ToInternal()
+	toP, okT := e.ToProperties.ToInternal()
+	if !okF {
+		return nil, fmt.Errorf("Could not parse edge start multplicity (%d-%d)", e.FromId, e.ToId)
+	}
+	if !okT {
+		return nil, fmt.Errorf("Could not parse edge end multiplicity (%d-%d)", e.FromId, e.ToId)
+	}
+	res.FromProperties = fromP
+	res.ToProperties = toP
+	return res, nil
 }
 
 // contains value along with optional properties

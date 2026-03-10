@@ -1,4 +1,4 @@
-package parse
+package convert
 
 import (
 	. "github.com/osingaatje/seshat/types/generic"

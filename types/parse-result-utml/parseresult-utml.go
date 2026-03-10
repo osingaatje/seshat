@@ -77,7 +77,7 @@ type ParseResultUTMLNode struct {
 	StyleObject     *struct {
 		Fill          string  `json:"fill"`
 		Stroke        string  `json:"stroke"`
-		StrokeWidth   float32 `json:"stroke-width"`
+		StrokeWidth   uint16  `json:"stroke-width"`
 		FillOpacity   float32 `json:"fill-opacity"`
 		StrokeOpacity float32 `json:"stroke-opacity"`
 	} `json:"styleObject,omitempty"`

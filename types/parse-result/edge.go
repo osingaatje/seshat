@@ -1,6 +1,7 @@
 package parseresult
 
 import (
+	"github.com/osingaatje/seshat/helper"
 	. "github.com/osingaatje/seshat/types/generic"
 )
 
@@ -9,6 +10,26 @@ type EdgeEndProperties struct { // the properties for the end of an edge ( <>---
 	ArrowStyle ArrowStyleVariant `json:"arrowstyle"`
 	Label      *ParsedLabel      `json:"label,omitempty"` // don't convert to stricter representation (multiplicity or something) yet, as we want to repair swapped labels etc.
 	// multiplicity conversion should happen later! Multiplicity *helper.Multiplicity `json:"multiplicity,omitempty"`
+}
+
+func (e EdgeEndProperties) ToInternal() (props InternalEdgeEndProperties, ok bool) {
+	props = InternalEdgeEndProperties{
+		ArrowStyle:   e.ArrowStyle,
+		Multiplicity: nil,
+	}
+	if e.Label != nil {
+		mult, ok := helper.GetMultiplicity(e.Label.Text)
+		if !ok {
+			return props, false
+		}
+		props.Multiplicity = mult
+	}
+	return props, true
+}
+
+type InternalEdgeEndProperties struct {
+	ArrowStyle   ArrowStyleVariant    `json:"arrowstyle"`
+	Multiplicity *helper.Multiplicity `json:"multiplicity,omitempty"`
 }
 
 func (p EdgeEndProperties) Copy() EdgeEndProperties {
@@ -23,14 +44,22 @@ func (p EdgeEndProperties) Copy() EdgeEndProperties {
 }
 
 type EdgeStyleProperties struct {
-	LineStyle     EdgeLineStyle `json:"line_style"`
-	StartLocation Vector2D      `json:"start_location"`
-	EndLocation   Vector2D      `json:"end_location"`
+	LineStyle EdgeLineStyle `json:"line_style"`
 }
 
 func (s *EdgeStyleProperties) Copy() *EdgeStyleProperties {
 	return &EdgeStyleProperties{
-		LineStyle:     s.LineStyle,
+		LineStyle: s.LineStyle,
+	}
+}
+
+type EdgeVisualProperties struct {
+	StartLocation Vector2D `json:"start_location"`
+	EndLocation   Vector2D `json:"end_location"`
+}
+
+func (s *EdgeVisualProperties) Copy() *EdgeVisualProperties {
+	return &EdgeVisualProperties{
 		StartLocation: s.StartLocation,
 		EndLocation:   s.EndLocation,
 	}

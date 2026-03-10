@@ -23,5 +23,9 @@ type Queries struct {
 	DisplayDiagramAsDot *Query[*ParseResult, *DotGraph]
 	RepairDiagram       *Query[RepairCmd /* parse result + config */, *ParseResult]
 
+	ConvertGraphToInternal *Query[*ParseResult, *InternalGraph]
+
+	//GradeDiagram        *Query[GradeCmd, *GradeResult]
+
 	Test *Query[NameCmd, string]
 }

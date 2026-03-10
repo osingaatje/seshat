@@ -6,8 +6,8 @@ package driver
 
 import (
 	"github.com/osingaatje/seshat/src/context"
+	"github.com/osingaatje/seshat/src/queryable/convert"
 	"github.com/osingaatje/seshat/src/queryable/display"
-	"github.com/osingaatje/seshat/src/queryable/parse"
 	"github.com/osingaatje/seshat/src/queryable/repair"
 	"github.com/osingaatje/seshat/src/queryable/tryout"
 )
@@ -15,7 +15,7 @@ import (
 // Add your own FindQueries to this method!
 func FindQueries(c *context.Ctx) {
 	tryout.FindQueries(c)
-	parse.FindQueries(c)
+	convert.FindQueries(c)
 	display.FindQueries(c)
 	repair.FindQueries(c)
 }

@@ -26,7 +26,7 @@ const (
 	VisibilityPublic    ValuePropVisibilityVar = "public"
 	VisibilityProtected ValuePropVisibilityVar = "protected"
 	VisibilityPrivate   ValuePropVisibilityVar = "private"
-	VisibilityUnknown   ValuePropVisibilityVar = "unknown"
+	VisibilityUnknown   ValuePropVisibilityVar = ""
 )
 
 // location on some grid or whatever

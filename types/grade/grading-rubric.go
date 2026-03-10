@@ -6,8 +6,7 @@ type GradingRubric struct {
 	// optional map of ILOs
 	ILOs map[uint32]ILO
 
-	GeneralRubric GenericRubric
-	Rubrics       []GradingRubricElement
+	Scoring DiagramMatchScores
 }
 
 type ILO struct {
@@ -15,36 +14,27 @@ type ILO struct {
 	Name  string
 	Descr string
 }
-type GenericRubric struct {
+type DiagramMatchScores struct {
 	VertexScore          RubricScoring // presence/absence of vertex / node
 	VertexAttributeScore RubricScoring // type of vertex
 
 	AttributeScore     RubricScoring // field/method presence/absence
 	AttributeTypeScore RubricScoring // wrong/right/extra attr. type
 
-	AssociationLabelScore RubricScoring // presence/absence of correct label
-
-	AssociationScore             RubricScoring // <-> presence/absence
-	AssociationTypeScore         RubricScoring // correct/wrong type
-	AssociationMultiplicityScore RubricScoring // presence/absence of
+	AssociationScore             RubricScoring `json:"association"`              // presence/absence of association |v1|-----|v2|
+	AssociationTypeScore         RubricScoring `json:"association_type"`         // association type |v1|<>-------|v2|
+	AssociationMultiplicityScore RubricScoring `json:"association_multiplicity"` // association mult. |v1|*<>----1|v2|
+	AssociationLabelScore        RubricScoring `json:"association_label"`        // association label |v1|*<>--text---1|v2|
 }
 
 type RubricScoring struct {
-	PointsForPresence    float32 // if we have an element, how many points to award / how many points to deduct for absence
-	PointsForAbsence     float32
-	PointsForSuperfluous float32 // if we have an extra element, how many points to deduct
+	PointsForPresence    float32 `json:"present"`     // if we have an element, how many points to award for presence
+	PointsForAbsence     float32 `json:"absent"`      // if this element is missing, how many points to deduct
+	PointsForSuperfluous float32 `json:"superfluous"` // if we have an extra element, how many points to deduct
+
+	ILOWeight *ILOWeight // optional
 }
-
-// examples:
-type GradingRubricElement struct {
-	Rule GradingRule
-	Args []any
+type ILOWeight struct {
+	ILO    uint32
+	Weight float32 // 0.1, or 10 points, whatever the grader wants
 }
-
-type GradingRule string
-
-const (
-	VertexMustExist GradingRule = "Vertex '%s' must exist"
-)
-
-func (r GradingRule) Format(args []string)

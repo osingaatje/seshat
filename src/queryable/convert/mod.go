@@ -1,4 +1,4 @@
-package parse
+package convert
 
 import (
 	"fmt"
@@ -9,9 +9,16 @@ import (
 )
 
 func FindQueries(c *context.Ctx) {
-	c.Queries.ParseUTML = context.DefineQuery(c, "Parse UTML", parseUTML)
-	c.Queries.ParseUTMLToInternal = context.DefineQuery(c, "Parse UTML to internal repr.", convertUTMLToParseRes)
-	c.Queries.Parse = context.DefineQuery(c, "Parse", parseFile)
+	c.Queries.Parse = context.DefineQuery(c,
+		"Parse file", parseFile)
+	c.Queries.ParseUTML = context.DefineQuery(c,
+		"Parse UTML", parseUTML)
+
+	c.Queries.ParseUTMLToInternal = context.DefineQuery(c,
+		"Parse UTML to parse result", convertUTMLToParseRes)
+
+	c.Queries.ConvertGraphToInternal = context.DefineQuery(c,
+		"Parse Result -> Internal graph", convertParseResToInternal)
 }
 
 // general method that switches based on context

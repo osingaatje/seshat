@@ -1,4 +1,4 @@
-package parse
+package convert
 
 import (
 	"errors"
@@ -150,10 +150,9 @@ func extractVisualProps(n *ParseResultUTMLNode) VertexVisualProperties {
 		res.VertexStyleStrokeWidth = 2 // idk do something fun I guess
 	}
 
-	// ignored, because we don't really need it (now) -2026-03-02
-	// if n.StyleObject != nil {
-	// 	res.VertexStyleStrokeWidth = n.StyleObject.StrokeWidth
-	// }
+	if n.StyleObject != nil {
+		res.VertexStyleStrokeWidth = n.StyleObject.StrokeWidth
+	}
 
 	return res
 }
@@ -164,12 +163,13 @@ func convertUTMLEdge(c *context.Ctx, e *ParseResultUTMLEdge) *ParsedEdge {
 	}
 
 	res := ParsedEdge{
-		FromId:          VertexIdentifier(e.StartNodeId), // location in the array
-		ToId:            VertexIdentifier(e.EndNodeId),   // location in the array
-		FromProperties:  extractUTMLEdgeEndProps(e, true),
-		Label:           extractUTMLEdgeLabel(e),
-		ToProperties:    extractUTMLEdgeEndProps(e, false),
-		StyleProperties: extractUTMLEdgeProps(e),
+		FromId:           VertexIdentifier(e.StartNodeId), // location in the array
+		ToId:             VertexIdentifier(e.EndNodeId),   // location in the array
+		FromProperties:   extractUTMLEdgeEndProps(e, true),
+		Label:            extractUTMLEdgeLabel(e),
+		ToProperties:     extractUTMLEdgeEndProps(e, false),
+		StyleProperties:  extractUTMLEdgeProps(e),
+		VisualProperties: EdgeVisualProperties{ /* filled in later */ },
 	}
 
 	return &res
@@ -285,8 +285,8 @@ func _addEdgeStartEndLocation(
 
 	offsetStart := _determineXYOffsetBasedOnEdgePos(fromSize, e.StartPosition)
 	offsetEnd := _determineXYOffsetBasedOnEdgePos(toSize, e.EndPosition)
-	res.StyleProperties.StartLocation = fromPos.Add(offsetStart)
-	res.StyleProperties.EndLocation = toPos.Add(offsetEnd)
+	res.VisualProperties.StartLocation = fromPos.Add(offsetStart)
+	res.VisualProperties.EndLocation = toPos.Add(offsetEnd)
 }
 
 // Translates relative position of a UTML label into an absolute position for internal repr.
@@ -316,7 +316,7 @@ func _addLocationToLabel(
 	case EdgeLabelPosStart:
 		offset := Vector2D{}.New(uL.Offset)
 		// solid base case. We can make it pretty later
-		position = iE.StyleProperties.StartLocation.Add(offset)
+		position = iE.VisualProperties.StartLocation.Add(offset)
 
 	case EdgeLabelPosMiddle:
 		nFromPos := Vector2D{}.New(nFrom.Position)
@@ -351,7 +351,7 @@ func _addLocationToLabel(
 	case EdgeLabelPosEnd:
 		offset := Vector2D{}.New(uL.Offset)
 		// solid base case. We can make it pretty later
-		position = iE.StyleProperties.EndLocation.Add(offset)
+		position = iE.VisualProperties.EndLocation.Add(offset)
 	}
 
 	resL.Location = position
