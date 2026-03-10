@@ -13,13 +13,15 @@ type MultTestCaseRes struct {
 }
 
 var testCases map[string]MultTestCaseRes = map[string]MultTestCaseRes{
-	"":             {Expected: nil, ErrMsg: ""},
-	"0":            {Expected: &Multiplicity{Start: 0, HasEndMult: false}, ErrMsg: ""},
-	"0..1":         {Expected: &Multiplicity{Start: 0, HasEndMult: true, End: 1}, ErrMsg: ""},
-	"1..15":        {Expected: &Multiplicity{Start: 1, HasEndMult: true, End: 15}, ErrMsg: ""},
-	"*":            {Expected: &Multiplicity{Start: -1, HasEndMult: false}, ErrMsg: "'Many' should be translated to '-1'"},
-	"*..*":         {Expected: &Multiplicity{Start: -1, HasEndMult: false}, ErrMsg: "Many to many should be normalised!"},
-	"151230123..1": {Expected: &Multiplicity{Start: 1, HasEndMult: true, End: 151230123}, ErrMsg: "Inverse ranges should be normalised!"},
+	"":                               {Expected: nil, ErrMsg: ""},
+	"0":                              {Expected: &Multiplicity{Start: 0, HasEndMult: false}, ErrMsg: ""},
+	"0..1":                           {Expected: &Multiplicity{Start: 0, HasEndMult: true, End: 1}, ErrMsg: ""},
+	"1..15":                          {Expected: &Multiplicity{Start: 1, HasEndMult: true, End: 15}, ErrMsg: ""},
+	"*":                              {Expected: &Multiplicity{Start: -1, HasEndMult: false}, ErrMsg: "'Many' should be translated to '-1'"},
+	"*..*":                           {Expected: &Multiplicity{Start: -1, HasEndMult: false}, ErrMsg: "Many to many should be normalised!"},
+	"151230123..1":                   {Expected: &Multiplicity{Start: 1, HasEndMult: true, End: 151230123}, ErrMsg: "Inverse ranges should be normalised!"},
+	"somethingthatcannotbeparsed..1": {Expected: nil, ErrMsg: "Raw text should not be parseable!"},
+	"-=-=-=- =-=-":                   {Expected: nil, ErrMsg: "Raw text should not be parseable!"},
 }
 
 func TestParseMultiplicity(t *testing.T) {

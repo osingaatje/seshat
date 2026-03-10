@@ -2,7 +2,6 @@ package cli
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
@@ -28,85 +27,74 @@ func (t *TestCmd) Run(c *context.Ctx) error {
 	return nil
 }
 
-// INTERNAL REPR
-type InternalRepCmd struct {
-	Input  string `arg:"" name:"in" help:"Input UTML file"`
-	Output string `arg:"" name:"out" help:"Output internal repr. file" default:"./out.json"`
+type EmitCmd struct {
+	Input  string    `arg:"" required:"" name:"in" help:"Input UTML file" default:"./in.utml"`
+	Output string    `arg:"" required:"" name:"out" help:"Output internal repr. file" default:"./out.json"`
+	Type   GraphType `name:"type" help:"" default:"dot"`
 }
+type GraphType string
 
-func (cmd *InternalRepCmd) Run(c *context.Ctx) error {
+const (
+	ParseResult GraphType = "parse"
+	DotFile     GraphType = "dot" // you can view this at https://dreampuf.github.io/GraphvizOnline
+	UTMLResult  GraphType = "utml"
+	Internal    GraphType = "internal"
+)
+
+func (cmd *EmitCmd) Run(c *context.Ctx) error {
+	// UTML
 	utml := c.Queries.ParseUTML.Get("Parse UTML", command.ParseUTMLCmd{Filepath: cmd.Input})
 	if utml == nil {
-		return fmt.Errorf("No UTML parse result for '%s'", cmd.Input)
+		return logErrAndExit(c, "No UTML parse result for '%s'", cmd.Input)
 	}
 
-	intern := c.Queries.ParseUTMLToInternal.Get("UTML -> Internal representation", utml)
-	if intern == nil {
-		c.LogWarn("Internal representation is nil!")
-		return fmt.Errorf("Failed conversion to internal representation.")
+	if cmd.Type == UTMLResult {
+		return helper.Export(cmd.Output, utml)
 	}
 
+	// PARSE RESULT
+	parseres := c.Queries.ParseUTMLToInternal.Get("UTML -> Internal representation", utml)
+	if parseres == nil {
+		return logErrAndExit(c, "Failed conversion to internal representation.")
+	}
+
+	// FIXED PARSE RESULT
 	fixed := c.Queries.RepairDiagram.Get("Repair internal repr.", command.NewRepairCmdDefOpt(
-		intern,
+		parseres,
 	))
 	if fixed == nil {
-		c.LogErr("Failed fixing diagram '%s'!", cmd.Input)
-		return fmt.Errorf("Failed fixing diagram '%s'!", cmd.Input)
+		return logErrAndExit(c, "Failed fixing diagram '%s'!", cmd.Input)
+	}
+	if cmd.Type == ParseResult {
+		return helper.Export(cmd.Output, parseres)
 	}
 
-	byt, err := helper.MarshalJSONWithIndent(fixed)
-	if err != nil {
-		c.LogErr("Could not marshal internal repr. to JSON")
-		return fmt.Errorf("Could not marshal internal representation to JSON")
+	if cmd.Type == DotFile {
+		dot := c.Queries.DisplayDiagramAsDot.Get("Internal -> .dot", fixed)
+		if dot == nil {
+			return logErrAndExit(c, "Could not convert '%s' from internal to .dot file", cmd.Input)
+		}
+
+		return helper.ExportString(cmd.Output, dot.String())
 	}
 
-	err = os.WriteFile(cmd.Output, byt, os.ModePerm)
-	if err != nil {
-		c.LogErr("Could not write to file :( err=%s", err.Error())
-		return err
+	if cmd.Type == Internal {
+		intern := c.Queries.ConvertGraphToInternal.Get("Parseres -> Internal", fixed)
+		if intern == nil {
+			return logErrAndExit(c, "Could not convert Parse Result to internal for file '%s'", cmd.Input)
+		}
+		return helper.Export(cmd.Output, intern)
 	}
+
 	return nil
 }
 
 // end INTERNAL REPR
 
-// PRINT GRAPH .dot FILE
-type PrintGraphCmd struct {
-	Input  string `arg:"" name:"in" help:"Input file (.utml)"`
-	Output string `arg:"" name:"out" help:"Output file (.dot)"`
-}
-
-func (cmd *PrintGraphCmd) Run(c *context.Ctx) error {
-	utml := c.Queries.ParseUTML.Get("Parse UTML", command.ParseUTMLCmd{Filepath: cmd.Input})
-	if utml == nil {
-		return fmt.Errorf("No UTML parse res for file '%s'", cmd.Input)
-	}
-	intern := c.Queries.ParseUTMLToInternal.Get("UTML -> Internal", utml)
-	if intern == nil {
-		return fmt.Errorf("Could not convert '%s' to internal result", cmd.Input)
-	}
-	fix := c.Queries.RepairDiagram.Get("Repair diag.", command.NewRepairCmdDefOpt(intern))
-	if fix == nil {
-		return fmt.Errorf("Could not fix diagram!")
-	}
-
-	dot := c.Queries.DisplayDiagramAsDot.Get("Internal -> .dot", fix)
-	if dot == nil {
-		return fmt.Errorf("Could not convert '%s' from internal to .dot file", cmd.Input)
-	}
-
-	err := os.WriteFile(cmd.Output, []byte(dot.String()), os.ModePerm)
-	if err != nil {
-		return fmt.Errorf("Could not write to '%s', err=%s", cmd.Output, err.Error())
-	}
-	return nil
-}
-
 // available options in the CLI
 var cli struct {
-	Test           TestCmd        `cmd:"" name:"test" help:"Print a test message using the Query system."`
-	GetInternalRep InternalRepCmd `cmd:"" name:"get-repr" help:"Print the internal representation for some UTML file"`
-	PrintDot       PrintGraphCmd  `cmd:"" name:"get-dot" help:"Export .dot file from .utml"`
+	Test TestCmd `cmd:"" name:"test" help:"Print a test message using the Query system."`
+	Emit EmitCmd `cmd:"" name:"emit" help:"Get some intermediate stage of the parsing process"`
 }
 
 // main method
@@ -115,4 +103,9 @@ func RunCli(c *context.Ctx) {
 
 	err := kongCli.Run(c)
 	kongCli.FatalIfErrorf(err)
+}
+
+func logErrAndExit(c *context.Ctx, errMsg string, args ...any) error {
+	c.LogErr(errMsg, args...)
+	return fmt.Errorf(errMsg, args...)
 }

@@ -1,0 +1,105 @@
+{
+  "vertices": {
+    "0": {
+      "id": 0,
+      "title": "swapped",
+      "properties": {
+        "type": "class"
+      },
+      "values": {},
+      "visual_properties": {
+        "location": {
+          "x": 1060,
+          "y": 340
+        },
+        "size": {
+          "x": 190,
+          "y": 72
+        },
+        "fill_col": {
+          "R": 255,
+          "G": 255,
+          "B": 255,
+          "A": 255
+        },
+        "stroke_col": {
+          "R": 0,
+          "G": 0,
+          "B": 0,
+          "A": 0
+        },
+        "stroke_width": 2
+      }
+    },
+    "1": {
+      "id": 1,
+      "title": "around",
+      "properties": {
+        "type": "class"
+      },
+      "values": {},
+      "visual_properties": {
+        "location": {
+          "x": 1440,
+          "y": 340
+        },
+        "size": {
+          "x": 190,
+          "y": 72
+        },
+        "fill_col": {
+          "R": 255,
+          "G": 255,
+          "B": 255,
+          "A": 255
+        },
+        "stroke_col": {
+          "R": 0,
+          "G": 0,
+          "B": 0,
+          "A": 0
+        },
+        "stroke_width": 2
+      }
+    }
+  },
+  "edges": {
+    "0-1": {
+      "fromId": 0,
+      "toId": 1,
+      "fromProperties": {
+        "arrowstyle": 0
+      },
+      "label": {
+        "text": "mid",
+        "location": {
+          "x": 190,
+          "y": 0
+        }
+      },
+      "toProperties": {
+        "arrowstyle": 0,
+        "label": {
+          "text": "right",
+          "location": {
+            "x": 1340,
+            "y": 350
+          }
+        }
+      },
+      "styleProperties": {
+        "line_style": 1
+      },
+      "visualProperties": {
+        "start_location": {
+          "x": 1250,
+          "y": 376
+        },
+        "end_location": {
+          "x": 1440,
+          "y": 376
+        }
+      }
+    }
+  }
+}
