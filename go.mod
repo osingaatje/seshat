@@ -12,6 +12,9 @@ require (
 )
 
 require (
+	github.com/agnivade/levenshtein v1.2.1 // indirect
+	github.com/agonopol/go-stem v0.0.0-20150630113328-985885018250 // indirect
+	github.com/fluhus/gostuff v1.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	golang.org/x/mod v0.33.0 // indirect

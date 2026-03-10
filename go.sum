@@ -1,5 +1,9 @@
 github.com/MatusOllah/slogcolor v1.7.0 h1:Nrd7yBPv2EBEEBEwl7WEPRmMd1ozZzw2jm8SLMYDbKs=
 github.com/MatusOllah/slogcolor v1.7.0/go.mod h1:5y1H50XuQIBvuYTJlmokWi+4FuPiJN5L7Z0jM4K4bYA=
+github.com/agnivade/levenshtein v1.2.1 h1:EHBY3UOn1gwdy/VbFwgo4cxecRznFk7fKWN1KOX7eoM=
+github.com/agnivade/levenshtein v1.2.1/go.mod h1:QVVI16kDrtSuwcpd0p1+xMC6Z/VfhtCyDIjcwga4/DU=
+github.com/agonopol/go-stem v0.0.0-20150630113328-985885018250 h1:znLjWXbvRGRvFlxYoiRu4Yf38isHmYYG07scbZKKg9I=
+github.com/agonopol/go-stem v0.0.0-20150630113328-985885018250/go.mod h1:JpR7ykfRJUCcS6aOUCB6dPImrYufY0NoBCDg/wqeIIo=
 github.com/alecthomas/assert/v2 v2.11.0 h1:2Q9r3ki8+JYXvGsDyBXwH3LcJ+WK5D0gc5E8vS6K3D0=
 github.com/alecthomas/assert/v2 v2.11.0/go.mod h1:Bze95FyfUr7x34QZrjL+XP+0qgp/zg8yS+TtBj1WA3k=
 github.com/alecthomas/kong v1.14.0 h1:gFgEUZWu2ZmZ+UhyZ1bDhuutbKN1nTtJTwh19Wsn21s=
@@ -8,6 +12,8 @@ github.com/alecthomas/repr v0.5.2 h1:SU73FTI9D1P5UNtvseffFSGmdNci/O6RsqzeXJtP0Qs
 github.com/alecthomas/repr v0.5.2/go.mod h1:Fr0507jx4eOXV7AlPV6AVZLYrLIuIeSOWtW57eE/O/4=
 github.com/fatih/color v1.18.0 h1:S8gINlzdQ840/4pfAwic/ZE0djQEH3wM94VfqLTZcOM=
 github.com/fatih/color v1.18.0/go.mod h1:4FelSpRwEGDpQ12mAdzqdOukCy4u8WUtOY6lkT/6HfU=
+github.com/fluhus/gostuff v1.4.0 h1:w4bpzIqjdygH05AsG9pZQKptaRR4O8rBjRq1jZGdqdY=
+github.com/fluhus/gostuff v1.4.0/go.mod h1:1Cz1B//olKCaDYnWffagdJj7rlvn8ws9S+psdyX/6qk=
 github.com/go-openapi/testify/v2 v2.3.0 h1:cZFOKhatfyVejoFNd8jqnHFosegN5vJZiPOTnkyT9hA=
 github.com/go-openapi/testify/v2 v2.3.0/go.mod h1:HCPmvFFnheKK2BuwSA0TbbdxJ3I16pjwMkYkP4Ywn54=
 github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=

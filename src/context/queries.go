@@ -8,6 +8,7 @@ package context
 import (
 	. "github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/display-graph"
+	. "github.com/osingaatje/seshat/types/grade"
 	. "github.com/osingaatje/seshat/types/parse-result"
 	. "github.com/osingaatje/seshat/types/parse-result-utml"
 )
@@ -25,7 +26,7 @@ type Queries struct {
 
 	ConvertGraphToInternal *Query[*ParseResult, *InternalGraph]
 
-	//GradeDiagram        *Query[GradeCmd, *GradeResult]
+	GradeDiagram *Query[GradeCmd, *GradeResult]
 
 	Test *Query[NameCmd, string]
 }
