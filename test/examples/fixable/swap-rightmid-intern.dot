@@ -1,9 +1,0 @@
-graph parse_result {
-	overlap=false;
-	splines=false;
-
-	node [shape=rect];
-		"swapped"[pos="132.5,42.5",nojustify=true];
-	"around"[pos="180.0,42.5",nojustify=true];
-	"swapped" -- "around"[label="right",headlabel="mid"]
-}
