@@ -6,8 +6,6 @@ import (
 	. "github.com/osingaatje/seshat/types/parse-result"
 )
 
-// swap edge labels if a student has dragged them to a location of where another label would be.
-
 func FindQueries(c *context.Ctx) {
 	c.Queries.RepairDiagram = context.DefineQuery(
 		c,
@@ -20,13 +18,14 @@ func performRepairs(c *context.Ctx, conf cmd.RepairCmd) *ParseResult {
 		return nil // repair(nil) = nil
 	}
 
-	res := conf.Diagram.Copy() // COPY THE DIAGRAM! To avoid changing the original, which would break immutability
+	res := conf.Diagram.Copy() // COPY THE DIAGRAM to avoid changing the original, which would break immutability
 
+	// swap edge labels if we detect that a student has dragged them to other spots
 	if conf.RepairOpts.SwapEdgeLabels {
-		swapEdgeLabels(c, res) // swap edge labels if we detect that a student has dragged them to other spots
+		swapEdgeLabels(c, res)
 	}
 
-	// ADD MORE OPTIONS HERE
+	// If more options become available, add them here!
 
 	return res
 }

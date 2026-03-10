@@ -1,14 +1,26 @@
 package test
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/go-openapi/testify/v2/assert"
 	"github.com/osingaatje/seshat/src/driver"
+	"github.com/osingaatje/seshat/test/helpers"
 	"github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/parse-result"
 	"github.com/osingaatje/seshat/types/repair"
 )
+
+func TestAllFixableDiagramsShouldBeChangedInSomeWay(t *testing.T) {
+	for _, f := range helpers.AllUTMLFiles("./fixable") {
+		intern, fixed := parseAndFix(t, f)
+
+		assert.NotNil(t, intern)
+		assert.NotNil(t, fixed)
+		assert.False(t, reflect.DeepEqual(intern, fixed), "Internal and Fixed representations were the same, which contradicts the 'fixable' directory name!")
+	}
+}
 
 func TestSwapLabelFromTo(t *testing.T) {
 	// needs from and to swapped
