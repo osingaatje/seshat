@@ -5,12 +5,17 @@ import (
 )
 
 type MatchStringCmd struct {
-	ref string // reference value
-	act string // actual value
+	Ref string // reference value
+	Act string // actual value
+}
+
+type MatchStringRes struct {
+	Score float64
+	Err   error
 }
 
 type MatchVertexCmd struct {
-	v1 *ParsedVertex
-	v2 *ParsedVertex
+	V1 *ParsedVertex
+	V2 *ParsedVertex
 	// can also put matching options in here such as matching with specific algorithms, should we need it
 }

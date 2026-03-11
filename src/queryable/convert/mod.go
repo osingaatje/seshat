@@ -26,7 +26,7 @@ func parseFile(c *context.Ctx, cmd ParseCmd) *ParseResult {
 	switch cmd.DiagramFormat {
 
 	case DiagramFormatUTML:
-		utmlRes := c.Queries.ParseUTML.Get("Parse UTML", ParseUTMLCmd{Filepath: cmd.Filepath})
+		utmlRes := c.Queries.ParseUTML.Get("Parse UTML", cmd.Filepath)
 		return convertUTMLToParseRes(c, utmlRes)
 
 	default:

@@ -1,4 +1,4 @@
-package result
+package grade
 
 // support for additive and deductive grading? 100% - deduction points or 0% + points?
 

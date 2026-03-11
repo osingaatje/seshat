@@ -11,6 +11,4 @@ type ParseCmd struct {
 	Filepath      string
 }
 
-type ParseUTMLCmd struct {
-	Filepath string
-}
+type ParseUTMLCmd string

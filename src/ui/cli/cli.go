@@ -7,6 +7,7 @@ import (
 	"github.com/osingaatje/seshat/src/context"
 	"github.com/osingaatje/seshat/types/command"
 	g "github.com/osingaatje/seshat/types/generic"
+	. "github.com/osingaatje/seshat/types/grade"
 
 	"github.com/alecthomas/kong"
 	dot "github.com/osingaatje/seshat/types/graph/dot"
@@ -87,7 +88,35 @@ type GradeCmd struct {
 }
 
 func (cmd *GradeCmd) Run(c *context.Ctx) error {
-	c.LogErr("TODO!")
+	c.LogWarn("TODO GRADING RUBRIC!")
+	rubric := GradeRubric{}
+
+	allSubmissions, err := helper.AllUTMLFiles(cmd.SubmissionDir)
+	if err != nil {
+		return logErrAndExit(c, "%s", err.Error())
+	}
+
+	_, _, refRep, _, errRef := getReps(c, cmd.ReferenceSubmission, g.Internal)
+	if errRef != nil {
+		return logErrAndExit(c, "Could not parse Reference Submission: %s", errRef.Error())
+	}
+
+	results := map[string]*GradeResult{}
+
+	for _, f := range allSubmissions {
+		_, _, submissionRep, _, err := getReps(c, f, g.Internal)
+		if err != nil {
+			return logErrAndExit(c, "Could not parse student submission '%s': %s", f, err.Error())
+		}
+
+		res := c.Queries.GradeDiagram.Get("Grade diagram", command.GradeCmd{
+			Rubric:            &rubric,
+			ReferenceSolution: refRep,
+			Submission:        submissionRep,
+		})
+		results[f] = res
+	}
+
 	return nil
 }
 
@@ -101,7 +130,7 @@ func logErrAndExit(c *context.Ctx, errMsg string, args ...any) error {
 
 func getReps(c *context.Ctx, inputFile string, graphType g.GraphType) (*utml.ParseResultUTML, *parse.ParseResult, *intern.InternalGraph, *dot.DotGraph, error) {
 	// UTML
-	utml := c.Queries.ParseUTML.Get("Parse UTML", command.ParseUTMLCmd{Filepath: inputFile})
+	utml := c.Queries.ParseUTML.Get("Parse UTML", inputFile)
 	if utml == nil {
 		return nil, nil, nil, nil, logErrAndExit(c, "No UTML parse result for '%s'", inputFile)
 	}

@@ -2,6 +2,8 @@ package word
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/fluhus/gostuff/nlp/wordnet"
 )
@@ -33,7 +35,8 @@ func GetWordNet() (*wordnet.WordNet, error) {
 		return wn, nil
 	}
 
-	wn, err = wordnet.Parse("./dict")
+	cwd, err := os.Getwd()
+	wn, err = wordnet.Parse(filepath.Join(cwd, "helper/wordnet/dict"))
 	if err != nil {
 		return nil, fmt.Errorf("Error occurred while reading WordNet: %s", err.Error())
 	}

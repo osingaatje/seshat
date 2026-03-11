@@ -5,17 +5,11 @@ import (
 	"unicode"
 
 	"github.com/agnivade/levenshtein"
-	"github.com/fluhus/gostuff/nlp"
-	"github.com/fluhus/gostuff/nlp/wordnet"
-	wn "github.com/osingaatje/seshat/helper/wordnet"
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/grade"
 	"github.com/osingaatje/seshat/types/graph/shared"
 )
-
-var net *wordnet.WordNet
-var netErr error
 
 /*
  * Idea (inspired by Smith (2004), Thomas (2009), Vachharajani (2014), Bian (2020))
@@ -31,60 +25,32 @@ func gradeDiag(c *context.Ctx, cmd GradeCmd) *GradeResult {
 		return nil
 	}
 
-	// init variables etc.
-	net, netErr = wn.GetWordNet()
-	if netErr != nil {
-		c.LogErr("Could not get WordNet (for semantic matching), err=%s", netErr.Error())
-		return nil
-	}
-
+	syntacticDistance := map[shared.VertexIdentifier]map[shared.VertexIdentifier]int{}
 	certainties := map[shared.VertexIdentifier]map[shared.VertexIdentifier]float64{}
 
 	for refId, refV := range cmd.ReferenceSolution.Vertices {
+		syntacticDistance[refId] = map[shared.VertexIdentifier]int{}
 		certainties[refId] = map[shared.VertexIdentifier]float64{}
+
 		for subId, subV := range cmd.Submission.Vertices {
-			certainties[refId][subId] = semanticMatch(refV.Title, subV.Title)
+			syntacticDistance[refId][subId] = syntacticDist(refV.Title, subV.Title)
+
+			res := c.Queries.SemanticMatch.Get("Semantic Match", MatchStringCmd{Ref: refV.Title, Act: subV.Title})
+
+			if res.Err != nil {
+				c.LogErr("Error while calculating semantic simlarity: %s", res.Err.Error())
+				return nil
+			}
+			certainties[refId][subId] = res.Score
 		}
 	}
 
+	c.LogErr("TODO GRADE FURTHER")
 	return nil
 }
 
-func semanticMatch(str1 string, str2 string) float64 {
-	if net == nil || netErr != nil {
-		panic("WordNet not correctly initialised!")
-	}
-
-	var totalScore float64 = 0
-
-	toks1 := nlp.Tokenize(str1, false)
-	toks2 := nlp.Tokenize(str2, false)
-
-	for _, tok := range toks1 {
-		tokMeanings := getMeanings(tok)
-		for _, otherTok := range toks2 {
-			otherTokMeanings := getMeanings(otherTok)
-
-			for _, meaning := range tokMeanings {
-				for _, otherMeaning := range otherTokMeanings {
-					totalScore += wn.Similarity(meaning, otherMeaning)
-				}
-			}
-		}
-	}
-	return totalScore
-}
-func getMeanings(token string) []*wordnet.Synset {
-	meanings := net.Search(token)
-	allMeanings := []*wordnet.Synset{}
-	for _, m := range wn.WordNetWordTypes {
-		allMeanings = append(allMeanings, meanings[string(m)]...)
-	}
-	return allMeanings
-}
-
 // Computes Levenshtein distance between normalised strings
-func syntacticMatch(str1 string, str2 string) int {
+func syntacticDist(str1 string, str2 string) int {
 	s1 := removePunctuation(str1)
 	s2 := removePunctuation(str2)
 

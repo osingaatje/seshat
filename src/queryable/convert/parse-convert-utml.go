@@ -9,7 +9,6 @@ import (
 
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
-	. "github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/generic"
 	pr "github.com/osingaatje/seshat/types/graph/parse-result"
 	. "github.com/osingaatje/seshat/types/graph/shared"
@@ -17,8 +16,8 @@ import (
 )
 
 // Parsing raw file to UTML
-func parseUTML(c *context.Ctx, cmd ParseUTMLCmd) *ParseResultUTML {
-	r, err := os.ReadFile(cmd.Filepath)
+func parseUTML(c *context.Ctx, filepath string) *ParseResultUTML {
+	r, err := os.ReadFile(filepath)
 	if err != nil {
 		c.LogErr("Error occurred while reading file! Err='%s'", err.Error())
 		return nil
@@ -28,7 +27,7 @@ func parseUTML(c *context.Ctx, cmd ParseUTMLCmd) *ParseResultUTML {
 
 	err = helper.UnmarshalJSON(r, &jsonRes)
 	if err != nil {
-		c.LogErr("Could not marshal file '%s' to a UTML Parse Result! Err=%s", cmd.Filepath, err.Error())
+		c.LogErr("Could not marshal file '%s' to a UTML Parse Result! Err=%s", filepath, err.Error())
 		return nil
 	}
 

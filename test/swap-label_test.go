@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/go-openapi/testify/v2/assert"
+	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/driver"
-	"github.com/osingaatje/seshat/test/helpers"
 	"github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/graph/parse-result"
 	. "github.com/osingaatje/seshat/types/graph/shared"
@@ -14,7 +14,7 @@ import (
 )
 
 func TestAllFixableDiagramsShouldBeChangedInSomeWay(t *testing.T) {
-	for _, f := range helpers.AllUTMLFiles("./fixable") {
+	for _, f := range helper.AllUTMLFilesUNSAFE("./fixable") {
 		intern, fixed := parseAndFix(t, f)
 
 		assert.NotNil(t, intern)
@@ -103,7 +103,7 @@ func TestReplaceMiddleRight(t *testing.T) {
 
 func parseAndFix(t *testing.T, filePath string) (internal *ParseResult, fixed *ParseResult) {
 	c := driver.NewContext()
-	utml := c.Queries.ParseUTML.Get("Parse UTML", command.ParseUTMLCmd{Filepath: filePath})
+	utml := c.Queries.ParseUTML.Get("Parse UTML", filePath)
 	if utml == nil {
 		t.Fatal("Failed to parse UTML")
 		return

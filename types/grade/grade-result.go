@@ -1,4 +1,4 @@
-package result
+package grade
 
 type GradeResult struct {
 	// TODO!

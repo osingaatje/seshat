@@ -8,6 +8,7 @@ import (
 	"github.com/osingaatje/seshat/src/context"
 	"github.com/osingaatje/seshat/src/queryable/convert"
 	"github.com/osingaatje/seshat/src/queryable/display"
+	"github.com/osingaatje/seshat/src/queryable/grade"
 	"github.com/osingaatje/seshat/src/queryable/repair"
 	"github.com/osingaatje/seshat/src/queryable/tryout"
 )
@@ -18,6 +19,7 @@ func FindQueries(c *context.Ctx) {
 	convert.FindQueries(c)
 	display.FindQueries(c)
 	repair.FindQueries(c)
+	grade.FindQueries(c)
 }
 
 // should be used for testing

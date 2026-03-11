@@ -8,8 +8,6 @@ import (
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
 	"github.com/osingaatje/seshat/src/driver"
-	"github.com/osingaatje/seshat/test/helpers"
-	"github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/generic"
 	. "github.com/osingaatje/seshat/types/graph/utml"
 )
@@ -17,7 +15,7 @@ import (
 func TestConvertSimpleUTMLResultToInternal(t *testing.T) {
 	c := driver.NewContext()
 
-	filePaths := helpers.AllUTMLFiles("./examples/correct")
+	filePaths := helper.AllUTMLFilesUNSAFE("./examples/correct")
 
 	for _, path := range filePaths {
 		verifyRes(c, t, path)
@@ -25,11 +23,11 @@ func TestConvertSimpleUTMLResultToInternal(t *testing.T) {
 }
 
 func TestConvertBrokenFiles(t *testing.T) {
-	filePaths := helpers.AllUTMLFiles("./examples/broken-internal")
+	filePaths := helper.AllUTMLFilesUNSAFE("./examples/broken-internal")
 	for _, path := range filePaths {
 		c := driver.NewContext()
 
-		utml := c.Queries.ParseUTML.Get("Parse UTML", command.ParseUTMLCmd{Filepath: path})
+		utml := c.Queries.ParseUTML.Get("Parse UTML", path)
 		assert.NotNil(t, utml) // should only break at the internal conversion
 
 		intern := c.Queries.ParseUTMLToInternal.Get("UTML -> internal repr.", utml)
@@ -40,7 +38,7 @@ func TestConvertBrokenFiles(t *testing.T) {
 }
 
 func verifyRes(c *context.Ctx, t *testing.T, inputFilePath string) {
-	utml := c.Queries.ParseUTML.Get("Parse UTML", command.ParseUTMLCmd{Filepath: inputFilePath})
+	utml := c.Queries.ParseUTML.Get("Parse UTML", inputFilePath)
 	intern := c.Queries.ParseUTMLToInternal.Get("UTML -> internal repr.", utml)
 
 	if utml == nil {

@@ -8,15 +8,13 @@ import (
 	"github.com/go-openapi/testify/v2/assert"
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/driver"
-	"github.com/osingaatje/seshat/test/helpers"
-	"github.com/osingaatje/seshat/types/command"
 )
 
 // Tests whether the parsed and JSONified file and the formatted input file is literally, to the character, the exact same.
 func TestUTMLParseSimple(t *testing.T) {
 	c := driver.NewContext()
 
-	var FilePaths []string = helpers.AllUTMLFiles("./examples/correct")
+	var FilePaths []string = helper.AllUTMLFilesUNSAFE("./examples/correct")
 
 	for _, path := range FilePaths {
 
@@ -33,7 +31,7 @@ func TestUTMLParseSimple(t *testing.T) {
 		}
 
 		// run query
-		res := c.Queries.ParseUTML.Get("Parse UTML", command.ParseUTMLCmd{Filepath: path})
+		res := c.Queries.ParseUTML.Get("Parse UTML", path)
 		actualJson, err := helper.IndentJSON([]byte(res.String()))
 		if err != nil {
 			t.Errorf("Could not indent JSON for parsed UTML, err=%s", err.Error())
@@ -52,14 +50,14 @@ func TestUTMLParseSimple(t *testing.T) {
 
 func TestUTMLBroken(t *testing.T) {
 
-	var filePaths []string = helpers.AllUTMLFiles("./examples/broken-utml")
+	var filePaths []string = helper.AllUTMLFilesUNSAFE("./examples/broken-utml")
 
 	for _, path := range filePaths {
 		// init fresh context without existing logs
 		c := driver.NewContext()
 
 		// run query
-		res := c.Queries.ParseUTML.Get("Parse UTML", command.ParseUTMLCmd{Filepath: path})
+		res := c.Queries.ParseUTML.Get("Parse UTML", path)
 
 		assert.Nil(t, res) // query should fail
 		if res != nil {

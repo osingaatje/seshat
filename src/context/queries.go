@@ -19,7 +19,7 @@ type Queries struct {
 
 	// queries are placed here. Note that you need to add this query to DefineQueries() and then let the Driver call the function in order to use it!
 	Parse               *Query[ParseCmd, *ParseResult]
-	ParseUTML           *Query[ParseUTMLCmd, *ParseResultUTML]
+	ParseUTML           *Query[string /* file path */, *ParseResultUTML]
 	ParseUTMLToInternal *Query[*ParseResultUTML, *ParseResult]
 
 	DisplayDiagramAsDot *Query[*ParseResult, *DotGraph]
@@ -27,7 +27,8 @@ type Queries struct {
 
 	ConvertGraphToInternal *Query[*ParseResult, *InternalGraph]
 
-	GradeDiagram *Query[GradeCmd, *GradeResult]
+	GradeDiagram  *Query[GradeCmd, *GradeResult]
+	SemanticMatch *Query[MatchStringCmd, MatchStringRes]
 
 	Test *Query[NameCmd, string]
 }
