@@ -11,9 +11,5 @@ For the paper that spawned this project, see [my other repository](https://githu
 To run the tests, navigate to the `test` folder and run `go test`, i.e.:
 
 ```sh
-cd test
-
-go test
+go test ./test
 ```
-
-
