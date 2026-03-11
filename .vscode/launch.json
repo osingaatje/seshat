@@ -19,7 +19,7 @@
       "args": [
         "grade",
         "test/examples/correct/simpleDiag-formatted.utml",
-        "test/examples/correct/simpleDiag-formatted.utml",
+        "test/examples/correct/simpleDiag-formatted-alt.utml",
         "--scheme",
         "./",
       ],
