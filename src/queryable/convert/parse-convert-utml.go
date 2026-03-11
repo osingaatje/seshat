@@ -11,8 +11,9 @@ import (
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/generic"
-	. "github.com/osingaatje/seshat/types/parse-result"
-	. "github.com/osingaatje/seshat/types/parse-result-utml"
+	. "github.com/osingaatje/seshat/types/graph/parse-result"
+	. "github.com/osingaatje/seshat/types/graph/shared"
+	. "github.com/osingaatje/seshat/types/graph/utml"
 )
 
 // Parsing raw file to UTML

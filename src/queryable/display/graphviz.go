@@ -7,7 +7,7 @@ import (
 
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/display-graph"
-	. "github.com/osingaatje/seshat/types/parse-result"
+	. "github.com/osingaatje/seshat/types/graph/parse-result"
 )
 
 const POSITION_SCALE_FACTOR float64 = float64(1) / 8

@@ -8,7 +8,8 @@ import (
 	"github.com/osingaatje/seshat/src/driver"
 	"github.com/osingaatje/seshat/test/helpers"
 	"github.com/osingaatje/seshat/types/command"
-	. "github.com/osingaatje/seshat/types/parse-result"
+	. "github.com/osingaatje/seshat/types/graph/parse-result"
+	. "github.com/osingaatje/seshat/types/graph/shared"
 	"github.com/osingaatje/seshat/types/repair"
 )
 

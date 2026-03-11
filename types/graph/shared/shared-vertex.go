@@ -1,4 +1,4 @@
-package parseresult
+package shared
 
 import (
 	"image/color"

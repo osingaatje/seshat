@@ -25,13 +25,24 @@ var netErr error
  * 3. Interpret:        produce grades based on present/missing/extra elements and parts of those elements
  */
 func gradeDiag(c *context.Ctx, cmd GradeCmd) *GradeResult {
-	net, netErr = wn.GetWordNet()
-	if netErr != nil {
-		c.LogErr("Could not get wordnet, err=%s", netErr.Error())
+	if cmd.ReferenceSolution == nil || cmd.Submission == nil || cmd.Rubric == nil {
+		c.LogErr("Referencesolution, submission, or rubric was not present when grading diagram!")
 		return nil
 	}
 
-	c.LogErr("TODO GRADE")
+	// init variables etc.
+	net, netErr = wn.GetWordNet()
+	if netErr != nil {
+		c.LogErr("Could not get WordNet (for semantic matching), err=%s", netErr.Error())
+		return nil
+	}
+
+	// certainties := map[graphVertexIdentifier]
+	//
+	//	for id, v := range cmd.ReferenceSolution.Vertices {
+	//
+	//	}
+
 	return nil
 }
 
@@ -67,6 +78,7 @@ func getMeanings(token string) []*wordnet.Synset {
 	return allMeanings
 }
 
+// Computes Levenshtein distance between normalised strings
 func syntacticMatch(str1 string, str2 string) int {
 	s1 := removePunctuation(str1)
 	s2 := removePunctuation(str2)

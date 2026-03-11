@@ -11,7 +11,7 @@ import (
 	"github.com/osingaatje/seshat/test/helpers"
 	"github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/generic"
-	. "github.com/osingaatje/seshat/types/parse-result-utml"
+	. "github.com/osingaatje/seshat/types/graph/utml"
 )
 
 func TestConvertSimpleUTMLResultToInternal(t *testing.T) {

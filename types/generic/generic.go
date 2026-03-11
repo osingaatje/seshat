@@ -1,32 +1,9 @@
-package parseresult
+package generic
 
 import (
 	"math"
 
-	utml "github.com/osingaatje/seshat/types/parse-result-utml"
-)
-
-// Properties of values, e.g.: "field" : Visibility=private, Type=string
-type ValueProperties struct {
-	Visibility ValuePropVisibilityVar `json:"visibility,omitempty"`
-	Type       string                 `json:"type,omitempty"` // type string,class,bool,etc.
-}
-
-func (p ValueProperties) Copy() ValueProperties {
-	return ValueProperties{
-		Visibility: p.Visibility,
-		Type:       p.Type,
-	}
-}
-
-// More detailed datatypes
-type ValuePropVisibilityVar string
-
-const (
-	VisibilityPublic    ValuePropVisibilityVar = "public"
-	VisibilityProtected ValuePropVisibilityVar = "protected"
-	VisibilityPrivate   ValuePropVisibilityVar = "private"
-	VisibilityUnknown   ValuePropVisibilityVar = ""
+	. "github.com/osingaatje/seshat/types/graph/utml"
 )
 
 // location on some grid or whatever
@@ -35,7 +12,7 @@ type Vector2D struct {
 	Y float64 `json:"y"`
 }
 
-func (v Vector2D) New(utmlPos utml.UTMLXY) Vector2D {
+func (v Vector2D) New(utmlPos UTMLXY) Vector2D {
 	return Vector2D{
 		X: float64(utmlPos.X),
 		Y: float64(utmlPos.Y),

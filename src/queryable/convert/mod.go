@@ -5,7 +5,7 @@ import (
 
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/command"
-	. "github.com/osingaatje/seshat/types/parse-result"
+	. "github.com/osingaatje/seshat/types/graph/parse-result"
 )
 
 func FindQueries(c *context.Ctx) {

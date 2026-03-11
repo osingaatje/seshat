@@ -2,7 +2,7 @@ package command
 
 import (
 	. "github.com/osingaatje/seshat/types/grade"
-	. "github.com/osingaatje/seshat/types/parse-result"
+	. "github.com/osingaatje/seshat/types/graph/internal-rep"
 )
 
 type GradeCmd struct {

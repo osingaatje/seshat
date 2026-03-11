@@ -6,6 +6,8 @@ type GradeRubric struct {
 	// optional map of ILOs
 	ILOs map[uint32]ILO `json:"ilos"`
 
+	GraderConfig GraderConfig `json:"grader_config"`
+
 	Scores DiagramMatchScores `json:"scores"`
 }
 
@@ -14,6 +16,12 @@ type ILO struct {
 	Name  string `json:"name"`
 	Descr string `json:"description"`
 }
+
+type GraderConfig struct {
+	SyntacticCertainty float32 `json:"syntactic_certainty"`
+	SemanticCertainty  float32 `json:"semantic_certainty"`
+}
+
 type DiagramMatchScores struct {
 	VertexScore                  RubricScoring `json:"vertex"`                   // presence/absence of vertex / node
 	VertexTypeScore              RubricScoring `json:"vertex_type"`              // type of vertex

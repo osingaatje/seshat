@@ -1,4 +1,4 @@
-package parseresult
+package shared
 
 import (
 	"github.com/osingaatje/seshat/helper"
@@ -10,6 +10,11 @@ type EdgeEndProperties struct { // the properties for the end of an edge ( <>---
 	ArrowStyle ArrowStyleVariant `json:"arrowstyle"`
 	Label      *ParsedLabel      `json:"label,omitempty"` // don't convert to stricter representation (multiplicity or something) yet, as we want to repair swapped labels etc.
 	// multiplicity conversion should happen later! Multiplicity *helper.Multiplicity `json:"multiplicity,omitempty"`
+}
+
+type InternalEdgeEndProperties struct {
+	ArrowStyle   ArrowStyleVariant    `json:"arrowstyle"`
+	Multiplicity *helper.Multiplicity `json:"multiplicity,omitempty"`
 }
 
 func (e EdgeEndProperties) ToInternal() (props InternalEdgeEndProperties, ok bool) {
@@ -25,11 +30,6 @@ func (e EdgeEndProperties) ToInternal() (props InternalEdgeEndProperties, ok boo
 		props.Multiplicity = mult
 	}
 	return props, true
-}
-
-type InternalEdgeEndProperties struct {
-	ArrowStyle   ArrowStyleVariant    `json:"arrowstyle"`
-	Multiplicity *helper.Multiplicity `json:"multiplicity,omitempty"`
 }
 
 func (p EdgeEndProperties) Copy() EdgeEndProperties {

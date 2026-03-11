@@ -1,9 +1,8 @@
 package convert
 
 import (
-	. "github.com/osingaatje/seshat/types/generic"
-	. "github.com/osingaatje/seshat/types/parse-result"
-	. "github.com/osingaatje/seshat/types/parse-result-utml"
+	. "github.com/osingaatje/seshat/types/graph/shared"
+	. "github.com/osingaatje/seshat/types/graph/utml"
 )
 
 var UTMLClassTypeToInternal map[UTMLClassType]string = map[UTMLClassType]string{

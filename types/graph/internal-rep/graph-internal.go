@@ -1,9 +1,11 @@
-package parseresult
+package internalrep
 
 import (
 	"fmt"
 
 	"github.com/osingaatje/seshat/helper"
+
+	. "github.com/osingaatje/seshat/types/graph/shared"
 )
 
 type InternalGraphJSON struct {

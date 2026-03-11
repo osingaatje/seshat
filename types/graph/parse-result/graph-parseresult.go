@@ -5,7 +5,8 @@ import (
 	"strings"
 
 	"github.com/osingaatje/seshat/helper"
-	. "github.com/osingaatje/seshat/types/generic"
+	. "github.com/osingaatje/seshat/types/graph/internal-rep"
+	. "github.com/osingaatje/seshat/types/graph/shared"
 )
 
 /*
@@ -60,16 +61,6 @@ func (p *ParseResult) Copy() *ParseResult {
 		res.Edges[k] = e.Copy()
 	}
 	return res
-}
-
-type VertexIdentifier uint32
-type EdgeIdentifier uint64
-
-func NewEdgeIdentifier(vId1 VertexIdentifier, vId2 VertexIdentifier) EdgeIdentifier {
-	return EdgeIdentifier(uint64(vId1)<<32 | uint64(vId2))
-}
-func (e EdgeIdentifier) New(vId1 VertexIdentifier, vId2 VertexIdentifier) EdgeIdentifier {
-	return NewEdgeIdentifier(vId1, vId2)
 }
 
 func NewParseResult() *ParseResult {
@@ -203,33 +194,4 @@ func (e *ParsedEdge) ToInternal() (*InternalEdge, error) {
 	res.FromProperties = fromP
 	res.ToProperties = toP
 	return res, nil
-}
-
-// contains value along with optional properties
-type ParsedValue struct {
-	Value      string          `json:"value"`      // raw value (i.e. the fieldValue in "fieldName: fieldValue"
-	Properties ValueProperties `json:"properties"` // things like visibility etc.
-}
-
-func (p ParsedValue) Copy() ParsedValue {
-	return ParsedValue{
-		Value:      p.Value,
-		Properties: p.Properties.Copy(),
-	}
-}
-
-// like in the UML text along an edge. Also contains a location so we can route the edge along this label
-type ParsedLabel struct {
-	Text     string   `json:"text"`
-	Location Vector2D `json:"location"`
-}
-
-func (l *ParsedLabel) Copy() *ParsedLabel {
-	if l == nil {
-		return nil
-	}
-	return &ParsedLabel{
-		Text:     l.Text,
-		Location: l.Location,
-	}
 }

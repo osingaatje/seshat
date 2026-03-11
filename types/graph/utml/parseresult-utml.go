@@ -1,4 +1,4 @@
-package types
+package utml
 
 import (
 	"github.com/osingaatje/seshat/helper"
