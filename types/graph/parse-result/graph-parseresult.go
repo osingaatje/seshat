@@ -183,13 +183,13 @@ func (e *ParsedEdge) ToInternal() (*InternalEdge, error) {
 		// FromProps, ToProps added below
 	}
 
-	fromP, okF := e.FromProperties.ToInternal()
-	toP, okT := e.ToProperties.ToInternal()
-	if !okF {
-		return nil, fmt.Errorf("Could not parse edge start multplicity (%d-%d)", e.FromId, e.ToId)
+	fromP, errF := e.FromProperties.ToInternal()
+	toP, errT := e.ToProperties.ToInternal()
+	if errF != nil {
+		return nil, fmt.Errorf("Could not parse start properties: %s", errF.Error())
 	}
-	if !okT {
-		return nil, fmt.Errorf("Could not parse edge end multiplicity (%d-%d)", e.FromId, e.ToId)
+	if errT != nil {
+		return nil, fmt.Errorf("Could not parse end properties: %s", errT.Error())
 	}
 	res.FromProperties = fromP
 	res.ToProperties = toP

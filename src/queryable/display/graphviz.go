@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/osingaatje/seshat/src/context"
-	. "github.com/osingaatje/seshat/types/display-graph"
+	. "github.com/osingaatje/seshat/types/graph/dot"
 	. "github.com/osingaatje/seshat/types/graph/parse-result"
 )
 

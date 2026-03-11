@@ -11,7 +11,7 @@ import (
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/generic"
-	. "github.com/osingaatje/seshat/types/graph/parse-result"
+	pr "github.com/osingaatje/seshat/types/graph/parse-result"
 	. "github.com/osingaatje/seshat/types/graph/shared"
 	. "github.com/osingaatje/seshat/types/graph/utml"
 )
@@ -36,7 +36,7 @@ func parseUTML(c *context.Ctx, cmd ParseUTMLCmd) *ParseResultUTML {
 }
 
 // Converting to internal representation
-func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *ParseResult {
+func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.ParseResult {
 	const LOGPREFIX = "Could not convert UTML -> internal: "
 
 	if utml == nil {
@@ -44,7 +44,7 @@ func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *ParseResult {
 		return nil
 	}
 
-	res := NewParseResult()
+	res := pr.NewParseResult()
 	for i, n := range utml.Nodes {
 		vertex := convertUTMLVertex(c, i, &n)
 		if vertex == nil { // errors are logged in function
@@ -81,12 +81,12 @@ func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *ParseResult {
 	return res
 }
 
-func convertUTMLVertex(ctx *context.Ctx, index int, n *ParseResultUTMLNode) *ParsedVertex {
+func convertUTMLVertex(ctx *context.Ctx, index int, n *ParseResultUTMLNode) *pr.ParsedVertex {
 	extractedProps := extractUTMLVertexProperties(ctx, index, n)
 	extractedVals := extractUTMLVals(n)
 	extractedVisualProps := extractVisualProps(n)
 
-	return &ParsedVertex{
+	return &pr.ParsedVertex{
 		Id:               VertexIdentifier(index), // location in the original UTML array
 		Title:            n.Text,
 		Properties:       extractedProps,
@@ -158,12 +158,12 @@ func extractVisualProps(n *ParseResultUTMLNode) VertexVisualProperties {
 	return res
 }
 
-func convertUTMLEdge(c *context.Ctx, e *ParseResultUTMLEdge) *ParsedEdge {
+func convertUTMLEdge(c *context.Ctx, e *ParseResultUTMLEdge) *pr.ParsedEdge {
 	if e.StartNodeId < 0 || e.EndNodeId < 0 {
 		c.LogErr("FromId or ToId have non-uint64 values for ")
 	}
 
-	res := ParsedEdge{
+	res := pr.ParsedEdge{
 		FromId:           VertexIdentifier(e.StartNodeId), // location in the array
 		ToId:             VertexIdentifier(e.EndNodeId),   // location in the array
 		FromProperties:   extractUTMLEdgeEndProps(e, true),
@@ -197,7 +197,7 @@ func extractUTMLEdgeEndProps(e *ParseResultUTMLEdge, start bool) EdgeEndProperti
 	return res
 }
 
-func finaliseEdgeProperties(utml *ParseResultUTML, res *ParseResult) error {
+func finaliseEdgeProperties(utml *ParseResultUTML, res *pr.ParseResult) error {
 	for _, uE := range utml.Edges {
 		nFromId := uE.StartNodeId
 		nToId := uE.EndNodeId
@@ -275,7 +275,7 @@ func _addEdgeStartEndLocation(
 	nFrom *ParseResultUTMLNode,
 	nTo *ParseResultUTMLNode,
 	e *ParseResultUTMLEdge,
-	res *ParsedEdge) {
+	res *pr.ParsedEdge) {
 	if nFrom == nil || nTo == nil || e == nil || res == nil {
 		panic("you stupid?")
 	}
@@ -297,7 +297,7 @@ func _addLocationToLabel(
 	nTo *ParseResultUTMLNode,
 	uE *ParseResultUTMLEdge,
 	uL *UTMLEdgeLabel,
-	iE *ParsedEdge,
+	iE *pr.ParsedEdge,
 	labelPos EdgeLabelPos,
 	resL *ParsedLabel) {
 	if nFrom == nil || nTo == nil || uE == nil || uL == nil || resL == nil {
@@ -380,7 +380,7 @@ func extractUTMLEdgeLabel(e *ParseResultUTMLEdge) *ParsedLabel {
 	return res
 }
 
-func verifyEdgesLinkToVertices(r *ParseResult) error {
+func verifyEdgesLinkToVertices(r *pr.ParseResult) error {
 	const PREFIX = "Could not convert UTML to internal representation: "
 
 	incorrectEdges := []string{}

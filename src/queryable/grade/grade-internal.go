@@ -11,6 +11,7 @@ import (
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/grade"
+	"github.com/osingaatje/seshat/types/graph/shared"
 )
 
 var net *wordnet.WordNet
@@ -37,16 +38,19 @@ func gradeDiag(c *context.Ctx, cmd GradeCmd) *GradeResult {
 		return nil
 	}
 
-	// certainties := map[graphVertexIdentifier]
-	//
-	//	for id, v := range cmd.ReferenceSolution.Vertices {
-	//
-	//	}
+	certainties := map[shared.VertexIdentifier]map[shared.VertexIdentifier]float64{}
+
+	for refId, refV := range cmd.ReferenceSolution.Vertices {
+		certainties[refId] = map[shared.VertexIdentifier]float64{}
+		for subId, subV := range cmd.Submission.Vertices {
+			certainties[refId][subId] = semanticMatch(refV.Title, subV.Title)
+		}
+	}
 
 	return nil
 }
 
-func semanticMatch(str1 string, str2 string) {
+func semanticMatch(str1 string, str2 string) float64 {
 	if net == nil || netErr != nil {
 		panic("WordNet not correctly initialised!")
 	}
@@ -68,6 +72,7 @@ func semanticMatch(str1 string, str2 string) {
 			}
 		}
 	}
+	return totalScore
 }
 func getMeanings(token string) []*wordnet.Synset {
 	meanings := net.Search(token)

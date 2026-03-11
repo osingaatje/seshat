@@ -1,6 +1,8 @@
 package shared
 
 import (
+	"fmt"
+
 	"github.com/osingaatje/seshat/helper"
 	. "github.com/osingaatje/seshat/types/generic"
 )
@@ -17,7 +19,7 @@ type InternalEdgeEndProperties struct {
 	Multiplicity *helper.Multiplicity `json:"multiplicity,omitempty"`
 }
 
-func (e EdgeEndProperties) ToInternal() (props InternalEdgeEndProperties, ok bool) {
+func (e EdgeEndProperties) ToInternal() (props InternalEdgeEndProperties, err error) {
 	props = InternalEdgeEndProperties{
 		ArrowStyle:   e.ArrowStyle,
 		Multiplicity: nil,
@@ -25,11 +27,11 @@ func (e EdgeEndProperties) ToInternal() (props InternalEdgeEndProperties, ok boo
 	if e.Label != nil {
 		mult, ok := helper.GetMultiplicity(e.Label.Text)
 		if !ok {
-			return props, false
+			return props, fmt.Errorf("Could not parse multiplicity '%s'", e.Label.Text)
 		}
 		props.Multiplicity = mult
 	}
-	return props, true
+	return props, nil
 }
 
 func (p EdgeEndProperties) Copy() EdgeEndProperties {

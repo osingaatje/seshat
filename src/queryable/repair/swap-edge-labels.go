@@ -3,7 +3,7 @@ package repair
 import (
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/generic"
-	. "github.com/osingaatje/seshat/types/graph/parse-result"
+	pr "github.com/osingaatje/seshat/types/graph/parse-result"
 	. "github.com/osingaatje/seshat/types/graph/shared"
 )
 
@@ -32,7 +32,7 @@ ex. of usefulness: if a student has dragged them to a location of where another 
 		..but if a student starts dragging labels to other vertices then we can consider that a failure in their thinking.
 			(at least I (Douwe) think so. We should not account for such major failures)
 */
-func swapEdgeLabels(c *context.Ctx, p *ParseResult) {
+func swapEdgeLabels(c *context.Ctx, p *pr.ParseResult) {
 	if p == nil {
 		c.LogWarn("Trying to swap edge labels on an empty parse result - BUG")
 		return
@@ -55,7 +55,7 @@ const DIST_INF float64 = 999999999999
  * conditions:
  * - when the label is farther to one side of the edge than to its own side.
  */
-func swapEdgeLabelsForEdge(c *context.Ctx, p *ParseResult, e *ParsedEdge) {
+func swapEdgeLabelsForEdge(c *context.Ctx, p *pr.ParseResult, e *pr.ParsedEdge) {
 	if e == nil {
 		return
 	}
