@@ -14,7 +14,7 @@ import (
 )
 
 func TestAllFixableDiagramsShouldBeChangedInSomeWay(t *testing.T) {
-	for _, f := range helper.AllUTMLFilesUNSAFE("./fixable") {
+	for _, f := range helper.AllUTMLFilesUNSAFE("./examples/fixable") {
 		intern, fixed := parseAndFix(t, f)
 
 		assert.NotNil(t, intern)

@@ -1,11 +1,10 @@
-package word
+package wordnet
 
 import (
+	"embed"
 	"fmt"
-	"os"
-	"path/filepath"
 
-	"github.com/fluhus/gostuff/nlp/wordnet"
+	"github.com/osingaatje/gostuff/nlp/wordnet"
 )
 
 type WordNetWordType string
@@ -27,6 +26,12 @@ var WordNetWordTypes []WordNetWordType = []WordNetWordType{
 var wn *wordnet.WordNet = nil
 var err error = nil
 
+// EMBED THE WORDNET FILES DIRECTLY INTO THE BINARY :)
+//
+//go:embed dict
+var WordNetDirectory embed.FS
+var WordNetDirectoryName string = "dict"
+
 func GetWordNet() (*wordnet.WordNet, error) {
 	if err != nil {
 		return nil, err
@@ -35,8 +40,7 @@ func GetWordNet() (*wordnet.WordNet, error) {
 		return wn, nil
 	}
 
-	cwd, err := os.Getwd()
-	wn, err = wordnet.Parse(filepath.Join(cwd, "helper/wordnet/dict"))
+	wn, err = wordnet.ParseFS(WordNetDirectory, WordNetDirectoryName)
 	if err != nil {
 		return nil, fmt.Errorf("Error occurred while reading WordNet: %s", err.Error())
 	}

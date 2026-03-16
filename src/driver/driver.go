@@ -26,13 +26,13 @@ func FindQueries(c *context.Ctx) {
 func NewContext() *context.Ctx {
 	ctx := context.New()
 	FindQueries(ctx)
+
 	return ctx
 }
 
 // should be used for UIs, CLIs, finished programs
 func Bootstrap(f func(*context.Ctx)) int {
-	ctx := context.New()
-	FindQueries(ctx)
+	ctx := NewContext()
 
 	var returnCode int = 0
 

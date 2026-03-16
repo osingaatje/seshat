@@ -7,6 +7,13 @@ For the paper that spawned this project, see [my other repository](https://githu
 
 # Code
 
+## Preparation
+### WordNet
+See the WordNet helper's README.md (`helper/wordnet/README.md`) for more information
+
+I use a forked package from `fluhus/gostuff` called `osingaatje/gostuff`.
+To import this, execute: `GONOSUMDB=github.com/osingaatje/gostuff go get github.com/osingaatje/gostuff@latest`
+
 ## Testing
 To run the tests, navigate to the `test` folder and run `go test`, i.e.:
 

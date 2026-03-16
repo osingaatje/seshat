@@ -4,10 +4,10 @@ Download the dictionary from [The Princeton Website](https://wordnet.princeton.e
 
 Make sure to "download the WordNet 3.1 database files" (here is a [link (v.3.1)](https://wordnetcode.princeton.edu/wn3.1.dict.tar.gz) that might work)
 
-Place these files inside this directory, with this structure:
+Place these files inside a directory. I put it inside `helper/wordnet/dict` (see example below):
 ```
  wordnet
-  | dict <--- make sure this name is "dict" exactly!
+  | dict <--- place the absolute path to this directory inside your .env!
   |  | dbfiles
   |  |  |-- (more files)
   |  | adj.exc
@@ -17,3 +17,5 @@ Place these files inside this directory, with this structure:
   |  | ...
 
 ```
+
+**NOTE:** Make sure to place the directory inside your .env!
