@@ -38,6 +38,8 @@ func semanticMatch(c *context.Ctx, s command.MatchStringCmd) command.MatchString
 	toks1 := nlp.Tokenize(s.Ref, false)
 	toks2 := nlp.Tokenize(s.Act, false)
 
+	// might look intimidating, but in real life, we mostly get single words or combinations of a couple words at most, with 4 word types, often containing 1 or 2 meanings.
+	// so this might look like a n^5 function, and it is, but it's fine.
 	for _, tok := range toks1 {
 		tokMeanings := getMeanings(tok)
 		for _, otherTok := range toks2 {
@@ -53,7 +55,7 @@ func semanticMatch(c *context.Ctx, s command.MatchStringCmd) command.MatchString
 		}
 	}
 
-	totalScore /= float64(len(toks1)) + float64(len(toks2)) // roughly normalise it to 0..1
+	totalScore /= float64(len(toks1) + len(toks2)) // roughly normalise it to 0..1
 
 	return command.MatchStringRes{
 		Score: totalScore,
