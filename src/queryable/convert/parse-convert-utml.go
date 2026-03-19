@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"image/color"
+	"math"
 	"os"
 	"strings"
 
@@ -14,6 +15,8 @@ import (
 	. "github.com/osingaatje/seshat/types/graph/shared"
 	. "github.com/osingaatje/seshat/types/graph/utml"
 )
+
+const LINE_CLOSENESS_PERCENT uint8 = 10 // 0-255%, 100% is the full length of the edge
 
 // Parsing raw file to UTML
 func parseUTML(c *context.Ctx, filepath string) *ParseResultUTML {
@@ -53,18 +56,17 @@ func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.ParseResul
 		res.Vertices[VertexIdentifier(vertex.Id)] = vertex
 	}
 
-	for _, e := range utml.Edges {
+	for index, e := range utml.Edges {
 		edge := convertUTMLEdge(c, &e)
 		if edge == nil { // inner errors are logged. no error logging here.
 			return nil
 		}
 
-		var eId EdgeIdentifier
-		res.Edges[eId.New(edge.FromId, edge.ToId)] = edge
+		res.Edges[EdgeIdentifier(index)] = edge
 	}
 
 	// EXTRA METHODS FOR EDGES:
-	err := finaliseEdgeProperties(utml, res)
+	err := finaliseEdgeProperties(c, utml, res)
 	if err != nil {
 		c.LogErr("%s%s", LOGPREFIX, err.Error())
 		return nil
@@ -158,21 +160,43 @@ func extractVisualProps(n *ParseResultUTMLNode) VertexVisualProperties {
 }
 
 func convertUTMLEdge(c *context.Ctx, e *ParseResultUTMLEdge) *pr.ParsedEdge {
-	if e.StartNodeId < 0 || e.EndNodeId < 0 {
+	if e.StartNodeId != nil && *e.StartNodeId < 0 || e.EndNodeId != nil && *e.EndNodeId < 0 {
 		c.LogErr("FromId or ToId have non-uint64 values for ")
 	}
 
 	res := pr.ParsedEdge{
-		FromId:           VertexIdentifier(e.StartNodeId), // location in the array
-		ToId:             VertexIdentifier(e.EndNodeId),   // location in the array
+		FromId:           NewVertexIdentifierInt16(e.StartNodeId), // nodeId = location in the array
+		ToId:             NewVertexIdentifierInt16(e.EndNodeId),   // nodeId = location in the array
+		FromEdgeId:       nil,                                     // filled in later
+		ToEdgeId:         nil,                                     // filled in later
 		FromProperties:   extractUTMLEdgeEndProps(e, true),
 		Label:            extractUTMLEdgeLabel(e),
 		ToProperties:     extractUTMLEdgeEndProps(e, false),
 		StyleProperties:  extractUTMLEdgeProps(e),
-		VisualProperties: EdgeVisualProperties{ /* filled in later */ },
+		VisualProperties: EdgeVisualProperties{ /* filled in either with absolute XY in this func, or based on the offset in the finalisation stage */ },
 	}
 
+	_optionallyAddPosition(c, &res, e, e.StartPosition)
+	_optionallyAddPosition(c, &res, e, e.EndPosition)
+
 	return &res
+}
+
+func _optionallyAddPosition(c *context.Ctx, iE *pr.ParsedEdge, uE *ParseResultUTMLEdge, pos UTMLEdgeXYOrOffsetPosition) bool {
+	switch pos := pos.Value.(type) {
+	case UTMLEdgeOffsetPosition:
+		// nothing happens here, the offset needs to be filled in later based on the Node.
+		if uE.StartNodeId == nil {
+			c.LogErr("UTML is not keeping to its own spec. Edge StartPosition has an offset (int) but no StartNodeId!")
+			return false
+		}
+	case UTMLXY:
+		iE.VisualProperties.StartLocation = Vector2D{}.New(pos)
+	default:
+		c.LogErr("UTML Edge StartPosition was neither an offset nor an X/Y position!")
+		return false
+	}
+	return true
 }
 
 func extractUTMLEdgeEndProps(e *ParseResultUTMLEdge, start bool) EdgeEndProperties {
@@ -196,58 +220,145 @@ func extractUTMLEdgeEndProps(e *ParseResultUTMLEdge, start bool) EdgeEndProperti
 	return res
 }
 
-func finaliseEdgeProperties(utml *ParseResultUTML, res *pr.ParseResult) error {
-	for _, uE := range utml.Edges {
+func finaliseEdgeProperties(c *context.Ctx, utml *ParseResultUTML, res *pr.ParseResult) error {
+	for uEID, uE := range utml.Edges {
 		nFromId := uE.StartNodeId
 		nToId := uE.EndNodeId
 
-		var eId EdgeIdentifier
-
-		iE, ok := res.Edges[eId.New(VertexIdentifier(nFromId), VertexIdentifier(nToId))]
+		iE, ok := res.Edges[EdgeIdentifier(uEID)]
 		if !ok {
 			errMsg := fmt.Sprintf("MISSING EDGE - bug in UTML -> Internal conversion. (from,to) = (%d,%d)", uE.StartNodeId, uE.EndNodeId)
 			return errors.New(errMsg)
 		}
 
-		if nFromId < 0 || nToId < 0 || nFromId >= len(utml.Nodes) || nToId >= len(utml.Nodes) {
+		if nFromId != nil && nToId != nil && (*nFromId < 0 || int(*nFromId) >= len(utml.Nodes) || *nToId < 0 || int(*nToId) >= len(utml.Nodes)) {
 			errMsg := fmt.Sprintf("EDGE (%d,%d) HAS INVALID NODE ID(s)", nFromId, nToId)
 			return errors.New(errMsg)
 		}
-		uNodeFrom := utml.Nodes[nFromId]
-		uNodeTo := utml.Nodes[nToId]
+		var uNodeFrom *ParseResultUTMLNode = nil
+		var uNodeTo *ParseResultUTMLNode = nil
+
+		if nFromId != nil {
+			uNodeFrom = &utml.Nodes[int(*nFromId)]
+		}
+		if nToId != nil {
+			uNodeTo = &utml.Nodes[int(*nToId)]
+		}
 
 		// add start/end location
-		_addEdgeStartEndLocation(&uNodeFrom, &uNodeTo, &uE, iE)
+		err := _addEdgeStartEndLocation(uNodeFrom, uNodeTo, &uE, iE)
+		if err != nil {
+			c.LogErr("Error while adding start/end location to edge: %s", err.Error())
+			return err
+		}
 
 		if uE.StartLabel != nil {
 			if iE.FromProperties.Label == nil {
-				errMsg := fmt.Sprintf("EDGE (%d,%d) HAS BROKEN START LABEL", uE.StartNodeId, uE.EndNodeId)
+				errMsg := fmt.Sprintf("EDGE '%d' HAS BROKEN START LABEL", uEID)
 				return errors.New(errMsg)
 			}
-			_addLocationToLabel(&uNodeFrom, &uNodeTo, &uE, uE.StartLabel, iE, EdgeLabelPosStart, iE.FromProperties.Label)
+			_addLocationToLabel(uNodeFrom, uNodeTo, &uE, uE.StartLabel, iE, EdgeLabelPosStart, iE.FromProperties.Label)
 		}
 		if uE.MiddleLabel != nil {
 			if iE.Label == nil {
-				errMsg := fmt.Sprintf("EDGE (%d,%d) HAS BROKEN MIDDLE LABEL", uE.StartNodeId, uE.EndNodeId)
+				errMsg := fmt.Sprintf("EDGE '%d' HAS BROKEN MIDDLE LABEL", uEID)
 				return errors.New(errMsg)
 			}
-			_addLocationToLabel(&uNodeFrom, &uNodeTo, &uE, uE.MiddleLabel, iE, EdgeLabelPosMiddle, iE.Label)
+			_addLocationToLabel(uNodeFrom, uNodeTo, &uE, uE.MiddleLabel, iE, EdgeLabelPosMiddle, iE.Label)
 		}
 		if uE.EndLabel != nil {
 			if iE.ToProperties.Label == nil {
-				errMsg := fmt.Sprintf("EDGE (%d,%d) HAS BROKEN START LABEL", uE.StartNodeId, uE.EndNodeId)
+				errMsg := fmt.Sprintf("EDGE '%d' HAS BROKEN START LABEL", uEID)
 				return errors.New(errMsg)
 			}
-			_addLocationToLabel(&uNodeFrom, &uNodeTo, &uE, uE.EndLabel, iE, EdgeLabelPosEnd, iE.ToProperties.Label)
+			_addLocationToLabel(uNodeFrom, uNodeTo, &uE, uE.EndLabel, iE, EdgeLabelPosEnd, iE.ToProperties.Label)
+		}
+
+	}
+
+	// now that all Edges have a start/end location, we can check if we still need to connect edges to other edges:
+	for id, iE := range res.Edges {
+		// figure out if we need to add FromEdge / ToEdge
+		// this can happen when an edge is connected to only one vertex, or none at all (floating, which is illegal in our case!)
+		if iE.FromId == nil || iE.ToId == nil {
+			err := tryConnectEdgeEnds(res, iE)
+			if err != nil {
+				return fmt.Errorf("Edge '%d' was not connected to either a starting vertex and/or end vertex - but failed to connect '%d' it to another edge! %s", id, id, err.Error())
+			}
 		}
 	}
 
 	return nil
 }
 
+// some edges may not be connected to both nodes. We hope that the creator of the diagram means to connect it to an edge, which we try to implement here.
+func tryConnectEdgeEnds(graph *pr.ParseResult, iE *pr.ParsedEdge) error {
+	if iE.FromId != nil && iE.ToId != nil {
+		panic("ONLY USE THIS FUNCTION WHEN A FromId OR ToId IS MISSING")
+	}
+
+	// if we've already added edge connections, we're done.
+	if ((iE.FromId == nil) != (iE.FromEdgeId == nil)) && ((iE.ToId == nil) != (iE.ToEdgeId == nil)) {
+		return nil
+	}
+
+	// just so that we don't have to make another function.
+	for range 2 {
+		var edgeIdToFix *EdgeIdentifier
+		var location *Vector2D
+		var edgeName string
+
+		if iE.FromId == nil && iE.FromEdgeId == nil {
+			edgeIdToFix = iE.FromEdgeId
+			location = &iE.VisualProperties.StartLocation
+			edgeName = "start"
+		} else if iE.ToId == nil && iE.ToEdgeId == nil {
+			edgeIdToFix = iE.ToEdgeId
+			location = &iE.VisualProperties.EndLocation
+			edgeName = "end"
+		} else {
+			break
+		}
+
+		var smallestDist float64 = math.Inf(1)
+		var smallestDistId EdgeIdentifier = EdgeIdentifier(math.MaxUint32)
+
+		for id, otherEdge := range graph.Edges {
+
+			dist, edgeLen := _calculateDistanceToLine(&otherEdge.VisualProperties.StartLocation, &otherEdge.VisualProperties.EndLocation, location)
+			if dist/edgeLen < float64(LINE_CLOSENESS_PERCENT) && dist < smallestDist {
+				smallestDist = dist
+				smallestDistId = id
+			}
+		}
+
+		if smallestDist < 99999999 {
+			*edgeIdToFix = smallestDistId
+		} else {
+			return fmt.Errorf("Could not find a close enough edge to connect %s point of edge '%d' to located at (%d,%d)", edgeName, *edgeIdToFix, location.X, location.Y)
+		}
+	}
+	return nil
+}
+
+// see https://mathworld.wolfram.com/Point-LineDistance2-Dimensional.html
+func _calculateDistanceToLine(lineStart *Vector2D, lineEnd *Vector2D, loc *Vector2D) (dist float64, edgeLength float64) {
+	x_0, y_0 := loc.X, loc.Y
+	x_1, y_1 := lineStart.X, lineStart.Y
+	x_2, y_2 := lineEnd.X, lineEnd.Y
+
+	edgeLength := math.Sqrt(math.Pow(x_2-x_1, 2) + math.Pow(y_2-y_1, 2))
+
+	// for the point 'loc' = (x_0, y_0) and the line lineStart<->lineEnd = (x_1,y_1), (x_2, y_2)
+	// to calculate the distance, we use d = | v^ . r | = ( |(x_2 - x_1)*(y_1 - y_0) - (x_1 - x_0)(y_2 - y_1)| ) \ ( \sqrt( (x_2-x_1)^2 + (y_2-y_1)^2 ) )
+
+	topPart := math.Abs((x_2-x_1)*(y_1-y_0) - (x_1-x_0)*(y_2-y_1))
+	return topPart / edgeLength, edgeLength
+}
+
 // determine the offset of an edge / label based on edge position
 // assumption: we draw nodes/vertices from the top-left.
-func _determineXYOffsetBasedOnEdgePos(nodeSize Vector2D, edgePos UTMLEdgeEndPosition) Vector2D {
+func _determineXYOffsetBasedOnEdgePos(nodeSize Vector2D, edgePos UTMLEdgeOffsetPosition) Vector2D {
 	var res Vector2D
 	switch edgePos {
 	case EdgePosTopCenter:
@@ -270,23 +381,59 @@ func _determineXYOffsetBasedOnEdgePos(nodeSize Vector2D, edgePos UTMLEdgeEndPosi
 	return res
 }
 
+// Tries to calculate the X/Y start / end position of an edge, if no absolute position is given already.
 func _addEdgeStartEndLocation(
 	nFrom *ParseResultUTMLNode,
 	nTo *ParseResultUTMLNode,
 	e *ParseResultUTMLEdge,
-	res *pr.ParsedEdge) {
-	if nFrom == nil || nTo == nil || e == nil || res == nil {
+	res *pr.ParsedEdge) error {
+	if e == nil || res == nil {
 		panic("you stupid?")
 	}
-	fromPos := Vector2D{}.New(nFrom.Position)
-	fromSize := Vector2D{}.NewInt(nFrom.Width, nFrom.Height)
-	toPos := Vector2D{}.New(nTo.Position)
-	toSize := Vector2D{}.NewInt(nTo.Width, nTo.Height)
 
-	offsetStart := _determineXYOffsetBasedOnEdgePos(fromSize, e.StartPosition)
-	offsetEnd := _determineXYOffsetBasedOnEdgePos(toSize, e.EndPosition)
-	res.VisualProperties.StartLocation = fromPos.Add(offsetStart)
-	res.VisualProperties.EndLocation = toPos.Add(offsetEnd)
+	// figure out if we still need to add the location based on the start/end nodes
+	var startIsOffset bool
+	var endIsOffset bool
+
+	switch e.StartPosition.Value.(type) {
+	case UTMLXY:
+		startIsOffset = false
+	case UTMLEdgeOffsetPosition:
+		startIsOffset = true
+	default:
+		panic("INVALID START POSITION (not XY/offset")
+	}
+	switch e.EndPosition.Value.(type) {
+	case UTMLXY:
+		endIsOffset = false
+	case UTMLEdgeOffsetPosition:
+		endIsOffset = true
+	default:
+		panic("INVALID END POSITION (not XY/offset")
+	}
+
+	// if we have no nodes to compare to but we get offsets from UTML, we can't do anything... so exit.
+	if (nFrom == nil && startIsOffset) || (nTo == nil && endIsOffset) {
+		return fmt.Errorf("UTML edge had a start or end offset (not absolute position) but also no Node to reference! Stupid UTML :(")
+	}
+
+	// if we have a start offset, calculate it
+	if startIsOffset {
+		fromPos := Vector2D{}.New(nFrom.Position)
+		fromSize := Vector2D{}.NewInt(nFrom.Width, nFrom.Height)
+
+		offsetStart := _determineXYOffsetBasedOnEdgePos(fromSize, e.StartPosition.Value.(UTMLEdgeOffsetPosition) /* cast it to the correct type (is checked beforehand) */)
+		res.VisualProperties.StartLocation = fromPos.Add(offsetStart)
+	}
+
+	if endIsOffset {
+		toPos := Vector2D{}.New(nTo.Position)
+		toSize := Vector2D{}.NewInt(nTo.Width, nTo.Height)
+
+		offsetEnd := _determineXYOffsetBasedOnEdgePos(toSize, e.EndPosition.Value.(UTMLEdgeOffsetPosition))
+		res.VisualProperties.EndLocation = toPos.Add(offsetEnd)
+	}
+	return nil
 }
 
 // Translates relative position of a UTML label into an absolute position for internal repr.
@@ -383,21 +530,38 @@ func verifyEdgesLinkToVertices(r *pr.ParseResult) error {
 	const PREFIX = "Could not convert UTML to internal representation: "
 
 	incorrectEdges := []string{}
-	for _, e := range r.Edges {
-		_, okFrom := r.Vertices[e.FromId]
-		_, okTo := r.Vertices[e.ToId]
-		if !okFrom || !okTo {
-			incorrectEdges = append(incorrectEdges, fmt.Sprintf("(%d -> %d)", e.FromId, e.ToId))
+	for id, e := range r.Edges {
+		var hasFromVertex bool
+		var hasToVertex bool
+		var hasFromEdge bool
+		var hasToEdge bool
+
+		if e.FromId != nil {
+			_, hasFromVertex = r.Vertices[*e.FromId]
+		}
+		if e.ToId != nil {
+			_, hasToVertex = r.Vertices[*e.ToId]
+		}
+		if e.FromEdgeId != nil {
+			_, hasFromEdge = r.Edges[*e.FromEdgeId]
+		}
+		if e.ToEdgeId != nil {
+			_, hasFromEdge = r.Edges[*e.ToEdgeId]
 		}
 
-		if len(incorrectEdges) > 0 {
-			errMsg := PREFIX + "Some edge(s) was/were not connected to any nodes! Edge(s): ["
-			errMsg += strings.Join(incorrectEdges, ",")
-			errMsg += "]"
-
-			return errors.New(errMsg)
+		// if the edge has both a from vertex/edge or a to vertex/edge, then we did something wrong
+		if hasFromVertex == hasFromEdge || hasToVertex == hasToEdge {
+			incorrectEdges = append(incorrectEdges, fmt.Sprintf("%d", id))
 		}
 	}
 
-	return nil
+	if len(incorrectEdges) == 0 {
+		return nil
+	}
+
+	errMsg := PREFIX + "Some edge(s) was/were not connected properly to either a(n) start/end edge/node! Edge(s): ["
+	errMsg += strings.Join(incorrectEdges, ",")
+	errMsg += "]"
+
+	return errors.New(errMsg)
 }

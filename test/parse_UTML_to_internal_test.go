@@ -18,7 +18,7 @@ func TestConvertSimpleUTMLResultToInternal(t *testing.T) {
 	filePaths := helper.AllUTMLFilesUNSAFE("./examples/correct")
 
 	for _, path := range filePaths {
-		verifyRes(c, t, path)
+		parseAndVerify(c, t, path)
 	}
 }
 
@@ -37,7 +37,7 @@ func TestConvertBrokenFiles(t *testing.T) {
 	}
 }
 
-func verifyRes(c *context.Ctx, t *testing.T, inputFilePath string) {
+func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string) {
 	utml := c.Queries.ParseUTML.Get("Parse UTML", inputFilePath)
 	intern := c.Queries.ParseUTMLToInternal.Get("UTML -> internal repr.", utml)
 
@@ -58,26 +58,49 @@ func verifyRes(c *context.Ctx, t *testing.T, inputFilePath string) {
 	// MORE ADVANCED CHECKS
 	for _, iEdge := range intern.Edges {
 		uEdge, ok := helper.Find(utml.Edges, func(e *ParseResultUTMLEdge) bool {
-			return e.StartNodeId == int(iEdge.FromId) && e.EndNodeId == int(iEdge.ToId)
+			return (e.StartNodeId == nil || int64(*e.StartNodeId) == int64(*iEdge.FromId)) &&
+				(e.EndNodeId == nil || int64(*e.EndNodeId) == int64(*iEdge.ToId))
 		})
 		if !ok {
 			t.Fatalf("Could not find edge %d -> %d in UTML result", iEdge.FromId, iEdge.ToId)
 			return
 		}
 
-		// found edge, now compare shit
-		assert.Equal(t, int(iEdge.FromId), uEdge.StartNodeId)
-		assert.Equal(t, int(iEdge.ToId), uEdge.EndNodeId)
+		// found edge, now compare stuff
 
-		if uEdge.MiddleLabel != nil {
-			assert.Equal(t, iEdge.Label.Text, uEdge.MiddleLabel.Value)
-		} else {
-			assert.Equal(t, "", iEdge.Label.Text)
+		// NODES/VERTICES
+		assert.Equal(t, iEdge.FromId == nil, uEdge.StartNodeId == nil) // node connections must be kept
+		if iEdge.FromId != nil {
+			assert.Equal(t, int64(*iEdge.FromId), int64(*uEdge.StartNodeId))
 		}
+
+		assert.Equal(t, iEdge.ToId == nil, uEdge.EndNodeId == nil) // node connections must be kept
+		if iEdge.ToId != nil {
+			assert.Equal(t, int64(*iEdge.ToId), int64(*uEdge.EndNodeId))
+		}
+		// END NODES/VERTICES
+
+		// LABELS
+		assert.Equal(t, iEdge.FromProperties.Label == nil, uEdge.StartLabel == nil)
+		if iEdge.FromProperties.Label != nil {
+			assert.Equal(t, iEdge.FromProperties.Label.Text, uEdge.StartLabel.Value)
+		}
+
+		assert.Equal(t, iEdge.Label == nil, uEdge.MiddleLabel == nil)
+		if iEdge.FromProperties.Label != nil {
+			assert.Equal(t, iEdge.FromProperties.Label.Text, uEdge.StartLabel.Value)
+		}
+
+		assert.Equal(t, iEdge.ToProperties.Label == nil, uEdge.EndLabel == nil)
+		if iEdge.FromProperties.Label != nil {
+			assert.Equal(t, iEdge.FromProperties.Label.Text, uEdge.StartLabel.Value)
+		}
+		// END LABELS
+
 	}
 
 	for i, iVertex := range intern.Vertices {
-		if i < 0 || int(i) > len(utml.Nodes) {
+		if i < 0 || int64(i) > int64(len(utml.Nodes)) {
 			t.Fatalf("A vertex identifier in internal repr. does not match UTML repr.! Id=%d", i)
 			return
 		}

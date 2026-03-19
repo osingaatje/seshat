@@ -41,8 +41,10 @@ type InternalVertex struct {
 }
 
 type InternalEdge struct {
-	FromId         VertexIdentifier          `json:"fromId"`
-	ToId           VertexIdentifier          `json:"toId"`
+	FromId         *VertexIdentifier         `json:"fromId"`
+	ToId           *VertexIdentifier         `json:"toId"`
+	FromEdgeId     *EdgeIdentifier           `json:"fromEdgeId"`
+	ToEdgeId       *EdgeIdentifier           `json:"toEdgeId"`
 	FromProperties InternalEdgeEndProperties `json:"fromProperties"`  // things like multiplicity and arrow head style
 	Label          *ParsedLabel              `json:"label,omitempty"` // for ex.: "teaches >"
 	ToProperties   InternalEdgeEndProperties `json:"toProperties"`

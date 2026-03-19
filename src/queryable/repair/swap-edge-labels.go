@@ -60,18 +60,11 @@ func swapEdgeLabelsForEdge(c *context.Ctx, p *pr.ParseResult, e *pr.ParsedEdge) 
 		return
 	}
 
-	fromNode, okFrom := p.Vertices[e.FromId]
-	toNode, okTo := p.Vertices[e.ToId]
-	if !okFrom || !okTo {
-		c.LogErr("Invalid Parse Result: missing vertices (trying to swap edge labels)")
-		return
-	}
-
-	fromNodePos := fromNode.VisualProperties.Location.Add(fromNode.VisualProperties.Size.Div(2)) // center of the node
-	toNodePos := toNode.VisualProperties.Location.Add(toNode.VisualProperties.Size.Div(2))       // center of the node
+	fromPos := e.VisualProperties.StartLocation // old: fromNode.VisualProperties.Location.Add(fromNode.VisualProperties.Size.Div(2)) // center of the node
+	toPos := e.VisualProperties.EndLocation     // old: toNode.VisualProperties.Location.Add(toNode.VisualProperties.Size.Div(2))       // center of the node
 
 	// center between A ---- B == A + (B-A)/2
-	centerPos := fromNodePos.Add(toNodePos.Sub(fromNodePos).Div(2))
+	centerPos := fromPos.Add(toPos.Sub(fromPos).Div(2))
 
 	labels := []**ParsedLabel{
 		&e.FromProperties.Label, &e.Label, &e.ToProperties.Label,
@@ -80,13 +73,13 @@ func swapEdgeLabelsForEdge(c *context.Ctx, p *pr.ParseResult, e *pr.ParsedEdge) 
 		"From", "Middle", "To",
 	}
 	referencePosition := []Vector2D{
-		fromNodePos, centerPos, toNodePos,
+		fromPos, centerPos, toPos,
 	}
-	// we want to punish swapping the center node a bit because that's not often done and the distances are smaller.
+	// decides how much closer the text needs to be in order to be swap-eligible - we want to punish swapping the center node a bit because that's not often done and the distances are smaller.
 	distance_scale := []float64{
 		1, 1.5, 1,
 	}
-	nodeDist := fromNodePos.Dist(toNodePos)
+	nodeDist := fromPos.Dist(toPos)
 
 	// close to start/middle/end
 	distances := map[int][]float64{}
@@ -145,7 +138,7 @@ func swapEdgeLabelsForEdge(c *context.Ctx, p *pr.ParseResult, e *pr.ParsedEdge) 
 			delete(possibleSwaps, nodeId)
 		}
 
-		// we can still swap the other label if necessary!
+		// we can still swap the other label if necessary! So: don't delete the nodeToSwap from possibleswaps.
 		//if labels[nodeToSwap] != nil {
 		//	delete(possibleSwaps, nodeToSwap)
 		//}

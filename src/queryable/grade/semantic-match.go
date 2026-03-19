@@ -36,12 +36,12 @@ const SEMANTIC_POSITIVE_MATCH_THRESHOLD float64 = 0.5
 
 // Score: [0,1+]: 0 (totally not similar) - 1 (perfectly similar) (with a bit of leniency above 1 ("I'm 120% sure!!" type behaviour))
 func semanticMatch(c *context.Ctx, s command.MatchStringCmd) command.MatchStringRes {
-	//if strings.EqualFold(s.Ref, s.Act) { // if strings are case-insentively equal, return 1
-	//	return command.MatchStringRes{
-	//		Score: 1,
-	//		Err:   nil,
-	//	}
-	//}
+	if strings.EqualFold(s.Ref, s.Act) { // if strings are case-insentively equal, return 1
+		return command.MatchStringRes{
+			Score: 1,
+			Err:   nil,
+		}
+	}
 
 	// init variables etc.
 	if net == nil && netErr == nil {
@@ -104,11 +104,6 @@ func semanticMatch(c *context.Ctx, s command.MatchStringCmd) command.MatchString
 			// check all meanings with each other
 			for _, meaning := range allTokMeanings {
 				for _, otherMeaning := range allOtherTokMeanings {
-
-					if len(meaning.Word) > 0 && meaning.Word[0] == "computer" {
-						c.LogDebug("GOTEM")
-					}
-
 					totalScore += wn.Similarity(meaning, otherMeaning)
 				}
 			}

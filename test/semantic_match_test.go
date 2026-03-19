@@ -124,6 +124,12 @@ var matchCases []command.MatchStringCmd = []command.MatchStringCmd{
 	}, */{
 		Ref: "computer",
 		Act: "desktop",
+	}, { // code examples
+		Ref: "Student yawn() string",
+		Act: "Pupil tired() string",
+	}, {
+		Ref: "Rollercoaster ride() void getName() string",
+		Act: "Attraction ride() name() string",
 	},
 }
 
@@ -207,7 +213,12 @@ func semanticMatch(t *testing.T, cases []command.MatchStringCmd, successfunc fun
 			t.Fatalf("Error in semantic match: %s", r.Err.Error())
 			return
 		}
-
+		//
+		//
+		//
+		//
+		//
+		//
 		if !successfunc(r.Score) {
 			ctx.LogWarn("Semantic Match '%s' <-> '%s' was %.2f", c.Ref, c.Act, r.Score)
 			failedCases = append(failedCases, TestRes{c, r})

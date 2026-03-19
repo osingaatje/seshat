@@ -1,6 +1,10 @@
 package utml
 
 import (
+	"encoding/json"
+	"fmt"
+	"hash/fnv"
+
 	"github.com/osingaatje/seshat/helper"
 )
 
@@ -34,8 +38,8 @@ type ParseResultUTML struct {
 }
 
 type ParseResultUTMLEdge struct {
-	StartPosition UTMLEdgeEndPosition `json:"startPosition"` // indicates to which end of the node the edge connects
-	EndPosition   UTMLEdgeEndPosition `json:"endPosition"`   // indicates to which end of the node the edge connects
+	StartPosition UTMLEdgeXYOrOffsetPosition `json:"startPosition"` // indicates either an offset to the node (StartNodeId) or an absolute position
+	EndPosition   UTMLEdgeXYOrOffsetPosition `json:"endPosition"`   // indicates either an offset to the node (EndNodeId) or absolute pos.
 
 	StartLabel      *UTMLEdgeLabel     `json:"startLabel,omitempty"`  // text
 	MiddleLabel     *UTMLEdgeLabel     `json:"middleLabel,omitempty"` // text
@@ -45,8 +49,18 @@ type ParseResultUTMLEdge struct {
 	LineStyle       UTMLLineStyle      `json:"lineStyle"`             // line styling
 	LineType        int                `json:"lineType"`              // line styling
 	MiddlePositions []UTMLXY           `json:"middlePositions"`       // no clue what this is
-	StartNodeId     int                `json:"startNodeId"`           // node pointer
-	EndNodeId       int                `json:"endNodeId"`             // node pointer
+	StartNodeId     *int16             `json:"startNodeId,omitempty"` // node pointer
+	EndNodeId       *int16             `json:"endNodeId,omitempty"`   // node pointer
+}
+
+func (p ParseResultUTMLEdge) Hash() int { // at least 32 bits in size so shifting 16-bit vals should be fine.
+	jsonbytes, err := helper.MarshalJSON(p)
+	if err != nil {
+		panic("AAA why can I not convert to JSON? stupid")
+	}
+	h := fnv.New32a()
+	h.Write(jsonbytes)
+	return int(h.Sum32())
 }
 
 type UTMLLineStyle int
@@ -104,6 +118,38 @@ type UTMLXY struct {
 	Y int32 `json:"y"`
 }
 
+type UTMLEdgeXYOrOffsetPosition struct {
+	Value any // UTMLEdgeOffsetPosition | UTMLXY
+}
+
+func (pos UTMLEdgeXYOrOffsetPosition) MarshalJSON() ([]byte, error) {
+	switch val := pos.Value.(type) {
+	case UTMLEdgeOffsetPosition:
+		return json.Marshal(int(val))
+	case UTMLXY:
+		return json.Marshal(val)
+	}
+	return nil, fmt.Errorf("Cannot marshal UTMLEdgeXYOrOffset if it's not an offset or XY position!")
+}
+
+func (pos *UTMLEdgeXYOrOffsetPosition) UnmarshalJSON(data []byte) error {
+	// first try UTMLEdgeOffsetPosition
+	var offsetVal UTMLEdgeOffsetPosition
+	if err := json.Unmarshal(data, &offsetVal); err == nil {
+		pos.Value = offsetVal
+		return nil
+	}
+
+	// otherwise try X/Y val
+	var xyVal UTMLXY
+	if err := json.Unmarshal(data, &xyVal); err == nil {
+		pos.Value = xyVal
+		return nil
+	}
+
+	panic("Edge offset / position was neither UTMLEdgeOffsetPosition nor UTMLXY value - bug in the code")
+}
+
 /*
  *     7     0     1
  *     |----------|
@@ -113,15 +159,15 @@ type UTMLXY struct {
  *     |----------|
  *    5     4      3
  */
-type UTMLEdgeEndPosition int
+type UTMLEdgeOffsetPosition int
 
 const (
-	EdgePosTopCenter    UTMLEdgeEndPosition = 0
-	EdgePosTopRight     UTMLEdgeEndPosition = 1
-	EdgePosMiddleRight  UTMLEdgeEndPosition = 2
-	EdgePosBottomRight  UTMLEdgeEndPosition = 3
-	EdgePosBottomCenter UTMLEdgeEndPosition = 4
-	EdgePosBottomLeft   UTMLEdgeEndPosition = 5
-	EdgePosMiddleLeft   UTMLEdgeEndPosition = 6
-	EdgePosTopLeft      UTMLEdgeEndPosition = 7
+	EdgePosTopCenter    UTMLEdgeOffsetPosition = 0
+	EdgePosTopRight     UTMLEdgeOffsetPosition = 1
+	EdgePosMiddleRight  UTMLEdgeOffsetPosition = 2
+	EdgePosBottomRight  UTMLEdgeOffsetPosition = 3
+	EdgePosBottomCenter UTMLEdgeOffsetPosition = 4
+	EdgePosBottomLeft   UTMLEdgeOffsetPosition = 5
+	EdgePosMiddleLeft   UTMLEdgeOffsetPosition = 6
+	EdgePosTopLeft      UTMLEdgeOffsetPosition = 7
 )

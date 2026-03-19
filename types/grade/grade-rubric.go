@@ -18,8 +18,7 @@ type ILO struct {
 }
 
 type GraderConfig struct {
-	SyntacticCertainty float32 `json:"syntactic_certainty"`
-	SemanticCertainty  float32 `json:"semantic_certainty"`
+	ClassContentSimilarity float32 `json:"syntactic_certainty"` // how much do classes need to look alike in order to be matched?
 }
 
 type DiagramMatchScores struct {

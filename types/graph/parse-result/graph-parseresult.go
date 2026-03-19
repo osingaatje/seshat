@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/osingaatje/seshat/helper"
 	. "github.com/osingaatje/seshat/types/graph/internal-rep"
 	. "github.com/osingaatje/seshat/types/graph/shared"
 )
@@ -24,24 +23,6 @@ import (
  *  height = Y-offset (to the bottom) for a vertex
  *
  */
-
-// Because we cannot marshal structs in map keys, we convert them to strings for json marshalling.
-func (pr ParseResult) MarshalJSON() ([]byte, error) {
-	r := ParseResultJSON{
-		Vertices: pr.Vertices,
-		Edges:    map[string]*ParsedEdge{},
-	}
-
-	for _, edge := range pr.Edges {
-		r.Edges[fmt.Sprintf("%d-%d", edge.FromId, edge.ToId)] = edge
-	}
-	return helper.MarshalJSON(r)
-}
-
-type ParseResultJSON struct {
-	Vertices map[VertexIdentifier]*ParsedVertex `json:"vertices"`
-	Edges    map[string]*ParsedEdge             `json:"edges"`
-}
 
 type ParseResult struct {
 	Vertices map[VertexIdentifier]*ParsedVertex `json:"vertices"`
@@ -146,8 +127,11 @@ func (p *ParsedVertex) ToInternal() *InternalVertex {
 }
 
 type ParsedEdge struct {
-	FromId         VertexIdentifier  `json:"fromId"`
-	ToId           VertexIdentifier  `json:"toId"`
+	FromId     *VertexIdentifier `json:"fromId"`     // an edge may be 'floating', i.e. not connected
+	ToId       *VertexIdentifier `json:"toId"`       // an edge may be 'floating', i.e. not connected
+	FromEdgeId *EdgeIdentifier   `json:"fromEdgeId"` // an edge may be connected to another edge
+	ToEdgeId   *EdgeIdentifier   `json:"toEdgeId"`   // an edge may be connected to another edge
+
 	FromProperties EdgeEndProperties `json:"fromProperties"`  // things like multiplicity and arrow head style
 	Label          *ParsedLabel      `json:"label,omitempty"` // for ex.: "teaches >"
 	ToProperties   EdgeEndProperties `json:"toProperties"`
@@ -162,12 +146,15 @@ func (e *ParsedEdge) Copy() *ParsedEdge {
 	}
 
 	res := &ParsedEdge{
-		FromId:          e.FromId,
-		ToId:            e.ToId,
-		FromProperties:  e.FromProperties.Copy(),
-		Label:           e.Label.Copy(),
-		ToProperties:    e.ToProperties.Copy(),
-		StyleProperties: e.StyleProperties,
+		FromId:           e.FromId,
+		ToId:             e.ToId,
+		FromEdgeId:       e.FromEdgeId,
+		ToEdgeId:         e.ToEdgeId,
+		FromProperties:   e.FromProperties.Copy(),
+		Label:            e.Label.Copy(),
+		ToProperties:     e.ToProperties.Copy(),
+		StyleProperties:  e.StyleProperties,
+		VisualProperties: e.VisualProperties,
 	}
 	return res
 }
@@ -176,6 +163,8 @@ func (e *ParsedEdge) ToInternal() (*InternalEdge, error) {
 	res := &InternalEdge{
 		FromId:          e.FromId,
 		ToId:            e.ToId,
+		FromEdgeId:      e.FromEdgeId,
+		ToEdgeId:        e.ToEdgeId,
 		Label:           e.Label.Copy(),
 		StyleProperties: e.StyleProperties,
 		// visual props omitted

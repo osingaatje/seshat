@@ -5,13 +5,21 @@ import (
 )
 
 type VertexIdentifier uint32
-type EdgeIdentifier uint64
+type EdgeIdentifier uint32
 
-func NewEdgeIdentifier(vId1 VertexIdentifier, vId2 VertexIdentifier) EdgeIdentifier {
-	return EdgeIdentifier(uint64(vId1)<<32 | uint64(vId2))
+func NewVertexIdentifierInt16(nId *int16) *VertexIdentifier {
+	if nId == nil {
+		return nil
+	}
+	res := VertexIdentifier(uint32(*nId))
+	return &res
 }
-func (e EdgeIdentifier) New(vId1 VertexIdentifier, vId2 VertexIdentifier) EdgeIdentifier {
-	return NewEdgeIdentifier(vId1, vId2)
+func NewVertexIdentifier(nId *int) *VertexIdentifier {
+	if nId == nil {
+		return nil
+	}
+	id := VertexIdentifier(uint32(*nId))
+	return &id
 }
 
 // contains value along with optional properties

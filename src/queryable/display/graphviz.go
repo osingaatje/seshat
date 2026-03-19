@@ -35,7 +35,7 @@ func convertInternalToDot(c *context.Ctx, p *ParseResult) *DotGraph {
 		res.Nodes = append(res.Nodes, convertNode(v))
 	}
 	for _, e := range p.Edges {
-		res.Edges = append(res.Edges, convertEdge(p, e))
+		res.Edges = append(res.Edges, convertEdge(c, p, e))
 	}
 
 	return &res
@@ -79,10 +79,24 @@ func extractNodeOpts(v *ParsedVertex) DotNodeOptions {
 	return res
 }
 
-func convertEdge(r *ParseResult, e *ParsedEdge) DotEdge {
+func convertEdge(c *context.Ctx, r *ParseResult, e *ParsedEdge) DotEdge {
+
 	res := DotEdge{
-		FromText: extractTextFromNode(r.Vertices[e.FromId]),
-		ToText:   extractTextFromNode(r.Vertices[e.ToId]),
+		FromText: "",
+		ToText:   "",
+	}
+	if e.FromId == nil {
+		c.LogWarn("Invalid edge, not connected to a starting vertex")
+		res.FromText = "No Edge"
+	} else {
+		res.FromText = extractTextFromNode(r.Vertices[*e.FromId])
+	}
+
+	if e.ToId == nil {
+		c.LogWarn("Invalid edge, not connected to an end vertex")
+		res.FromText = "No Edge"
+	} else {
+		res.ToText = extractTextFromNode(r.Vertices[*e.ToId])
 	}
 
 	if e.FromProperties.Label != nil {

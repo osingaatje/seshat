@@ -9,7 +9,6 @@ import (
 	"github.com/osingaatje/seshat/src/driver"
 	"github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/graph/parse-result"
-	. "github.com/osingaatje/seshat/types/graph/shared"
 	"github.com/osingaatje/seshat/types/repair"
 )
 
@@ -31,8 +30,8 @@ func TestSwapLabelFromTo(t *testing.T) {
 	assert.Equal(t, len(intern.Edges), len(fixed.Edges))
 	assert.Equal(t, len(intern.Vertices), len(fixed.Vertices))
 
-	for _, iE := range intern.Edges {
-		fE /*fixed edge */, ok := fixed.Edges[NewEdgeIdentifier(iE.FromId, iE.ToId)]
+	for id, iE := range intern.Edges {
+		fE /*fixed edge */, ok := fixed.Edges[id]
 		if !ok {
 			t.FailNow()
 		}
@@ -56,8 +55,8 @@ func TestSwapMiddleTo(t *testing.T) {
 	assert.Equal(t, len(intern.Edges), len(fixed.Edges))
 	assert.Equal(t, len(intern.Vertices), len(fixed.Vertices))
 
-	for _, iE := range intern.Edges {
-		fE /*fixed edge */, ok := fixed.Edges[NewEdgeIdentifier(iE.FromId, iE.ToId)]
+	for id, iE := range intern.Edges {
+		fE /*fixed edge */, ok := fixed.Edges[id]
 		if !ok {
 			t.FailNow()
 		}
@@ -81,8 +80,8 @@ func TestReplaceMiddleRight(t *testing.T) {
 	assert.Equal(t, len(intern.Edges), len(fixed.Edges))
 	assert.Equal(t, len(intern.Vertices), len(fixed.Vertices))
 
-	for _, iE := range intern.Edges {
-		fE /*fixed edge */, ok := fixed.Edges[NewEdgeIdentifier(iE.FromId, iE.ToId)]
+	for id, iE := range intern.Edges {
+		fE /*fixed edge */, ok := fixed.Edges[id]
 		if !ok {
 			t.FailNow()
 		}
