@@ -1,0 +1,17 @@
+// Project-local debug tasks
+//
+// For more documentation on how to configure debug tasks,
+// see: https://zed.dev/docs/debugger
+[
+  {
+    "label": "Run Tests",
+    "adapter": "Delve",
+    "request": "launch",
+    "mode": "test",
+    "program": "${ZED_WORKTREE_ROOT}/test",
+    "buildFlags": [],
+    "cwd": "${ZED_WORKTREE_ROOT}/test",
+    // To filter down to just the test your cursor is in:
+    // "args": ["-test.run", "$ZED_SYMBOL"]
+  },
+]
