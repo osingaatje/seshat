@@ -140,7 +140,7 @@ func getReps(c *context.Ctx, inputFile string, graphType g.GraphType) (*utml.Par
 	}
 
 	// PARSE RESULT
-	parseres := c.Queries.ParseUTMLToInternal.Get("UTML -> Internal representation", utml)
+	parseres := c.Queries.ParseUTMLToParseRes.Get("UTML -> Internal representation", utml)
 	if parseres == nil {
 		return utml, nil, nil, nil, logErrAndExit(c, "Failed conversion to internal representation.")
 	}

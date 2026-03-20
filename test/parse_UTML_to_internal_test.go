@@ -30,7 +30,7 @@ func TestConvertBrokenFiles(t *testing.T) {
 		utml := c.Queries.ParseUTML.Get("Parse UTML", path)
 		assert.NotNil(t, utml) // should only break at the internal conversion
 
-		intern := c.Queries.ParseUTMLToInternal.Get("UTML -> internal repr.", utml)
+		intern := c.Queries.ParseUTMLToParseRes.Get("UTML -> internal repr.", utml)
 		assert.Nil(t, intern)
 
 		assert.True(t, strings.Contains(strings.ToLower(c.Logger.GetLogString()), "could not convert"))
@@ -39,7 +39,7 @@ func TestConvertBrokenFiles(t *testing.T) {
 
 func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string) {
 	utml := c.Queries.ParseUTML.Get("Parse UTML", inputFilePath)
-	intern := c.Queries.ParseUTMLToInternal.Get("UTML -> internal repr.", utml)
+	intern := c.Queries.ParseUTMLToParseRes.Get("UTML -> internal repr.", utml)
 
 	if utml == nil {
 		t.Fatalf("UTML repr. was nil!")

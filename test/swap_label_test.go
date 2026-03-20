@@ -108,7 +108,7 @@ func parseAndFix(t *testing.T, filePath string) (internal *ParseResult, fixed *P
 		return
 	}
 
-	internal = c.Queries.ParseUTMLToInternal.Get("UTML -> internal", utml)
+	internal = c.Queries.ParseUTMLToParseRes.Get("UTML -> internal", utml)
 	if internal == nil {
 		t.Fatal("Failed to parse internal repr.")
 		return
