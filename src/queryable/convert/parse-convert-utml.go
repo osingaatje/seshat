@@ -281,7 +281,7 @@ func finaliseEdgeProperties(c *context.Ctx, utml *ParseResultUTML, res *pr.Parse
 		// figure out if we need to add FromEdge / ToEdge
 		// this can happen when an edge is connected to only one vertex, or none at all (floating, which is illegal in our case!)
 		if iE.FromId == nil || iE.ToId == nil {
-			err := tryConnectEdgeEnds(res, iE)
+			err := tryConnectEdgeEnds(res, id, iE)
 			if err != nil {
 				return fmt.Errorf("Edge '%d' was not connected to either a starting vertex and/or end vertex - but failed to connect '%d' it to another edge! %s", id, id, err.Error())
 			}
@@ -292,7 +292,7 @@ func finaliseEdgeProperties(c *context.Ctx, utml *ParseResultUTML, res *pr.Parse
 }
 
 // some edges may not be connected to both nodes. We hope that the creator of the diagram means to connect it to an edge, which we try to implement here.
-func tryConnectEdgeEnds(graph *pr.ParseResult, iE *pr.ParsedEdge) error {
+func tryConnectEdgeEnds(graph *pr.ParseResult, id EdgeIdentifier, iE *pr.ParsedEdge) error {
 	if iE.FromId != nil && iE.ToId != nil {
 		panic("ONLY USE THIS FUNCTION WHEN A FromId OR ToId IS MISSING")
 	}
@@ -304,16 +304,16 @@ func tryConnectEdgeEnds(graph *pr.ParseResult, iE *pr.ParsedEdge) error {
 
 	// just so that we don't have to make another function.
 	for range 2 {
-		var edgeIdToFix *EdgeIdentifier
+		var edgeIdToFix **EdgeIdentifier
 		var location *Vector2D
 		var edgeName string
 
 		if iE.FromId == nil && iE.FromEdgeId == nil {
-			edgeIdToFix = iE.FromEdgeId
+			edgeIdToFix = &iE.FromEdgeId
 			location = &iE.VisualProperties.StartLocation
 			edgeName = "start"
 		} else if iE.ToId == nil && iE.ToEdgeId == nil {
-			edgeIdToFix = iE.ToEdgeId
+			edgeIdToFix = &iE.ToEdgeId
 			location = &iE.VisualProperties.EndLocation
 			edgeName = "end"
 		} else {
@@ -333,9 +333,9 @@ func tryConnectEdgeEnds(graph *pr.ParseResult, iE *pr.ParsedEdge) error {
 		}
 
 		if smallestDist < 99999999 {
-			*edgeIdToFix = smallestDistId
+			*edgeIdToFix = &smallestDistId
 		} else {
-			return fmt.Errorf("Could not find a close enough edge to connect %s point of edge '%d' to located at (%d,%d)", edgeName, *edgeIdToFix, location.X, location.Y)
+			return fmt.Errorf("Could not find a close enough edge to connect %s point of edge '%d' to located at (%.2f,%.2f)", edgeName, id, location.X, location.Y)
 		}
 	}
 	return nil
@@ -343,17 +343,17 @@ func tryConnectEdgeEnds(graph *pr.ParseResult, iE *pr.ParsedEdge) error {
 
 // see https://mathworld.wolfram.com/Point-LineDistance2-Dimensional.html
 func _calculateDistanceToLine(lineStart *Vector2D, lineEnd *Vector2D, loc *Vector2D) (dist float64, edgeLength float64) {
+	// calculate distance between the point 'loc(ation)' = (x_0, y_0) and the line lineStart<->lineEnd = (x_1,y_1), (x_2, y_2)
+	// we use this formula: d = | v^ . r | = ( |(x_2 - x_1)*(y_1 - y_0) - (x_1 - x_0)(y_2 - y_1)| ) \ ( \sqrt( (x_2-x_1)^2 + (y_2-y_1)^2 ) )
+
 	x_0, y_0 := loc.X, loc.Y
 	x_1, y_1 := lineStart.X, lineStart.Y
 	x_2, y_2 := lineEnd.X, lineEnd.Y
 
-	edgeLength := math.Sqrt(math.Pow(x_2-x_1, 2) + math.Pow(y_2-y_1, 2))
-
-	// for the point 'loc' = (x_0, y_0) and the line lineStart<->lineEnd = (x_1,y_1), (x_2, y_2)
-	// to calculate the distance, we use d = | v^ . r | = ( |(x_2 - x_1)*(y_1 - y_0) - (x_1 - x_0)(y_2 - y_1)| ) \ ( \sqrt( (x_2-x_1)^2 + (y_2-y_1)^2 ) )
+	lenOfEdge := math.Sqrt(math.Pow(x_2-x_1, 2) + math.Pow(y_2-y_1, 2)) // <>---------------<> the length inbetween lineStart and lineEnd
 
 	topPart := math.Abs((x_2-x_1)*(y_1-y_0) - (x_1-x_0)*(y_2-y_1))
-	return topPart / edgeLength, edgeLength
+	return topPart / lenOfEdge, lenOfEdge
 }
 
 // determine the offset of an edge / label based on edge position
