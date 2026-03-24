@@ -4,7 +4,6 @@ import (
 	"os"
 
 	"github.com/knights-analytics/hugot"
-	"github.com/knights-analytics/hugot/pipelines"
 	"github.com/osingaatje/seshat/src/context"
 )
 
@@ -20,7 +19,7 @@ func modelPath(c *context.Ctx) string {
 	return path
 }
 
-func CompareSentences(c *context.Ctx, s []string) (*pipelines.FeatureExtractionOutput, error) {
+func CompareSentences(c *context.Ctx, s []string) ([][]float32, error) {
 	session, err := hugot.NewGoSession()
 	if err != nil {
 		return nil, err
@@ -51,5 +50,9 @@ func CompareSentences(c *context.Ctx, s []string) (*pipelines.FeatureExtractionO
 		return nil, c.LogErrAndReturn("Could not init semantic similarity pipeline! Err: %s", err.Error())
 	}
 
-	return pipeline.RunPipeline(s)
+	r, err := pipeline.RunPipeline(s)
+	if err != nil {
+		return nil, c.LogErrAndReturn("Could not run pipeline: %s", err.Error())
+	}
+	return r.Embeddings, nil
 }
