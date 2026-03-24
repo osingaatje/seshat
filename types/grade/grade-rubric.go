@@ -11,6 +11,14 @@ type GradeRubric struct {
 	Scores DiagramMatchScores `json:"scores"`
 }
 
+func NewGradeRubric() GradeRubric {
+	return GradeRubric{
+		ILOs:         map[uint32]ILO{},
+		GraderConfig: NewGraderConfig(),
+		Scores:       NewDiagramMatchScores(),
+	}
+}
+
 type ILO struct {
 	Id    uint32 `json:"id"`
 	Name  string `json:"name"`
@@ -19,6 +27,12 @@ type ILO struct {
 
 type GraderConfig struct {
 	ClassContentSimilarity float32 `json:"syntactic_certainty"` // how much do classes need to look alike in order to be matched?
+}
+
+func NewGraderConfig() GraderConfig {
+	return GraderConfig{
+		ClassContentSimilarity: 0.75,
+	}
 }
 
 type DiagramMatchScores struct {
@@ -32,6 +46,12 @@ type DiagramMatchScores struct {
 	AssociationLabelScore        RubricScoring `json:"association_label"`        // association label |v1|--text---|v2|
 }
 
+func NewDiagramMatchScores() DiagramMatchScores {
+	return DiagramMatchScores{
+		VertexScore: NewRubricScore(),
+	}
+}
+
 type RubricScoring struct {
 	PointsForPresence    float32 `json:"present"`     // if we have an element, how many points to award for presence
 	PointsForAbsence     float32 `json:"absent"`      // if this element is missing, how many points to deduct
@@ -39,6 +59,16 @@ type RubricScoring struct {
 
 	ILOWeight []ILOWeight `json:"ilo_weights,omitempty"` // optional
 }
+
+func NewRubricScore() RubricScoring {
+	return RubricScoring{
+		PointsForPresence:    +1,
+		PointsForAbsence:     -1,
+		PointsForSuperfluous: -1,
+		ILOWeight:            []ILOWeight{},
+	}
+}
+
 type ILOWeight struct {
 	ILO    uint32  `json:"ilo_id"`
 	Weight float32 `json:"weight"` // 0.1, or 10 points, whatever the grader wants

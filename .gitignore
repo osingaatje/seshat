@@ -36,3 +36,7 @@ go.work.sum
 
 # Ignore the WordNet dict:
 */wordnet/dict
+
+# Ignore sentence transformer files:
+*/sentence-transformer/model
+

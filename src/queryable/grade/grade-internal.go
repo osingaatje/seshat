@@ -8,6 +8,7 @@ import (
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/grade"
+	internalrep "github.com/osingaatje/seshat/types/graph/internal-rep"
 	"github.com/osingaatje/seshat/types/graph/shared"
 )
 
@@ -35,6 +36,8 @@ func gradeDiag(c *context.Ctx, cmd GradeCmd) *GradeResult {
 		for subId, subV := range cmd.Submission.Vertices {
 			syntacticDistance[refId][subId] = syntacticDist(refV.Title, subV.Title)
 
+			SemanticSimilarityMiniLM(c, vertexToStr(refV), vertexToStr(subV))
+
 			res := c.Queries.SemanticMatch.Get("Semantic Match", MatchStringCmd{Ref: refV.Title, Act: subV.Title})
 
 			if res.Err != nil {
@@ -47,6 +50,20 @@ func gradeDiag(c *context.Ctx, cmd GradeCmd) *GradeResult {
 
 	c.LogErr("TODO GRADE FURTHER")
 	return nil
+}
+
+func vertexToStr(v *internalrep.InternalVertex) string {
+	r := new(strings.Builder)
+	r.WriteString(v.Title)
+	r.WriteRune(' ')
+	for n, v := range v.Values {
+		r.WriteString(n)
+		r.WriteRune(' ')
+		valProps := []string{v.Value, v.Properties.Type, string(v.Properties.Visibility)}
+		r.WriteString(strings.Join(valProps, ","))
+		r.WriteRune(' ')
+	}
+	return r.String()
 }
 
 // Computes Levenshtein distance between normalised strings

@@ -75,7 +75,7 @@ func (cmd *EmitCmd) Run(c *context.Ctx) error {
 	case g.DotFile:
 		return helper.ExportString(cmd.Output, dot.String())
 	}
-	return logErrAndExit(c, "Unknown graph type %s", cmd.Type)
+	return c.LogErrAndReturn("Unknown graph type %s", cmd.Type)
 }
 
 // end EMIT
@@ -93,12 +93,12 @@ func (cmd *GradeCmd) Run(c *context.Ctx) error {
 
 	allSubmissions, err := helper.AllUTMLFiles(cmd.SubmissionDir)
 	if err != nil {
-		return logErrAndExit(c, "%s", err.Error())
+		return c.LogErrAndReturn("%s", err.Error())
 	}
 
 	_, _, refRep, _, errRef := getReps(c, cmd.ReferenceSubmission, g.Internal)
 	if errRef != nil {
-		return logErrAndExit(c, "Could not parse Reference Submission: %s", errRef.Error())
+		return c.LogErrAndReturn("Could not parse Reference Submission: %s", errRef.Error())
 	}
 
 	results := map[string]*GradeResult{}
@@ -106,7 +106,7 @@ func (cmd *GradeCmd) Run(c *context.Ctx) error {
 	for _, f := range allSubmissions {
 		_, _, submissionRep, _, err := getReps(c, f, g.Internal)
 		if err != nil {
-			return logErrAndExit(c, "Could not parse student submission '%s': %s", f, err.Error())
+			return c.LogErrAndReturn("Could not parse student submission '%s': %s", f, err.Error())
 		}
 
 		res := c.Queries.GradeDiagram.Get("Grade diagram", command.GradeCmd{
@@ -123,16 +123,12 @@ func (cmd *GradeCmd) Run(c *context.Ctx) error {
 // end GRADE
 
 // ---------------- HELPERS ---------------- //
-func logErrAndExit(c *context.Ctx, errMsg string, args ...any) error {
-	c.LogErr(errMsg, args...)
-	return fmt.Errorf(errMsg, args...)
-}
 
 func getReps(c *context.Ctx, inputFile string, graphType g.GraphType) (*utml.ParseResultUTML, *parse.ParseResult, *intern.InternalGraph, *dot.DotGraph, error) {
 	// UTML
 	utml := c.Queries.ParseUTML.Get("Parse UTML", inputFile)
 	if utml == nil {
-		return nil, nil, nil, nil, logErrAndExit(c, "No UTML parse result for '%s'", inputFile)
+		return nil, nil, nil, nil, c.LogErrAndReturn("No UTML parse result for '%s'", inputFile)
 	}
 
 	if graphType == g.UTMLResult {
@@ -142,7 +138,7 @@ func getReps(c *context.Ctx, inputFile string, graphType g.GraphType) (*utml.Par
 	// PARSE RESULT
 	parseres := c.Queries.ParseUTMLToParseRes.Get("UTML -> Internal representation", utml)
 	if parseres == nil {
-		return utml, nil, nil, nil, logErrAndExit(c, "Failed conversion to internal representation.")
+		return utml, nil, nil, nil, c.LogErrAndReturn("Failed conversion to internal representation.")
 	}
 
 	// FIXED PARSE RESULT
@@ -150,7 +146,7 @@ func getReps(c *context.Ctx, inputFile string, graphType g.GraphType) (*utml.Par
 		parseres,
 	))
 	if fixed == nil {
-		return utml, parseres, nil, nil, logErrAndExit(c, "Failed fixing diagram '%s'!", inputFile)
+		return utml, parseres, nil, nil, c.LogErrAndReturn("Failed fixing diagram '%s'!", inputFile)
 	}
 	if graphType == g.ParseResult {
 		return utml, fixed, nil, nil, nil
@@ -159,7 +155,7 @@ func getReps(c *context.Ctx, inputFile string, graphType g.GraphType) (*utml.Par
 	if graphType == g.DotFile {
 		dot := c.Queries.DisplayDiagramAsDot.Get("Internal -> .dot", fixed)
 		if dot == nil {
-			return utml, fixed, nil, nil, logErrAndExit(c, "Could not convert '%s' from internal to .dot file", inputFile)
+			return utml, fixed, nil, nil, c.LogErrAndReturn("Could not convert '%s' from internal to .dot file", inputFile)
 		}
 
 		return utml, fixed, nil, dot, nil
@@ -168,10 +164,10 @@ func getReps(c *context.Ctx, inputFile string, graphType g.GraphType) (*utml.Par
 	if graphType == g.Internal {
 		intern := c.Queries.ConvertGraphToInternal.Get("Parseres -> Internal", fixed)
 		if intern == nil {
-			return utml, fixed, nil, nil, logErrAndExit(c, "Could not convert Parse Result to internal for file '%s'", inputFile)
+			return utml, fixed, nil, nil, c.LogErrAndReturn("Could not convert Parse Result to internal for file '%s'", inputFile)
 		}
 		return utml, fixed, intern, nil, nil
 	}
 
-	return nil, nil, nil, nil, logErrAndExit(c, "Unknown graphtype requested: %s", graphType)
+	return nil, nil, nil, nil, c.LogErrAndReturn("Unknown graphtype requested: %s", graphType)
 }

@@ -91,3 +91,7 @@ func (c *Ctx) LogWarn(msg string, args ...any) {
 func (c *Ctx) LogErr(msg string, args ...any) {
 	slog.Error(fmt.Sprintf(msg, args...))
 }
+func (c *Ctx) LogErrAndReturn(errMsg string, args ...any) error {
+	c.LogErr(errMsg, args...)
+	return fmt.Errorf(errMsg, args...)
+}
