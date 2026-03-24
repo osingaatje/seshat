@@ -189,11 +189,11 @@ var notMatchCases []command.MatchStringCmd = []command.MatchStringCmd{
 }
 
 func TestSemanticMATCH(t *testing.T) {
-	semanticMatch(t, matchCases, func(score float64) bool { return score > grade.SEMANTIC_POSITIVE_MATCH_THRESHOLD })
+	semanticMatch(t, matchCases, func(score float64) bool { return score > grade.WORDNET_SIMILARITY_THRESHOLD })
 }
 
 func TestNOTSemanticallyRelated(t *testing.T) {
-	semanticMatch(t, notMatchCases, func(score float64) bool { return score < grade.SEMANTIC_POSITIVE_MATCH_THRESHOLD })
+	semanticMatch(t, notMatchCases, func(score float64) bool { return score < grade.WORDNET_SIMILARITY_THRESHOLD })
 }
 
 type TestRes struct {

@@ -32,7 +32,7 @@ func getMeanings(token string) map[wn.WordNetWordType][]*wordnet.Synset {
 	return allMeanings
 }
 
-const SEMANTIC_POSITIVE_MATCH_THRESHOLD float64 = 0.55
+const WORDNET_SIMILARITY_THRESHOLD float64 = 0.55
 
 //func semanticMatch(c *context.Ctx, s command.MatchStringCmd) command.MatchStringRes {
 //	res, err := SemanticSimilarityMiniLM(c, s.Act, s.Ref)

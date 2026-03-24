@@ -5,8 +5,11 @@ import (
 	"os"
 
 	"github.com/knights-analytics/hugot"
+	"github.com/knights-analytics/hugot/pipelines"
 	"github.com/osingaatje/seshat/src/context"
 )
+
+// TODO: Perhaps use a combination of MiniLM-L6-v2 and msmarco-MiniLM (see Ramachandran, 2025)
 
 const DEFAULT_SENTENCE_TRANSFORMER_MODEL_PATH = "./al-MiniLM-L6-v2"
 
@@ -20,42 +23,52 @@ func modelPath(c *context.Ctx) string {
 	return path
 }
 
+var hugotMiniLML6v2Pipeline *pipelines.FeatureExtractionPipeline = nil
+var hugotMiniLML6v2PipelineErr error = nil
+
 func CompareSentences(c *context.Ctx, s []string) ([][]float32, error) {
-	session, err := hugot.NewGoSession()
-	if err != nil {
-		return nil, err
+	if hugotMiniLML6v2PipelineErr != nil {
+		return nil, c.LogErrAndReturn("Error while initialising Hugot Pipeline: %s", hugotMiniLML6v2PipelineErr.Error())
 	}
-
-	defer func(c *context.Ctx, session *hugot.Session) {
-		err := session.Destroy()
-		if err != nil {
-			c.LogErr("Could not destroy Hugot session! Err=%s", err.Error())
+	if hugotMiniLML6v2Pipeline == nil {
+		// init session and pipline etc.
+		session, hugotMiniLML6v2PipelineErr := hugot.NewGoSession()
+		if hugotMiniLML6v2PipelineErr != nil {
+			return nil, c.LogErrAndReturn("Could not init Hugot semantic analysis session: %s", hugotMiniLML6v2PipelineErr.Error())
 		}
-	}(c, session)
 
-	dopts := hugot.NewDownloadOptions()
-	dopts.OnnxFilePath = "onnx/model.onnx"
+		// don't destroy the session until the end of the program
+		//defer func(c *context.Ctx, session *hugot.Session) {
+		//	err := session.Destroy()
+		//	if err != nil {
+		//		c.LogErr("Could not destroy Hugot session! Err=%s", err.Error())
+		//	}
+		//}(c, session)
 
-	modelPath, err := hugot.DownloadModel("sentence-transformers/all-MiniLM-L6-v2", modelPath(c), dopts)
-	if err != nil {
-		return nil, c.LogErrAndReturn("Could not download MiniLM-L6-v2: %s", err.Error())
+		dopts := hugot.NewDownloadOptions()
+		dopts.OnnxFilePath = "onnx/model.onnx"
+
+		modelPath, hugotMiniLML6v2PipelineErr := hugot.DownloadModel("sentence-transformers/all-MiniLM-L6-v2", modelPath(c), dopts)
+		if hugotMiniLML6v2PipelineErr != nil {
+			return nil, c.LogErrAndReturn("Could not download MiniLM-L6-v2: %s", hugotMiniLML6v2PipelineErr.Error())
+		}
+
+		config := hugot.FeatureExtractionConfig{
+			ModelPath:    modelPath,
+			Name:         "SemanticSimilarity-MiniLM-L6-v2",
+			OnnxFilename: "model.onnx",
+		}
+		hugotMiniLML6v2Pipeline, hugotMiniLML6v2PipelineErr = hugot.NewPipeline(session, config)
+		if hugotMiniLML6v2PipelineErr != nil {
+			return nil, c.LogErrAndReturn("Could not init MiniLM-L6-v2 similarity pipeline! Err: %s", hugotMiniLML6v2PipelineErr.Error())
+		}
 	}
 
-	config := hugot.FeatureExtractionConfig{
-		ModelPath:    modelPath,
-		Name:         "SemanticSimilarity-MiniLM-L6-v2",
-		OnnxFilename: "model.onnx",
+	result, hugotMiniLML6v2Pipeline := hugotMiniLML6v2Pipeline.RunPipeline(s)
+	if hugotMiniLML6v2Pipeline != nil {
+		return nil, c.LogErrAndReturn("Could not run pipeline: %s", hugotMiniLML6v2Pipeline.Error())
 	}
-	pipeline, err := hugot.NewPipeline(session, config)
-	if err != nil {
-		return nil, c.LogErrAndReturn("Could not init semantic similarity pipeline! Err: %s", err.Error())
-	}
-
-	r, err := pipeline.RunPipeline(s)
-	if err != nil {
-		return nil, c.LogErrAndReturn("Could not run pipeline: %s", err.Error())
-	}
-	return r.Embeddings, nil
+	return result.Embeddings, nil
 }
 
 func CosineSimilarity(v1 []float32, v2 []float32) (cosine float64) {

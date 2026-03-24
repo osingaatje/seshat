@@ -1,10 +1,9 @@
 package grade
 
 import (
+	"math"
 	"strings"
-	"unicode"
 
-	"github.com/agnivade/levenshtein"
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/grade"
@@ -26,36 +25,77 @@ func gradeDiag(c *context.Ctx, cmd GradeCmd) *GradeResult {
 		return nil
 	}
 
+	potentialMatches := map[shared.VertexIdentifier]map[shared.VertexIdentifier]bool{}
+
 	syntacticDistance := map[shared.VertexIdentifier]map[shared.VertexIdentifier]int{}
-	certainties := map[shared.VertexIdentifier]map[shared.VertexIdentifier]float64{}
-	similarities := map[shared.VertexIdentifier]map[shared.VertexIdentifier]float64{}
+	semanticWordNet := map[shared.VertexIdentifier]map[shared.VertexIdentifier]float64{}
+	semanticMiniLM := map[shared.VertexIdentifier]map[shared.VertexIdentifier]float64{}
+
+	// matching algorithm inspired by Smith et al. 2013 (forall vertex pairs, if syntactic match or semantic match, add to potential matches)
 
 	for refId, refV := range cmd.ReferenceSolution.Vertices {
 		syntacticDistance[refId] = map[shared.VertexIdentifier]int{}
-		certainties[refId] = map[shared.VertexIdentifier]float64{}
-		similarities[refId] = map[shared.VertexIdentifier]float64{}
+		semanticWordNet[refId] = map[shared.VertexIdentifier]float64{}
+		semanticMiniLM[refId] = map[shared.VertexIdentifier]float64{}
 
 		for subId, subV := range cmd.Submission.Vertices {
-			syntacticDistance[refId][subId] = syntacticDist(refV.Title, subV.Title)
+			syntacticMatchCmd := MatchStringCmd{Ref: refV.Title, Act: subV.Title}
+			syntacticDistance[refId][subId] = c.Queries.SyntacticMatch.Get("Syntactic match", syntacticMatchCmd)
+			if syntacticDistance[refId][subId] <= MAX_ALLOWED_LEVENSHTEIN_DISTANCE {
+				if _, ok := potentialMatches[refId]; !ok {
+					potentialMatches[refId] = map[shared.VertexIdentifier]bool{}
+				}
+				potentialMatches[refId][subId] = true
+				// continue
+			}
 
-			resMl := c.Queries.SemanticMatchSentenceTransformer.Get("Semantic Match - MiniLM", MatchStringCmd{Ref: vertexToStr(refV), Act: vertexToStr(subV)})
-			if resMl.Err != nil {
-				c.LogErr("Failed calculating similarity: %s", resMl.Err.Error())
+			semanticMatchCmd := MatchStringCmd{Ref: vertexToStr(refV), Act: vertexToStr(subV)}
+
+			resMini := c.Queries.SemanticMatchSentenceTransformer.Get("Semantic Match - MiniLM", semanticMatchCmd)
+			if resMini.Err != nil {
+				c.LogErr("Failed calculating similarity: %s", resMini.Err.Error())
 				return nil
 			}
 
-			res := c.Queries.SemanticMatchWordnet.Get("Semantic Match - Wordnet", MatchStringCmd{Ref: refV.Title, Act: subV.Title})
-			if res.Err != nil {
-				c.LogErr("Error while calculating semantic simlarity: %s", res.Err.Error())
-				return nil
-			}
+			//resWordNet := c.Queries.SemanticMatchWordnet.Get("Semantic Match - Wordnet", semanticMatchCmd)
+			//if resWordNet.Err != nil {
+			//	c.LogErr("Error while calculating semantic simlarity: %s", resWordNet.Err.Error())
+			//	return nil
+			//}
 
-			certainties[refId][subId] = res.Score
-			similarities[refId][subId] = resMl.Score
+			semanticMiniLM[refId][subId] = resMini.Score
+			//semanticWordNet[refId][subId] = resWordNet.Score
+			if resMini.Score >= COSINE_SIMILARITY_THRESHOLD { //|| resWordNet.Score >= WORDNET_SIMILARITY_THRESHOLD {
+				potentialMatches[refId][subId] = true
+			}
 		}
 	}
 
-	c.LogErr("TODO GRADE FURTHER")
+	fixedIds := map[shared.VertexIdentifier]shared.VertexIdentifier{}
+
+	for refId, subIdMap := range potentialMatches {
+		var smallestSyntacticDistance int = math.MaxInt
+		var highestSemanticMiniScore float64 = math.MaxFloat64
+		var highestScoreId shared.VertexIdentifier = 0
+
+		for subId, _ := range subIdMap {
+			if syntacticDistance[refId][subId] < smallestSyntacticDistance ||
+				semanticMiniLM[refId][subId] > highestSemanticMiniScore {
+
+				smallestSyntacticDistance = syntacticDistance[refId][subId]
+				highestSemanticMiniScore = semanticMiniLM[refId][subId]
+				highestScoreId = subId
+			}
+		}
+
+		// fix this ID.
+		fixedIds[refId] = highestScoreId
+	}
+
+	//if len(fixedIds) == len(cmd.ReferenceSolution.Vertices) && len(cmd.ReferenceSolution.Vertices) == len(cmd.Submission.Vertices) {
+	//	// we fixed everything I guess?
+	//
+	//}
 	return nil
 }
 
@@ -71,26 +111,4 @@ func vertexToStr(v *internalrep.InternalVertex) string {
 		r.WriteRune(' ')
 	}
 	return r.String()
-}
-
-// Computes Levenshtein distance between normalised strings
-func syntacticDist(str1 string, str2 string) int {
-	s1 := removePunctuation(str1)
-	s2 := removePunctuation(str2)
-
-	return levenshtein.ComputeDistance(s1, s2)
-}
-
-// inspired by https://stackoverflow.com/questions/32081808/strip-all-whitespace-from-a-string
-func removePunctuation(str string) string {
-	b := new(strings.Builder)
-	b.Grow(len(str))
-
-	for _, r := range str {
-		if unicode.IsSpace(r) || unicode.IsControl(r) {
-			continue
-		}
-		b.WriteRune(r)
-	}
-	return b.String()
 }
