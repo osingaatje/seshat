@@ -208,17 +208,12 @@ func semanticMatch(t *testing.T, cases []command.MatchStringCmd, successfunc fun
 	failedCases := []TestRes{}
 
 	for _, c := range cases {
-		r := ctx.Queries.SemanticMatch.Get("Semantic Match", c)
+		r := ctx.Queries.SemanticMatchWordnet.Get("Semantic Match", c)
 		if r.Err != nil {
 			t.Fatalf("Error in semantic match: %s", r.Err.Error())
 			return
 		}
-		//
-		//
-		//
-		//
-		//
-		//
+
 		if !successfunc(r.Score) {
 			ctx.LogWarn("Semantic Match '%s' <-> '%s' was %.2f", c.Ref, c.Act, r.Score)
 			failedCases = append(failedCases, TestRes{c, r})

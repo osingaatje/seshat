@@ -38,20 +38,20 @@ func gradeDiag(c *context.Ctx, cmd GradeCmd) *GradeResult {
 		for subId, subV := range cmd.Submission.Vertices {
 			syntacticDistance[refId][subId] = syntacticDist(refV.Title, subV.Title)
 
-			sim, err := SemanticSimilarityMiniLM(c, vertexToStr(refV), vertexToStr(subV))
-			if err != nil {
-				c.LogErr("Failed calculating similarity: %s", err.Error())
+			resMl := c.Queries.SemanticMatchSentenceTransformer.Get("Semantic Match - MiniLM", MatchStringCmd{Ref: vertexToStr(refV), Act: vertexToStr(subV)})
+			if resMl.Err != nil {
+				c.LogErr("Failed calculating similarity: %s", resMl.Err.Error())
 				return nil
 			}
 
-			res := c.Queries.SemanticMatch.Get("Semantic Match", MatchStringCmd{Ref: refV.Title, Act: subV.Title})
+			res := c.Queries.SemanticMatchWordnet.Get("Semantic Match - Wordnet", MatchStringCmd{Ref: refV.Title, Act: subV.Title})
 			if res.Err != nil {
 				c.LogErr("Error while calculating semantic simlarity: %s", res.Err.Error())
 				return nil
 			}
 
 			certainties[refId][subId] = res.Score
-			similarities[refId][subId] = sim
+			similarities[refId][subId] = resMl.Score
 		}
 	}
 

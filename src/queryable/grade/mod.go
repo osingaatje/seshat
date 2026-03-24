@@ -8,6 +8,9 @@ func FindQueries(c *context.Ctx) {
 	c.Queries.GradeDiagram = context.DefineQuery(c,
 		"Grade Internal Diagram", gradeDiag)
 
-	c.Queries.SemanticMatch = context.DefineQuery(c,
-		"WordNet Similarity Score between words", semanticMatch)
+	c.Queries.SemanticMatchWordnet = context.DefineQuery(c,
+		"WordNet Similarity Score between words", semanticMatchWordnet)
+
+	c.Queries.SemanticMatchSentenceTransformer = context.DefineQuery(c,
+		"Sentence Transformer (MiniLM L6 v2) semantic equivalence", semanticSimilarityMiniLM)
 }

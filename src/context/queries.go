@@ -27,8 +27,9 @@ type Queries struct {
 
 	ConvertGraphToInternal *Query[*ParseResult, *InternalGraph]
 
-	GradeDiagram  *Query[GradeCmd, *GradeResult]
-	SemanticMatch *Query[MatchStringCmd, MatchStringRes]
+	GradeDiagram                     *Query[GradeCmd, *GradeResult]
+	SemanticMatchWordnet             *Query[MatchStringCmd, MatchStringRes]
+	SemanticMatchSentenceTransformer *Query[MatchStringCmd, MatchStringRes]
 
 	Test *Query[NameCmd, string]
 }

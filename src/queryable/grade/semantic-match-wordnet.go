@@ -32,10 +32,18 @@ func getMeanings(token string) map[wn.WordNetWordType][]*wordnet.Synset {
 	return allMeanings
 }
 
-const SEMANTIC_POSITIVE_MATCH_THRESHOLD float64 = 0.5
+const SEMANTIC_POSITIVE_MATCH_THRESHOLD float64 = 0.55
 
-// Score: [0,1+]: 0 (totally not similar) - 1 (perfectly similar) (with a bit of leniency above 1 ("I'm 120% sure!!" type behaviour))
-func semanticMatch(c *context.Ctx, s command.MatchStringCmd) command.MatchStringRes {
+//func semanticMatch(c *context.Ctx, s command.MatchStringCmd) command.MatchStringRes {
+//	res, err := SemanticSimilarityMiniLM(c, s.Act, s.Ref)
+//	return command.MatchStringRes{
+//		Score: res,
+//		Err:   err,
+//	}
+//}
+
+// Score: [0,1+]: 0 (totally not similar) - 1+ (more similar) (with a bit of leniency above 1 ("I'm 120% sure!!" type behaviour, sometimes to (literally) 11))
+func semanticMatchWordnet(c *context.Ctx, s command.MatchStringCmd) command.MatchStringRes {
 	if strings.EqualFold(s.Ref, s.Act) { // if strings are case-insentively equal, return 1
 		return command.MatchStringRes{
 			Score: 1,
