@@ -17,3 +17,21 @@ func Find[E any](arr []E, f func(*E) bool) (*E, bool) {
 	}
 	return nil, false
 }
+
+func Any[E any](arr []E, f func(*E) bool) bool {
+	for _, e := range arr {
+		if f(&e) {
+			return true
+		}
+	}
+	return false
+}
+
+func AnyBool(arr []bool) bool {
+	for _, e := range arr {
+		if e {
+			return true
+		}
+	}
+	return false
+}

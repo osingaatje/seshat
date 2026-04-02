@@ -9,7 +9,7 @@ import (
 	. "github.com/osingaatje/seshat/types/command"
 )
 
-const MAX_ALLOWED_LEVENSHTEIN_DISTANCE = 2 // no. of characters
+const SYNTACTIC_DISTANCE_THRESHOLD = 2 // no. of characters
 
 // Computes Levenshtein distance between normalised strings
 func syntacticDist(c *context.Ctx, cmd MatchStringCmd) int {
