@@ -1,0 +1,301 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startLabel": {
+        "offset": {
+          "x": 10,
+          "y": -30
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.99775037961632,
+          "y": -0.29996625569424484
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 4
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 695,
+          "y": 380
+        },
+        {
+          "x": 845,
+          "y": 380
+        }
+      ],
+      "startNodeId": 2,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 1005,
+          "y": 380
+        },
+        {
+          "x": 845,
+          "y": 380
+        }
+      ],
+      "startNodeId": 3,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": 19.99829889380537,
+          "y": -0.26084737687572224
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -25,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 845,
+          "y": 75
+        }
+      ],
+      "startNodeId": 5,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 10,
+          "y": -30
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -10,
+          "y": -6
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 420,
+          "y": 75
+        }
+      ],
+      "startNodeId": 4,
+      "endNodeId": 5
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 220,
+      "height": 80,
+      "position": {
+        "x": 310,
+        "y": 420
+      },
+      "text": "Visitor",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "wallet",
+          "type": "Integer",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 150,
+      "position": {
+        "x": 750,
+        "y": 190
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "interface",
+      "attributes": [
+        {
+          "name": "status",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "visitors",
+          "type": "Integer",
+          "visibility": "public"
+        },
+        {
+          "name": "queue",
+          "type": "Integer",
+          "visibility": "public"
+        },
+        {
+          "name": "open",
+          "type": "Boolean",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 600,
+        "y": 430
+      },
+      "text": "Horst Coaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 910,
+        "y": 430
+      },
+      "text": "Waaihammer",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 200,
+      "height": 72,
+      "position": {
+        "x": 320,
+        "y": 210
+      },
+      "text": "App",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "register()",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 540,
+        "y": 40
+      },
+      "text": "Twentastic",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    }
+  ]
+}

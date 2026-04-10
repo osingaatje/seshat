@@ -1,0 +1,324 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startLabel": {
+        "offset": {
+          "x": 15,
+          "y": -30
+        },
+        "edgeLocation": 0,
+        "value": "0..*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 55,
+          "y": -21
+        },
+        "edgeLocation": 1,
+        "value": "registers on >"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 15,
+          "y": -2
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 2,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 1225,
+          "y": 515
+        }
+      ],
+      "startNodeId": 4,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": 15,
+          "y": -4
+        },
+        "edgeLocation": 0,
+        "value": "0..*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 35,
+          "y": -17
+        },
+        "edgeLocation": 1,
+        "value": "go to >"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 15,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "0..*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": 25,
+          "y": -2
+        },
+        "edgeLocation": 0,
+        "value": "0..*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "edgeLocation": 1,
+        "value": ""
+      },
+      "endLabel": {
+        "offset": {
+          "x": 15,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 5,
+      "endNodeId": 3
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 880,
+        "y": 60
+      },
+      "text": "Twentastic App",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Registration id",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 104,
+      "position": {
+        "x": 880,
+        "y": 230
+      },
+      "text": "Person",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "id",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "coins",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 152,
+      "position": {
+        "x": 880,
+        "y": 440
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Attraction Id",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Length of queue",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "visibility": "private"
+        },
+        {
+          "name": "number of visitors",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "Entry fee",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 530,
+        "y": 480
+      },
+      "text": "Horst Horror Coaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 1130,
+        "y": 600
+      },
+      "text": "Waaierhammer 30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Flame show",
+          "type": "",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 530,
+        "y": 250
+      },
+      "text": "Pictures",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "picture id",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

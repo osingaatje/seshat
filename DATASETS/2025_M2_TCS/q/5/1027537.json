@@ -1,0 +1,336 @@
+{
+  "edges": [
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 2,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": 17.4759726018986,
+          "y": 9.725758665404438
+        },
+        "edgeLocation": 0,
+        "value": "1..*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 32.5,
+          "y": -38
+        },
+        "edgeLocation": 1,
+        "value": "Pay for ride"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 5,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "1..*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 4,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": 16.347982441490394,
+          "y": 11.521435244478946
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "edgeLocation": 1,
+        "value": "Stores"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 5,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "1..*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 6
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 4,
+      "startLabel": {
+        "offset": {
+          "x": 10,
+          "y": -46
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 7.5,
+          "y": 1
+        },
+        "edgeLocation": 1,
+        "value": "Stores"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 5,
+          "y": -2
+        },
+        "edgeLocation": 2,
+        "value": "1..*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 4
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 20,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": "1..*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 5,
+          "y": -36
+        },
+        "edgeLocation": 1,
+        "value": "Registers"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -10,
+          "y": -6
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 5,
+      "endNodeId": 0
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 840,
+        "y": 260
+      },
+      "text": "App",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 128,
+      "position": {
+        "x": 1250,
+        "y": 250
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "open",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "numberOfVIsitor",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "queue",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "operationStatus",
+          "type": "String",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 1500,
+        "y": 200
+      },
+      "text": "TheHorstHorrorCoaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 1500,
+        "y": 360
+      },
+      "text": "Waaierhammer30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 1040,
+        "y": 150
+      },
+      "text": "Coins",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 560,
+        "y": 260
+      },
+      "text": "Person",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 1040,
+        "y": 370
+      },
+      "text": "Name",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    }
+  ]
+}

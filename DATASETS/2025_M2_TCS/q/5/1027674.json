@@ -1,0 +1,242 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 2,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startLabel": {
+        "offset": {
+          "x": -20,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 20,
+          "y": 0
+        },
+        "edgeLocation": 2,
+        "value": "*"
+      },
+      "startStyle": 0,
+      "endStyle": 2,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 19.99900007499375,
+          "y": 0.1999900007499375
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.99900007499375,
+          "y": -0.1999900007499375
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 2,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 4
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 152,
+      "position": {
+        "x": 400,
+        "y": 90
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "isOpen",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "currentVisitors",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "queue",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "inOperation",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "entryFee",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 290,
+        "y": 310
+      },
+      "text": "Waaierhammer 30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "shoot flames()",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 520,
+        "y": 310
+      },
+      "text": "The Horst Horror Coaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "takePicture()",
+          "type": "Picture",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 700,
+        "y": 130
+      },
+      "text": "Twentastic",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 114,
+      "position": {
+        "x": 990,
+        "y": 110
+      },
+      "text": "MobileApp",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "coinWallet",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "registerName()",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "addCoins()",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    }
+  ]
+}

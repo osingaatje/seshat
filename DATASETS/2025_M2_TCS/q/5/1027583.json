@@ -1,0 +1,204 @@
+{
+  "edges": [
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 20,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": ""
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 20,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "edgeLocation": 1,
+        "value": "has a"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -20,
+          "y": 0
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 3,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 2
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 200,
+      "height": 234,
+      "position": {
+        "x": 400,
+        "y": 610
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "status",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "queue",
+          "type": "Double",
+          "visibility": "private"
+        },
+        {
+          "name": "visitors",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "fee",
+          "type": "double",
+          "visibility": "protected"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getStatus()",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "getQueue()",
+          "type": "Double",
+          "visibility": "public"
+        },
+        {
+          "name": "getVisitors()",
+          "type": "Int",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 120,
+      "position": {
+        "x": 720,
+        "y": 670
+      },
+      "text": "Visitor",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "register()",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "getName()",
+          "type": "String",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 160,
+      "position": {
+        "x": 1050,
+        "y": 650
+      },
+      "text": "Wallet",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "interface",
+      "attributes": [
+        {
+          "name": "coins",
+          "type": "double",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getCoins()",
+          "type": "double",
+          "visibility": "private"
+        },
+        {
+          "name": "addCoins()",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "subtractCoins()",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    }
+  ]
+}

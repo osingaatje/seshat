@@ -1,0 +1,696 @@
+{
+  "edges": [
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "edgeLocation": 1,
+        "value": "commisions >"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.936305570722496,
+          "y": -1.5949044456577997
+        },
+        "edgeLocation": 2,
+        "value": "1..*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": {
+        "x": 870,
+        "y": 135
+      },
+      "endPosition": {
+        "x": 1120,
+        "y": 135
+      },
+      "startLabel": {
+        "offset": {
+          "x": 10,
+          "y": -35
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 5,
+          "y": -35
+        },
+        "edgeLocation": 1,
+        "value": "is_carried_out_by>"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -20,
+          "y": -35
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 985,
+          "y": 135
+        }
+      ]
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 19.99900007499375,
+          "y": 0.1999900007499375
+        },
+        "edgeLocation": 0,
+        "value": "1..*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "edgeLocation": 1,
+        "value": "consist_of>"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.99900007499375,
+          "y": -0.1999900007499375
+        },
+        "edgeLocation": 2,
+        "value": "1..*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startLabel": {
+        "offset": {
+          "x": 15,
+          "y": -40
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 35,
+          "y": -4
+        },
+        "edgeLocation": 1,
+        "value": "tracks ^"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 5,
+          "y": 2
+        },
+        "edgeLocation": 2,
+        "value": "*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 7,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": {
+        "x": 1720,
+        "y": 230
+      },
+      "endPosition": 2,
+      "startLabel": {
+        "offset": {
+          "x": 10,
+          "y": -10
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -80,
+          "y": 7.5
+        },
+        "edgeLocation": 1,
+        "value": "has_lead>"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 30,
+          "y": -24
+        },
+        "edgeLocation": 2,
+        "value": "lead\\n\\n1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 1720,
+          "y": 285
+        },
+        {
+          "x": 1870,
+          "y": 285
+        },
+        {
+          "x": 1870,
+          "y": 200
+        },
+        {
+          "x": 1870,
+          "y": 165
+        }
+      ],
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 5,
+      "endPosition": 1,
+      "startLabel": {
+        "offset": {
+          "x": -14.001428218521147,
+          "y": 14.28145678289157
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -40,
+          "y": -39
+        },
+        "edgeLocation": 1,
+        "value": "<can_have"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 14.001428218521147,
+          "y": -14.28145678289157
+        },
+        "edgeLocation": 2,
+        "value": "*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 4
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": -15,
+          "y": 2
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -55,
+          "y": -9
+        },
+        "edgeLocation": 1,
+        "value": "requires\\/"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -15,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 2,
+      "endNodeId": 5
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": -15,
+          "y": 6
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -65,
+          "y": -12
+        },
+        "edgeLocation": 1,
+        "value": "belongs_to v"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -15,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 5,
+      "endNodeId": 6
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startLabel": {
+        "offset": {
+          "x": -19.647898127243998,
+          "y": -3.736321611082465
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -15,
+          "y": 10
+        },
+        "edgeLocation": 1,
+        "value": "<keeps_track_of"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 19.647898127243998,
+          "y": 3.736321611082465
+        },
+        "edgeLocation": 2,
+        "value": "*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 7,
+      "endNodeId": 5
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 4,
+      "startLabel": {
+        "offset": {
+          "x": -19.058708873976318,
+          "y": -6.0634656803692994
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "edgeLocation": 1,
+        "value": "<stores_data_of"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 19.058708873976318,
+          "y": 6.0634656803692994
+        },
+        "edgeLocation": 2,
+        "value": "*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 1660,
+          "y": 740
+        },
+        {
+          "x": 365,
+          "y": 740
+        }
+      ],
+      "startNodeId": 7,
+      "endNodeId": 1
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 210,
+      "height": 128,
+      "position": {
+        "x": 1550,
+        "y": 100
+      },
+      "text": "Member",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "skills",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "professionalLevel",
+          "type": "integer",
+          "visibility": "private"
+        },
+        {
+          "name": "employmentDate",
+          "type": "date",
+          "visibility": "private"
+        },
+        {
+          "name": "internalEmail",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 104,
+      "position": {
+        "x": 270,
+        "y": 110
+      },
+      "text": "Client",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "industry",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "primaryContact",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 128,
+      "position": {
+        "x": 680,
+        "y": 100
+      },
+      "text": "Project",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "startDate",
+          "type": "date",
+          "visibility": "private"
+        },
+        {
+          "name": "deadline",
+          "type": "date",
+          "visibility": "private"
+        },
+        {
+          "name": "budget",
+          "type": "double",
+          "visibility": "private"
+        },
+        {
+          "name": "deliverablesSet",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 230,
+      "height": 104,
+      "position": {
+        "x": 1120,
+        "y": 110
+      },
+      "text": "Team",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "specializationDomain",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "creationDate",
+          "type": "date",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 104,
+      "position": {
+        "x": 1260,
+        "y": 330
+      },
+      "text": "TrainingSession",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "title",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "scheduledDate",
+          "type": "date",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 270,
+      "height": 104,
+      "position": {
+        "x": 640,
+        "y": 370
+      },
+      "text": "Resource",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "identifier",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "cost",
+          "type": "type",
+          "visibility": "private"
+        },
+        {
+          "name": "currentAvailabilityStatus",
+          "type": "boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 680,
+        "y": 630
+      },
+      "text": "ResourceType",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "type",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 280,
+      "height": 176,
+      "position": {
+        "x": 1520,
+        "y": 450
+      },
+      "text": "System",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "role",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "joinDate",
+          "type": "date",
+          "visibility": "private"
+        },
+        {
+          "name": "leaveDate",
+          "type": "date",
+          "visibility": "private"
+        },
+        {
+          "name": "team",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "isLead",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "trainingSessionAttendance",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

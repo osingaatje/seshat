@@ -1,0 +1,286 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startLabel": {
+        "offset": {
+          "x": 13.232432741736925,
+          "y": -14.99675710730185
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -13.232432741736925,
+          "y": 14.99675710730185
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startLabel": {
+        "offset": {
+          "x": 0,
+          "y": -20
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 0,
+          "y": 20
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 2,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startLabel": {
+        "offset": {
+          "x": -19.96105156965777,
+          "y": -1.2475657231036106
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 19.96105156965777,
+          "y": 1.2475657231036106
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startLabel": {
+        "offset": {
+          "x": -19.994465965583046,
+          "y": -0.4704580227196011
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 19.994465965583046,
+          "y": 0.4704580227196011
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 4,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 1,
+      "endPosition": 5,
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 4
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 110,
+        "y": 150
+      },
+      "text": "Twentastic",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "app",
+          "type": "String",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 162,
+      "position": {
+        "x": 50,
+        "y": 290
+      },
+      "text": "attractions",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "Number of visitors ",
+          "type": "interger",
+          "visibility": "public"
+        }
+      ],
+      "methods": [
+        {
+          "name": "status()",
+          "type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "queue()",
+          "type": "time",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 50,
+        "y": 530
+      },
+      "text": "WaaierHammer 30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "shoots flames",
+          "type": "void",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 320,
+        "y": 340
+      },
+      "text": "The Horst Horror coaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "pictures",
+          "type": "boolean",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 470,
+        "y": 150
+      },
+      "text": "Guests",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Coins",
+          "type": "int",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

@@ -1,0 +1,297 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 1025,
+          "y": 500
+        },
+        {
+          "x": 860,
+          "y": 500
+        }
+      ],
+      "startNodeId": 2,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 700,
+          "y": 500
+        },
+        {
+          "x": 860,
+          "y": 500
+        }
+      ],
+      "startNodeId": 3,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "edgeLocation": 1,
+        "value": "rides on >"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 1
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 210,
+      "position": {
+        "x": 350,
+        "y": 140
+      },
+      "text": "Person",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "wallet",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "setName()",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "withdraw()",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "topup()",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "getBalance()",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "getName()",
+          "type": "void",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 260,
+      "height": 400,
+      "position": {
+        "x": 730,
+        "y": 50
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "abstract",
+      "attributes": [
+        {
+          "name": "cost",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "currentVisitors",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "inOperation",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "queueSize",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "open",
+          "type": "Boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "isOpen()",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "getCost()",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "getName()",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "getNumVisitors()",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "isInOperation()",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "getQueueSize()",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "increaseQueue()",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "decreaseQueue(int amount)",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 250,
+      "height": 114,
+      "position": {
+        "x": 900,
+        "y": 530
+      },
+      "text": "The Horst Horror Coaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "picturePaths",
+          "type": "String[]",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getPicturePath(int index)",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "takePicture()",
+          "type": "void",
+          "visibility": "package"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 260,
+      "height": 138,
+      "position": {
+        "x": 570,
+        "y": 530
+      },
+      "text": "Waaierhammer 30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "flamesActive",
+          "type": "Bolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "activateFlames()",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "deactivateFlames()",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "activateFlames(int duration)",
+          "type": "void",
+          "visibility": "public"
+        }
+      ]
+    }
+  ]
+}

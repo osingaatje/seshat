@@ -1,0 +1,141 @@
+{
+  "edges": [
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 19.99829889380537,
+          "y": -0.26084737687572224
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "edgeLocation": 1,
+        "value": "Goes in"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.99829889380537,
+          "y": 0.26084737687572224
+        },
+        "edgeLocation": 2,
+        "value": "*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 1
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 270,
+      "height": 162,
+      "position": {
+        "x": 460,
+        "y": 210
+      },
+      "text": "Visitor",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "wallet",
+          "type": "double",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getWallet()",
+          "type": "double",
+          "visibility": "public"
+        },
+        {
+          "name": "removeCoins(double amount)",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "addCoins(double amount",
+          "type": "void",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 160,
+      "height": 176,
+      "position": {
+        "x": 960,
+        "y": 200
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "price",
+          "type": "double",
+          "visibility": "private"
+        },
+        {
+          "name": "visitors",
+          "type": "double",
+          "visibility": "private"
+        },
+        {
+          "name": "queue",
+          "type": "integer",
+          "visibility": "private"
+        },
+        {
+          "name": "operation",
+          "type": "boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

@@ -1,0 +1,125 @@
+{
+  "edges": [
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 19.988898139583085,
+          "y": 0.6662966046527695
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "edgeLocation": 1,
+        "value": "is in a queue for>"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.988898139583085,
+          "y": -0.6662966046527695
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 1
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 410,
+        "y": 190
+      },
+      "text": "Person",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "coins",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 176,
+      "position": {
+        "x": 840,
+        "y": 140
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "numberOfVisitors",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "queue",
+          "type": "List<Person>",
+          "visibility": "private"
+        },
+        {
+          "name": "operating",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "entryFee",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

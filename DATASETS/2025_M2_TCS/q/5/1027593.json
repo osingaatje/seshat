@@ -1,0 +1,270 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 3,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 5,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 2,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 7,
+      "endPosition": 4,
+      "startLabel": {
+        "offset": {
+          "x": -16.263094444070877,
+          "y": -11.640951812598102
+        },
+        "edgeLocation": 0,
+        "value": "0.. *"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -42.5,
+          "y": 4
+        },
+        "edgeLocation": 1,
+        "value": "can ride"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -15,
+          "y": -2
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 1,
+      "endPosition": 4,
+      "startLabel": {
+        "offset": {
+          "x": 16.263094444070877,
+          "y": -11.640951812598102
+        },
+        "edgeLocation": 0,
+        "value": "0..*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 32.5,
+          "y": 4
+        },
+        "edgeLocation": 1,
+        "value": "can ride"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -5,
+          "y": -2
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "middleLabel": {
+        "offset": {
+          "x": 40,
+          "y": -25
+        },
+        "edgeLocation": 1,
+        "value": "Registers"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 4,
+      "endNodeId": 3
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 200,
+      "height": 174,
+      "position": {
+        "x": 600,
+        "y": 60
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "abstract",
+      "attributes": [
+        {
+          "name": "isOpen",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "numOfVisitors",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "queueLength",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "status",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "entryFee",
+          "type": "double",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 800,
+        "y": 300
+      },
+      "text": "Waaierhammer 30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 410,
+        "y": 300
+      },
+      "text": "The Horst Horror Coaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 200,
+      "height": 80,
+      "position": {
+        "x": 600,
+        "y": 440
+      },
+      "text": "registeredUsers",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Wallet",
+          "type": "Double",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 200,
+      "height": 80,
+      "position": {
+        "x": 600,
+        "y": 590
+      },
+      "text": "User",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "User",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Walllet",
+          "type": "Double",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

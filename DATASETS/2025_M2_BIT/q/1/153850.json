@@ -1,0 +1,779 @@
+{
+  "edges": [
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": -15,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -15,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 10,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 19.92693298083502,
+          "y": -1.7080228269287159
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.92693298083502,
+          "y": 1.7080228269287159
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 11
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 35,
+          "y": -30
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 7.5,
+          "y": 2
+        },
+        "edgeLocation": 1,
+        "value": "requires>"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -17.32505310168537,
+          "y": 9.992123649344121
+        },
+        "edgeLocation": 2,
+        "value": "1..*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 8
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 19.95570315713218,
+          "y": 1.3303802104754787
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": -38
+        },
+        "edgeLocation": 1,
+        "value": "type of>"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.95570315713218,
+          "y": -1.3303802104754787
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 8,
+      "endNodeId": 9
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": -25,
+          "y": -4
+        },
+        "edgeLocation": 0,
+        "value": "1..*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 65,
+          "y": -12
+        },
+        "edgeLocation": 1,
+        "value": "carried out by v"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -15,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 3
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": -15,
+          "y": -4
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 55,
+          "y": -17
+        },
+        "edgeLocation": 1,
+        "value": "consist of v"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -5,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 5
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 19.9950635566322,
+          "y": -0.44433474570293774
+        },
+        "edgeLocation": 0,
+        "value": "0..*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 5,
+          "y": -33
+        },
+        "edgeLocation": 1,
+        "value": "consist of<"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.9950635566322,
+          "y": 0.44433474570293774
+        },
+        "edgeLocation": 2,
+        "value": "0..*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 4,
+      "endNodeId": 3
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": -25,
+          "y": 2
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 55,
+          "y": -19
+        },
+        "edgeLocation": 1,
+        "value": "consist of v"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -15,
+          "y": -40
+        },
+        "edgeLocation": 2,
+        "value": "1..*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 4,
+      "endNodeId": 6
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 19.9950635566322,
+          "y": -0.44433474570293774
+        },
+        "edgeLocation": 0,
+        "value": "1..*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -5,
+          "y": -41
+        },
+        "edgeLocation": 1,
+        "value": "attend>"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.9950635566322,
+          "y": 0.44433474570293774
+        },
+        "edgeLocation": 2,
+        "value": "0..*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 7,
+      "endNodeId": 6
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 19.980276129324174,
+          "y": 0.8880122724144077
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -5,
+          "y": -28
+        },
+        "edgeLocation": 1,
+        "value": "type of>"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.980276129324174,
+          "y": -0.8880122724144077
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 11,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 20,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -5,
+          "y": -42
+        },
+        "edgeLocation": 1,
+        "value": "can commision>"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -20,
+          "y": 0
+        },
+        "edgeLocation": 2,
+        "value": "1..*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 0
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 104,
+      "position": {
+        "x": 640,
+        "y": 260
+      },
+      "text": "Project",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Start date",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "Deadline",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "Budget",
+          "type": "Int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 104,
+      "position": {
+        "x": 300,
+        "y": 260
+      },
+      "text": "Client",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Industry",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Phone",
+          "type": "Int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 1180,
+        "y": 270
+      },
+      "text": "Type of Deliverables",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Date",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "Status",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 104,
+      "position": {
+        "x": 640,
+        "y": 420
+      },
+      "text": "Team",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Domain",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "Date",
+          "type": "Int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 128,
+      "position": {
+        "x": 360,
+        "y": 410
+      },
+      "text": "Members",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Skiils",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Professional level",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Date",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Email",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 640,
+        "y": 570
+      },
+      "text": "Team Leader",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Phone",
+          "type": "Int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 360,
+        "y": 660
+      },
+      "text": "Developer",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Phone",
+          "type": "Int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 104,
+      "position": {
+        "x": 80,
+        "y": 650
+      },
+      "text": "Training Sessions",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Title",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Description",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Date",
+          "type": "Int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 950,
+        "y": 100
+      },
+      "text": "Resource",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Id ",
+          "type": "Int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 1200,
+        "y": 100
+      },
+      "text": "Type of Resource",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Cost",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "Status",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 640,
+        "y": 100
+      },
+      "text": "Allocation Person",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Phone",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 900,
+        "y": 270
+      },
+      "text": "Deliverables",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Id",
+          "type": "Int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 690,
+          "y": 520
+        },
+        {
+          "x": 900,
+          "y": 520
+        }
+      ],
+      "startNodeId": 1,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 1110,
+          "y": 520
+        },
+        {
+          "x": 900,
+          "y": 520
+        }
+      ],
+      "startNodeId": 2,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": -35
+        },
+        "edgeLocation": 1,
+        "value": "< pay entry fee"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 0
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 220,
+      "height": 130,
+      "position": {
+        "x": 790,
+        "y": 340
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "is_open",
+          "type": "boolean",
+          "visibility": "package"
+        },
+        {
+          "name": "current_visitors",
+          "type": "int",
+          "visibility": "package"
+        },
+        {
+          "name": "queue",
+          "type": "?",
+          "visibility": "package"
+        },
+        {
+          "name": "is_in_operation",
+          "type": "boolean",
+          "visibility": "package"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 220,
+      "height": 72,
+      "position": {
+        "x": 580,
+        "y": 580
+      },
+      "text": "The Horst Horror Coaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "takePicture()",
+          "type": "void",
+          "visibility": "package"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 220,
+      "height": 72,
+      "position": {
+        "x": 1000,
+        "y": 580
+      },
+      "text": "Waaierhammer 30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "shootFlameIntoSky()",
+          "type": "void",
+          "visibility": "package"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 90,
+      "position": {
+        "x": 1250,
+        "y": 360
+      },
+      "text": "Person",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "package"
+        },
+        {
+          "name": "coins",
+          "type": "int",
+          "visibility": "package"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

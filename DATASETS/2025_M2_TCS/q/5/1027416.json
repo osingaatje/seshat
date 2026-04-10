@@ -1,0 +1,269 @@
+{
+  "edges": [
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": -5,
+          "y": -2
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 15,
+          "y": -40
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 3,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 1295,
+          "y": 445
+        },
+        {
+          "x": 1055,
+          "y": 445
+        }
+      ],
+      "startNodeId": 1,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 5,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 885,
+          "y": 740
+        },
+        {
+          "x": 950,
+          "y": 740
+        }
+      ],
+      "startNodeId": 3,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 3,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 1180,
+          "y": 735
+        },
+        {
+          "x": 1160,
+          "y": 735
+        }
+      ],
+      "startNodeId": 4,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startLabel": {
+        "offset": {
+          "x": -19.99809777439174,
+          "y": 0.27583583137092055
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 19.99809777439174,
+          "y": -0.27583583137092055
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 2,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 0
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 720,
+        "y": 300
+      },
+      "text": "Customer",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "email",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 1200,
+        "y": 300
+      },
+      "text": "Wallet",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "coinsBalance",
+          "type": "Integer",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 210,
+      "height": 152,
+      "position": {
+        "x": 950,
+        "y": 500
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "price",
+          "type": "Real",
+          "visibility": "private"
+        },
+        {
+          "name": "openOrClosed",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "currentVisitors",
+          "type": "Integer",
+          "visibility": "private"
+        },
+        {
+          "name": "queue",
+          "type": "Integer",
+          "visibility": "private"
+        },
+        {
+          "name": "operationStatus",
+          "type": "Boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 790,
+        "y": 800
+      },
+      "text": "HorstHorrorCoaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "passengerPics",
+          "type": "Photo",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 240,
+      "height": 72,
+      "position": {
+        "x": 1060,
+        "y": 800
+      },
+      "text": "Waaierhammer30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "shootFlameIntoSky",
+          "type": "Boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

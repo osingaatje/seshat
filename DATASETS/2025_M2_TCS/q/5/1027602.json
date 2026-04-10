@@ -1,0 +1,229 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "middleLabel": {
+        "offset": {
+          "x": -10,
+          "y": -30
+        },
+        "edgeLocation": 1,
+        "value": "is a type of >"
+      },
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 445,
+          "y": 220
+        },
+        {
+          "x": 625,
+          "y": 220
+        }
+      ],
+      "startNodeId": 0,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "middleLabel": {
+        "offset": {
+          "x": 65,
+          "y": -30
+        },
+        "edgeLocation": 1,
+        "value": "< is a type of "
+      },
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 785,
+          "y": 220
+        },
+        {
+          "x": 625,
+          "y": 220
+        },
+        {
+          "x": 625,
+          "y": 220
+        }
+      ],
+      "startNodeId": 1,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "edgeLocation": 1,
+        "value": "can subtract balance>"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 2,
+      "endNodeId": 3
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 350,
+        "y": 260
+      },
+      "text": "HorstHorrorCoaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 690,
+        "y": 260
+      },
+      "text": "Waaierhammer30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 250,
+      "height": 176,
+      "position": {
+        "x": 500,
+        "y": 0
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "opened",
+          "type": "Boolean",
+          "visibility": "protected"
+        },
+        {
+          "name": "currentVisitors",
+          "type": "int",
+          "visibility": "protected"
+        },
+        {
+          "name": "inOperationg",
+          "type": "Boolean",
+          "visibility": "protected"
+        },
+        {
+          "name": "queueLength",
+          "type": "int",
+          "visibility": "protected"
+        },
+        {
+          "name": "entryFee",
+          "type": "int",
+          "visibility": "protected"
+        },
+        {
+          "name": "attractionDescription",
+          "type": "String",
+          "visibility": "protected"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 940,
+        "y": 50
+      },
+      "text": "TwentasticApp",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "userName",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "userBalance",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "CommentNode",
+      "width": 150,
+      "height": 120,
+      "position": {
+        "x": 1140,
+        "y": 20
+      },
+      "text": "I chose 'int' as \\nbalance since the \\n\"Coin\" currency used \\nare full numbers",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      }
+    }
+  ]
+}

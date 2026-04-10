@@ -1,0 +1,203 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 5,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 2,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 3,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 19.97873219697371,
+          "y": 0.9220953321680174
+        },
+        "edgeLocation": 0,
+        "value": "0..*"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.97873219697371,
+          "y": -0.9220953321680174
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 1
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 570,
+        "y": 160
+      },
+      "text": "Person",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "amountOfCoins",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 176,
+      "position": {
+        "x": 890,
+        "y": 110
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "isOpen",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "numberOfVisitors",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "isInOperation",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "queue",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "entryFee",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 200,
+      "height": 80,
+      "position": {
+        "x": 770,
+        "y": 380
+      },
+      "text": "Waaierhammer 30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "isFlameWorking",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "flameHeight",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 220,
+      "height": 80,
+      "position": {
+        "x": 1010,
+        "y": 380
+      },
+      "text": "The Horst Horror Coaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "isCameraWorking",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "amountOfPicturesTaken",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

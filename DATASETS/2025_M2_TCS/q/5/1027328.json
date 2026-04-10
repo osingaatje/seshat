@@ -1,0 +1,206 @@
+{
+  "edges": [
+    {
+      "startPosition": 2,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": 20,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": "0..*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -25,
+          "y": 0
+        },
+        "edgeLocation": 1,
+        "value": "visits"
+      },
+      "startStyle": 0,
+      "endStyle": 3,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 855,
+          "y": 130
+        }
+      ],
+      "startNodeId": 0,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 1085,
+          "y": 460
+        },
+        {
+          "x": 855,
+          "y": 460
+        }
+      ],
+      "startNodeId": 3,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 680,
+          "y": 460
+        },
+        {
+          "x": 855,
+          "y": 460
+        }
+      ],
+      "startNodeId": 2,
+      "endNodeId": 1
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 480,
+        "y": 90
+      },
+      "text": "UserInformation",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "userName",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "walletCoins",
+          "type": "Int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 128,
+      "position": {
+        "x": 760,
+        "y": 250
+      },
+      "text": "Attractions",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "isOpen",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "currentVisitors",
+          "type": "Int",
+          "visibility": "protected"
+        },
+        {
+          "name": "queueVisitors",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "inOperation",
+          "type": "Boolean",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 320,
+      "height": 72,
+      "position": {
+        "x": 520,
+        "y": 500
+      },
+      "text": "TheHorstHorrorCoaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "takePictures(inOperation, isOpen)",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 410,
+      "height": 72,
+      "position": {
+        "x": 880,
+        "y": 500
+      },
+      "text": "Waaierhammer30K",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "shootFlames(inOperation, isOpen, currentVisitors)",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    }
+  ]
+}

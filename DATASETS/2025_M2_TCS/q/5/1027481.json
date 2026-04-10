@@ -1,0 +1,247 @@
+{
+  "edges": [
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 2,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 3
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 1,
+      "lineType": 1,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 3
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 280,
+      "height": 162,
+      "position": {
+        "x": 330,
+        "y": 340
+      },
+      "text": "User",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "coins",
+          "type": "double",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "addCoins(double amount)",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "getCoins()",
+          "type": "double",
+          "visibility": "public"
+        },
+        {
+          "name": "enter(Attraction attraction)",
+          "type": "boolean",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 220,
+      "height": 306,
+      "position": {
+        "x": 740,
+        "y": 340
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "operationStatus",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "openOrClosed",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "queue",
+          "type": "ArrayList<String>",
+          "visibility": "public"
+        },
+        {
+          "name": "visitorAmount",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "price",
+          "type": "double",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getStatus",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "getOpenOrClosed",
+          "type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "setStatus(String)",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "setOpen()",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "setClosed()",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "getPrice()",
+          "type": "double",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 90,
+      "position": {
+        "x": 1080,
+        "y": 340
+      },
+      "text": "SpecialAttraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "feature",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getFeature()",
+          "type": "String",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 260,
+      "height": 114,
+      "position": {
+        "x": 640,
+        "y": 90
+      },
+      "text": "AppUi",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "appVersion",
+          "type": "double",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "registerName(String name)",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "getAttractions()",
+          "type": "void",
+          "visibility": "public"
+        }
+      ]
+    }
+  ]
+}

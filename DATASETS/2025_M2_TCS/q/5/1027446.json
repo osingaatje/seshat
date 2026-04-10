@@ -1,0 +1,293 @@
+{
+  "edges": [
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 19.99763355616518,
+          "y": -0.3076559008640797
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.99763355616518,
+          "y": 0.3076559008640797
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": 15,
+          "y": -2
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 15,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 1,
+      "endPosition": 7,
+      "startLabel": {
+        "offset": {
+          "x": 20,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": 10
+        },
+        "edgeLocation": 1,
+        "value": "attractions"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -20,
+          "y": 0
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 2,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 5,
+      "endPosition": 3,
+      "startLabel": {
+        "offset": {
+          "x": -18.382900600361157,
+          "y": 7.878385971583352
+        },
+        "edgeLocation": 0,
+        "value": "0"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "edgeLocation": 1,
+        "value": "park"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 18.382900600361157,
+          "y": -7.878385971583352
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 3,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 3
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 230,
+      "height": 80,
+      "position": {
+        "x": 670,
+        "y": 70
+      },
+      "text": "ThemePark",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "users",
+          "type": "User",
+          "visibility": "private"
+        },
+        {
+          "name": "attractions",
+          "type": "List<Attraction>",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 104,
+      "position": {
+        "x": 690,
+        "y": 280
+      },
+      "text": "User",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "userID",
+          "type": "Integer",
+          "visibility": "private"
+        },
+        {
+          "name": "userName",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "wallet",
+          "type": "Wallet",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 1010,
+        "y": 290
+      },
+      "text": "Wallet",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "coins",
+          "type": "Integer",
+          "visibility": "private"
+        },
+        {
+          "name": "ownerID",
+          "type": "Integer",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 224,
+      "position": {
+        "x": 340,
+        "y": 10
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "entryFee",
+          "type": "Integer",
+          "visibility": "private"
+        },
+        {
+          "name": "open",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "visitors",
+          "type": "Integer",
+          "visibility": "private"
+        },
+        {
+          "name": "queue",
+          "type": "Integer",
+          "visibility": "private"
+        },
+        {
+          "name": "inOperation",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "park",
+          "type": "ThemePark",
+          "visibility": "private"
+        },
+        {
+          "name": "specialty",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

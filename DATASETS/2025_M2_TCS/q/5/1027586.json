@@ -1,0 +1,253 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "middleLabel": {
+        "offset": {
+          "x": 45,
+          "y": 10
+        },
+        "edgeLocation": 1,
+        "value": "Entry fee"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 505,
+          "y": 530
+        }
+      ],
+      "startNodeId": 2,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 1,
+      "lineType": 1,
+      "middlePositions": [],
+      "startNodeId": 4,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 5,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 3,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 2
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 230,
+      "height": 128,
+      "position": {
+        "x": 390,
+        "y": 380
+      },
+      "text": "Visitor",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "customer name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "enoughCoins",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "visitorId",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "walletIdRight",
+          "type": "Boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 104,
+      "position": {
+        "x": 190,
+        "y": 780
+      },
+      "text": "Waaierhammer 30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "pictures",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "isOpen",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "isClosed",
+          "type": "Boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 128,
+      "position": {
+        "x": 410,
+        "y": 610
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "attractionName",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "numberOfVisitors",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "operation",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "queue",
+          "type": "In",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 104,
+      "position": {
+        "x": 630,
+        "y": 790
+      },
+      "text": "The Horror Coaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "takePictures",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "isClosed",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "isClosed",
+          "type": "Boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 90,
+      "position": {
+        "x": 740,
+        "y": 400
+      },
+      "text": "Wallet",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "walletId",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "visitorIdRight",
+          "type": "Boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

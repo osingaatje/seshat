@@ -1,0 +1,674 @@
+{
+  "edges": [
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 18.330787567392665,
+          "y": -7.998889120316799
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": -31
+        },
+        "edgeLocation": 1,
+        "value": "In team >"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -18.330787567392665,
+          "y": 7.998889120316799
+        },
+        "edgeLocation": 2,
+        "value": "*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 4,
+      "endNodeId": 3
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 19.975046777556894,
+          "y": -0.9987523388778446
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -5,
+          "y": -32.5
+        },
+        "edgeLocation": 1,
+        "value": "Commissions project>"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.975046777556894,
+          "y": 0.9987523388778446
+        },
+        "edgeLocation": 2,
+        "value": "1..*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 19.99900007499375,
+          "y": -0.1999900007499375
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -5,
+          "y": -34.5
+        },
+        "edgeLocation": 1,
+        "value": "Track deliverables >"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.99900007499375,
+          "y": 0.1999900007499375
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 0,
+      "endPosition": {
+        "x": 850,
+        "y": 660
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 1,
+      "lineType": 1,
+      "middlePositions": [],
+      "startNodeId": 5
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": -10,
+          "y": -8
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 42.5,
+          "y": -4
+        },
+        "edgeLocation": 1,
+        "value": "Handels^"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -15,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 3
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": -15,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -55,
+          "y": -40
+        },
+        "edgeLocation": 1,
+        "value": "If \\ndeveloper v"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -15,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 4,
+      "endNodeId": 6
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": 10,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 20,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 7,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startLabel": {
+        "offset": {
+          "x": -19.748812638334105,
+          "y": -3.159810022133457
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -5,
+          "y": -44
+        },
+        "edgeLocation": 1,
+        "value": "belongs to >"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 19.748812638334105,
+          "y": 3.159810022133457
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 8,
+      "endNodeId": 7
+    },
+    {
+      "startPosition": 2,
+      "endPosition": {
+        "x": 1090,
+        "y": 295
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 1,
+      "lineType": 1,
+      "middlePositions": [],
+      "startNodeId": 9
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 200,
+      "height": 128,
+      "position": {
+        "x": 550,
+        "y": 360
+      },
+      "text": "Client",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "industry",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "phone no. ",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "email",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 200,
+      "height": 128,
+      "position": {
+        "x": 980,
+        "y": 370
+      },
+      "text": "Project",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "start",
+          "type": "Date",
+          "visibility": "private"
+        },
+        {
+          "name": "deadline",
+          "type": "Date",
+          "visibility": "private"
+        },
+        {
+          "name": "budget",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "deliverables id ",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 210,
+      "height": 128,
+      "position": {
+        "x": 1350,
+        "y": 370
+      },
+      "text": "Deliverables",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "id",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "type",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "due date",
+          "type": "Date",
+          "visibility": "private"
+        },
+        {
+          "name": "completion status",
+          "type": "Boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 230,
+      "height": 104,
+      "position": {
+        "x": 960,
+        "y": 610
+      },
+      "text": "Team",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "specialization domain",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "creation date",
+          "type": "date",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 200,
+      "position": {
+        "x": 550,
+        "y": 560
+      },
+      "text": "Employees",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "skills",
+          "type": "List",
+          "visibility": "private"
+        },
+        {
+          "name": "professional level",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "employment date",
+          "type": "Date",
+          "visibility": "private"
+        },
+        {
+          "name": "internal email",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "date joined team",
+          "type": "Date",
+          "visibility": "private"
+        },
+        {
+          "name": "role in team",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "date left team",
+          "type": "Date",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 760,
+        "y": 770
+      },
+      "text": "Team Leader",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Employee name",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 104,
+      "position": {
+        "x": 550,
+        "y": 860
+      },
+      "text": "Training",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "title",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "description",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "scheduled dates",
+          "type": "Date",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 260,
+      "height": 104,
+      "position": {
+        "x": 980,
+        "y": 110
+      },
+      "text": "Resources",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "id",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "cost",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "current availability status",
+          "type": "boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 230,
+      "height": 152,
+      "position": {
+        "x": 1390,
+        "y": 110
+      },
+      "text": "Resource Type",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "software license ",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "work station",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "virtual machine",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "testing device",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "cloud service credit",
+          "type": "Boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 104,
+      "position": {
+        "x": 710,
+        "y": 200
+      },
+      "text": "Resource Allocation",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "employee name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "project allocation",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "when",
+          "type": "date",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

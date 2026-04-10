@@ -1,0 +1,243 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 275,
+          "y": 550
+        },
+        {
+          "x": 405,
+          "y": 550
+        }
+      ],
+      "startNodeId": 1,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 545,
+          "y": 550
+        },
+        {
+          "x": 405,
+          "y": 550
+        }
+      ],
+      "startNodeId": 2,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 4
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 4,
+      "endNodeId": 0
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 152,
+      "position": {
+        "x": 310,
+        "y": 350
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "isOpen",
+          "type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "isClosed",
+          "type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "currentVisitors",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "queue",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "status",
+          "type": "boolean",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 180,
+        "y": 590
+      },
+      "text": "HorstHorrorCoaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "isOpen",
+          "type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "isClosed",
+          "type": "boolean",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 450,
+        "y": 590
+      },
+      "text": "Waaierhammer",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "isOpen",
+          "type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "isClosed",
+          "type": "boolean",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 310,
+        "y": 120
+      },
+      "text": "UserAccount",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "userName",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "coinsAmount",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 310,
+        "y": 240
+      },
+      "text": "TwentasticApp",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "registerUser",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "acceptEntryFee",
+          "type": "int",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

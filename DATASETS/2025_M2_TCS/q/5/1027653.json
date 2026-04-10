@@ -1,0 +1,397 @@
+{
+  "edges": [
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": 25,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": "1 .. *"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 15,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 1,
+      "startLabel": {
+        "offset": {
+          "x": -17.990163171519953,
+          "y": 8.738079254738263
+        },
+        "edgeLocation": 0,
+        "value": ""
+      },
+      "endLabel": {
+        "offset": {
+          "x": 17.990163171519953,
+          "y": -8.738079254738263
+        },
+        "edgeLocation": 2,
+        "value": ""
+      },
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 3,
+      "startLabel": {
+        "offset": {
+          "x": -17.78575604636294,
+          "y": -9.146960252415226
+        },
+        "edgeLocation": 0,
+        "value": ""
+      },
+      "endLabel": {
+        "offset": {
+          "x": 17.78575604636294,
+          "y": 9.146960252415226
+        },
+        "edgeLocation": 2,
+        "value": ""
+      },
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 4,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startLabel": {
+        "offset": {
+          "x": -19.99876554639885,
+          "y": 0.22220850607109832
+        },
+        "edgeLocation": 0,
+        "value": "1 .. *"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 19.99876554639885,
+          "y": -0.22220850607109832
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 2,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 5,
+      "endNodeId": 3
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startLabel": {
+        "offset": {
+          "x": -20,
+          "y": -6
+        },
+        "edgeLocation": 0,
+        "value": "1 .. *"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 20,
+          "y": -6
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 2,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 6,
+      "endNodeId": 4
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startLabel": {
+        "offset": {
+          "x": -19.971068814470254,
+          "y": 1.0753652438560906
+        },
+        "edgeLocation": 0,
+        "value": "0 .. *"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 19.971068814470254,
+          "y": -1.0753652438560906
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 2,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 2,
+      "endNodeId": 1
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 270,
+        "y": 180
+      },
+      "text": "Register",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "coinWallet",
+          "type": "Integer",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 230,
+      "height": 110,
+      "position": {
+        "x": 250,
+        "y": 330
+      },
+      "text": "Twentastic",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "userNames",
+          "type": "List<name?",
+          "visibility": "private"
+        },
+        {
+          "name": "attractions",
+          "type": "List<Attraction>",
+          "visibility": "private"
+        },
+        {
+          "name": "userWallets",
+          "type": "List<wallet>",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 174,
+      "position": {
+        "x": 600,
+        "y": 300
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "abstract",
+      "attributes": [
+        {
+          "name": "isOpen",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "nroVisitors",
+          "type": "Integer",
+          "visibility": "private"
+        },
+        {
+          "name": "queue",
+          "type": "Integer",
+          "visibility": "public"
+        },
+        {
+          "name": "isOperating",
+          "type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "coinCost",
+          "type": "type",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 860,
+        "y": 230
+      },
+      "text": "HorstHorrorCoaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "pictures",
+          "type": "List<Picture>",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 220,
+      "height": 72,
+      "position": {
+        "x": 860,
+        "y": 450
+      },
+      "text": "Waaierhammer30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "isShootingFlames",
+          "type": "Boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 90,
+      "position": {
+        "x": 1140,
+        "y": 220
+      },
+      "text": "CameraController",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "picture",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "fieldName",
+          "type": "type",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 1160,
+        "y": 450
+      },
+      "text": "FireController",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "shootingFire",
+          "type": "Boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

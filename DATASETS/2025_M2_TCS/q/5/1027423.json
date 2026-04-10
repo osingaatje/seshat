@@ -1,0 +1,281 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 835,
+          "y": 330
+        },
+        {
+          "x": 715,
+          "y": 330
+        }
+      ],
+      "startNodeId": 3,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": {
+        "x": 715,
+        "y": 330
+      },
+      "endPosition": 0,
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 715,
+          "y": 330
+        },
+        {
+          "x": 575,
+          "y": 330
+        }
+      ],
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 20,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": "0..*"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -20,
+          "y": 0
+        },
+        "edgeLocation": 2,
+        "value": "0..*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": {
+        "x": 545,
+        "y": 240
+      },
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 1,
+      "lineType": 1,
+      "middlePositions": [],
+      "endNodeId": 4
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 104,
+      "position": {
+        "x": 260,
+        "y": 190
+      },
+      "text": "Customer",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "customer_id",
+          "type": "int (PK)",
+          "visibility": "public"
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "visibility": "private"
+        },
+        {
+          "name": "walletBalance",
+          "type": "double",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 104,
+      "position": {
+        "x": 620,
+        "y": 190
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "attraction_id",
+          "type": "int (PK)",
+          "visibility": "public"
+        },
+        {
+          "name": "isOpen",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "entryFee",
+          "type": "double",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 480,
+        "y": 350
+      },
+      "text": "TheHorstHorrorCoaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "photo_id",
+          "type": "int (PK)",
+          "visibility": "public"
+        },
+        {
+          "name": "customer_id",
+          "type": "int (FK)",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 740,
+        "y": 350
+      },
+      "text": "Waaierhammer30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "customer_id",
+          "type": "int (FK)",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 128,
+      "position": {
+        "x": 450,
+        "y": 40
+      },
+      "text": "Session",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "session_id",
+          "type": "int (PK)",
+          "visibility": "public"
+        },
+        {
+          "name": "cusomer_id",
+          "type": "int (FK)",
+          "visibility": "public"
+        },
+        {
+          "name": "NumVisitors",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "attractionStatus",
+          "type": "string",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "CommentNode",
+      "width": 350,
+      "height": 60,
+      "position": {
+        "x": 680,
+        "y": 90
+      },
+      "text": "session class because its many to many relation",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      }
+    }
+  ]
+}

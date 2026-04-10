@@ -1,0 +1,187 @@
+{
+  "edges": [
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": -15,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -25,
+          "y": -20
+        },
+        "edgeLocation": 1,
+        "value": "uses"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -15,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 19.999750004687403,
+          "y": -0.09999875002343701
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "edgeLocation": 1,
+        "value": "Special"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.999750004687403,
+          "y": 0.09999875002343701
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 2
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 300,
+      "height": 152,
+      "position": {
+        "x": 560,
+        "y": 420
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "entryFee",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "open()",
+          "type": "",
+          "visibility": "public"
+        },
+        {
+          "name": "numberOfVisitiors",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "queue",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "status",
+          "type": "String",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 200,
+      "height": 80,
+      "position": {
+        "x": 610,
+        "y": 230
+      },
+      "text": "App",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "protected"
+        },
+        {
+          "name": "wallet",
+          "type": "Int",
+          "visibility": "protected"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 300,
+      "height": 90,
+      "position": {
+        "x": 1060,
+        "y": 450
+      },
+      "text": "SpecialAttraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "method(isHorst)",
+          "type": "takePicture",
+          "visibility": "public"
+        },
+        {
+          "name": "method(isWaaier)",
+          "type": "addFlames",
+          "visibility": "public"
+        }
+      ]
+    }
+  ]
+}

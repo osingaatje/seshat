@@ -1,0 +1,205 @@
+{
+  "edges": [
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startStyle": 0,
+      "endStyle": 3,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startStyle": 0,
+      "endStyle": 2,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startStyle": 0,
+      "endStyle": 3,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 3
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 200,
+      "height": 80,
+      "position": {
+        "x": 300,
+        "y": 200
+      },
+      "text": "Person",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "wallet",
+          "type": "Wallet",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 250,
+      "height": 90,
+      "position": {
+        "x": 630,
+        "y": 200
+      },
+      "text": "Wallet",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "coins",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "method()",
+          "type": "getBalance",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 250,
+      "height": 114,
+      "position": {
+        "x": 670,
+        "y": 370
+      },
+      "text": "Attraction park",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "attractions",
+          "type": "List<Attraction>",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getAttractions",
+          "type": "List<Attraction>",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 250,
+      "height": 234,
+      "position": {
+        "x": 300,
+        "y": 360
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "status",
+          "type": "bool",
+          "visibility": "private"
+        },
+        {
+          "name": "noOfVisitors",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "queue",
+          "type": "List<Person>",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "isOpen",
+          "type": "bool",
+          "visibility": "public"
+        },
+        {
+          "name": "isClosed",
+          "type": "bool",
+          "visibility": "public"
+        },
+        {
+          "name": "getCurrentNoVisitors",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "getQueue",
+          "type": "List<Person>",
+          "visibility": "public"
+        }
+      ]
+    }
+  ]
+}

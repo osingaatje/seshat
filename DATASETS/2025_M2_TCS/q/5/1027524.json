@@ -1,0 +1,231 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 3,
+      "startStyle": 0,
+      "endStyle": 3,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 2,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 5,
+      "startStyle": 0,
+      "endStyle": 2,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startStyle": 0,
+      "endStyle": 2,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 2,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 0
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 240,
+      "height": 114,
+      "position": {
+        "x": 560,
+        "y": 140
+      },
+      "text": "Wallet",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "customer",
+          "type": "Customer",
+          "visibility": "private"
+        },
+        {
+          "name": "coinCount",
+          "type": "coinCount",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "canAfford(Attraction)",
+          "type": "boolean",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 200,
+      "height": 80,
+      "position": {
+        "x": 580,
+        "y": 360
+      },
+      "text": "Customer",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Wallet",
+          "type": "Wallet",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 220,
+      "height": 210,
+      "position": {
+        "x": 780,
+        "y": 540
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "queue",
+          "type": "List<Customer>",
+          "visibility": "private"
+        },
+        {
+          "name": "currentVisitorCount",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "open",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "operating",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "coinEntryFee",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "joinQueue(Customer)",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "leaveQueue(Customer)",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 320,
+      "height": 186,
+      "position": {
+        "x": 260,
+        "y": 550
+      },
+      "text": "ThemePark",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "attractions",
+          "type": "Set<Attraction>",
+          "visibility": "private"
+        },
+        {
+          "name": "customers",
+          "type": "Set<Customer>",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "registerCustomer(Customer)",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "deregisterCustomer(Customer)",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "addAttraction(Attraction)",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "removeAttraction(Attraction)",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    }
+  ]
+}

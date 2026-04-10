@@ -1,0 +1,231 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 2,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "middleLabel": {
+        "offset": {
+          "x": -20,
+          "y": -34.5
+        },
+        "edgeLocation": 1,
+        "value": "pay for >"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": {
+        "x": 755,
+        "y": 285
+      },
+      "endPosition": 0,
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 1,
+      "lineType": 1,
+      "middlePositions": [],
+      "endNodeId": 4
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 240,
+      "height": 128,
+      "position": {
+        "x": 960,
+        "y": 220
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "numberOfVisitors",
+          "type": "Integer",
+          "visibility": "public"
+        },
+        {
+          "name": "operationStatus",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "isOpen",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "queue",
+          "type": "Integer",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 200,
+      "height": 72,
+      "position": {
+        "x": 1100,
+        "y": 430
+      },
+      "text": "TheHorstHorrorCoaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "takePictures()",
+          "type": "",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 180,
+      "height": 72,
+      "position": {
+        "x": 870,
+        "y": 430
+      },
+      "text": "Waaierhammer30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "shootFlames()",
+          "type": "",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 210,
+      "height": 170,
+      "position": {
+        "x": 370,
+        "y": 200
+      },
+      "text": "TwentasticApp",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "userId",
+          "type": "Integer",
+          "visibility": "public"
+        },
+        {
+          "name": "userName",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "numberOfCoins",
+          "type": "Integer",
+          "visibility": "public"
+        }
+      ],
+      "methods": [
+        {
+          "name": "registerName()",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "registerWallet()",
+          "type": "",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 210,
+      "height": 72,
+      "position": {
+        "x": 650,
+        "y": 340
+      },
+      "text": "Coins",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "numberOfCoins",
+          "type": "Integer",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

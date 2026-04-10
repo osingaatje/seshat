@@ -1,0 +1,434 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 1385,
+          "y": 735
+        },
+        {
+          "x": 1195,
+          "y": 735
+        }
+      ],
+      "startNodeId": 2,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 1005,
+          "y": 735
+        },
+        {
+          "x": 1195,
+          "y": 735
+        }
+      ],
+      "startNodeId": 1,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startLabel": {
+        "offset": {
+          "x": -20,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 20,
+          "y": 0
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 3
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startLabel": {
+        "offset": {
+          "x": -20,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 20,
+          "y": 0
+        },
+        "edgeLocation": 2,
+        "value": "1..*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 3,
+      "endNodeId": 4
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "middleLabel": {
+        "offset": {
+          "x": -65,
+          "y": -3.5
+        },
+        "edgeLocation": 1,
+        "value": "1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.996001199600137,
+          "y": 0.39992002399200277
+        },
+        "edgeLocation": 2,
+        "value": "*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 5,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 19.999489815440654,
+          "y": -0.14285349868171895
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.999489815440654,
+          "y": 0.14285349868171895
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 6,
+      "endNodeId": 5
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 330,
+      "height": 424,
+      "position": {
+        "x": 1030,
+        "y": 230
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "abstract",
+      "attributes": [
+        {
+          "name": "fee",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "open",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "visitors",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "que",
+          "type": "Int",
+          "visibility": "private"
+        },
+        {
+          "name": "Operation",
+          "type": "Boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getFee()",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "getOpen()",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "getVisitors()",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "getQue()",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "getOperation()",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "setFee(int price)",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "setOpen(Boolean open)",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "updateVisitors(int number)",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "update que(int number)",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "setOperation(Boolean operation)",
+          "type": "void",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 910,
+        "y": 800
+      },
+      "text": "HorstHorrorCoaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "makePhoto()",
+          "type": "Photo",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 1290,
+        "y": 800
+      },
+      "text": "Waaierhammer30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "shootFlames()",
+          "type": "void",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 610,
+        "y": 800
+      },
+      "text": "Camera",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "shoot()",
+          "type": "photo",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 310,
+        "y": 800
+      },
+      "text": "Photo",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "size",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 690,
+        "y": 410
+      },
+      "text": "Twentastic",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 230,
+      "height": 186,
+      "position": {
+        "x": 360,
+        "y": 350
+      },
+      "text": "App",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "coins",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "setCoins(Int money)",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "setName(String name)",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "getCoins()",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "getName()",
+          "type": "String",
+          "visibility": "public"
+        }
+      ]
+    }
+  ]
+}

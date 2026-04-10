@@ -1,0 +1,263 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 6,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 665,
+          "y": 345
+        }
+      ],
+      "startNodeId": 3,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 2,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 1090,
+          "y": 345
+        }
+      ],
+      "startNodeId": 4,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 15,
+          "y": -30
+        },
+        "edgeLocation": 0,
+        "value": "0..*"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -11.783443148988837,
+          "y": 16.160150604327548
+        },
+        "edgeLocation": 2,
+        "value": ""
+      },
+      "startStyle": 0,
+      "endStyle": 3,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 465,
+          "y": 145
+        }
+      ],
+      "startNodeId": 0,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 2,
+      "startLabel": {
+        "offset": {
+          "x": 15,
+          "y": -30
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 30,
+          "y": -6
+        },
+        "edgeLocation": 2,
+        "value": ""
+      },
+      "startStyle": 0,
+      "endStyle": 3,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 875,
+          "y": 145
+        }
+      ],
+      "startNodeId": 1,
+      "endNodeId": 2
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 80,
+      "position": {
+        "x": 370,
+        "y": 290
+      },
+      "text": "Person",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "string",
+          "visibility": "private"
+        },
+        {
+          "name": "amount of coins",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 250,
+      "height": 128,
+      "position": {
+        "x": 750,
+        "y": 280
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "open",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "current number of visitos",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "status",
+          "type": "string",
+          "visibility": "private"
+        },
+        {
+          "name": "queue",
+          "type": "list",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 570,
+        "y": 110
+      },
+      "text": "Twentastic app",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "PayFee()",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 90,
+      "position": {
+        "x": 570,
+        "y": 480
+      },
+      "text": "The Horst Horror Coaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "picture",
+          "type": "string",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "take picture()",
+          "type": "string",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 1000,
+        "y": 490
+      },
+      "text": "Waaierhammer 30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "Shoot flames()",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    }
+  ]
+}

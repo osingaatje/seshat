@@ -1,0 +1,276 @@
+{
+  "edges": [
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startLabel": {
+        "offset": {
+          "x": -15,
+          "y": -2
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -15,
+          "y": -30
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 3,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 2,
+      "endNodeId": 0
+    },
+    {
+      "startPosition": 1,
+      "endPosition": 5,
+      "startLabel": {
+        "offset": {
+          "x": 19.9950635566322,
+          "y": 0.44433474570293774
+        },
+        "edgeLocation": 0,
+        "value": "0...*"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.9950635566322,
+          "y": -0.44433474570293774
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 3
+    },
+    {
+      "startPosition": 3,
+      "endPosition": 7,
+      "startLabel": {
+        "offset": {
+          "x": 19.991841729213892,
+          "y": -0.5711954779775398
+        },
+        "edgeLocation": 0,
+        "value": "0...*"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.991841729213892,
+          "y": 0.5711954779775398
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 2,
+      "endNodeId": 3
+    },
+    {
+      "startPosition": 5,
+      "endPosition": 2,
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 900,
+          "y": 305
+        },
+        {
+          "x": 900,
+          "y": 265
+        }
+      ],
+      "startNodeId": 1,
+      "endNodeId": 3
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 340,
+        "y": 300
+      },
+      "text": "Wallet",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Coins",
+          "type": "Integer",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 152,
+      "position": {
+        "x": 900,
+        "y": 80
+      },
+      "text": "Waaierhammer 30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Entry Fee",
+          "type": "Integer",
+          "visibility": "public"
+        },
+        {
+          "name": "Open",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "Status",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "visitors",
+          "type": "Integer",
+          "visibility": "public"
+        },
+        {
+          "name": "queue(min)",
+          "type": "Integer",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 340,
+        "y": 160
+      },
+      "text": "Customer",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Name",
+          "type": "String",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 620,
+        "y": 230
+      },
+      "text": "EntryRegulator",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 152,
+      "position": {
+        "x": 900,
+        "y": 300
+      },
+      "text": "Horst Horror Coaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Entry Fee",
+          "type": "Integer",
+          "visibility": "public"
+        },
+        {
+          "name": "Open",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "Status",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "visitors",
+          "type": "Integer",
+          "visibility": "public"
+        },
+        {
+          "name": "queue(min)",
+          "type": "Integer",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    }
+  ]
+}

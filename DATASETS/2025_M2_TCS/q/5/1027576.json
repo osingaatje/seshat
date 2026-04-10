@@ -1,0 +1,303 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 20,
+          "y": -30
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 150,
+          "y": -40
+        },
+        "edgeLocation": 1,
+        "value": "GoesTo"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.62409219805677,
+          "y": 3.859404798951165
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 370,
+          "y": 150
+        }
+      ],
+      "startNodeId": 0,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 17.375545403853216,
+          "y": 9.904060880196333
+        },
+        "edgeLocation": 0,
+        "value": "*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "edgeLocation": 1,
+        "value": "Goes to"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -17.375545403853216,
+          "y": -9.904060880196333
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 370,
+          "y": 620
+        }
+      ],
+      "startNodeId": 0,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 3
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 2,
+      "endNodeId": 3
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 200,
+      "height": 80,
+      "position": {
+        "x": 270,
+        "y": 290
+      },
+      "text": "customer",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "UserName",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "Wallet",
+          "type": "Integer",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 234,
+      "position": {
+        "x": 670,
+        "y": 30
+      },
+      "text": "HorrorCoaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Queue",
+          "type": "Integer",
+          "visibility": "public"
+        },
+        {
+          "name": "Status",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "Open",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "Price",
+          "type": "Integer",
+          "visibility": "public"
+        }
+      ],
+      "methods": [
+        {
+          "name": "TakePhoto()",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "GetQueue()",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "GetStatus()",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "CheckCoins()",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 234,
+      "position": {
+        "x": 670,
+        "y": 500
+      },
+      "text": "Waaierhammer",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Queue",
+          "type": "Integer",
+          "visibility": "public"
+        },
+        {
+          "name": "Status",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "Open",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "Price",
+          "type": "integer",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "ShootFlames()",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "getQueue()",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "getStatus()",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "CheckCoins()",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 136,
+      "position": {
+        "x": 670,
+        "y": 310
+      },
+      "text": "Attractions",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "interface",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "GetQueues()",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "GetStatus()",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "IsOpen()",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    }
+  ]
+}

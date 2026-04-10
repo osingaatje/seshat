@@ -1,0 +1,504 @@
+{
+  "edges": [
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 20,
+          "y": -33
+        },
+        "edgeLocation": 0,
+        "value": "2"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 40,
+          "y": -65
+        },
+        "edgeLocation": 1,
+        "value": "is in >"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -20,
+          "y": -36
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 2,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 920,
+          "y": 175
+        },
+        {
+          "x": 920,
+          "y": 105
+        }
+      ],
+      "startNodeId": 1,
+      "endNodeId": 4
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startLabel": {
+        "offset": {
+          "x": 17.88854381999832,
+          "y": -8.94427190999916
+        },
+        "edgeLocation": 0,
+        "value": ""
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -45,
+          "y": -35
+        },
+        "edgeLocation": 1,
+        "value": "is an >"
+      },
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 585,
+          "y": 315
+        },
+        {
+          "x": 705,
+          "y": 315
+        }
+      ],
+      "startNodeId": 2,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "middleLabel": {
+        "offset": {
+          "x": 15,
+          "y": -35
+        },
+        "edgeLocation": 1,
+        "value": "< is an"
+      },
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 805,
+          "y": 315
+        },
+        {
+          "x": 705,
+          "y": 315
+        }
+      ],
+      "startNodeId": 3,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startLabel": {
+        "offset": {
+          "x": 15,
+          "y": -40
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -55,
+          "y": -21
+        },
+        "edgeLocation": 1,
+        "value": "has a v"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 15,
+          "y": 8
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 3,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 4
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 20,
+          "y": -35
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 5,
+          "y": -35.5
+        },
+        "edgeLocation": 1,
+        "value": "< registers in"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -20,
+          "y": -36
+        },
+        "edgeLocation": 2,
+        "value": "*"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 5
+    },
+    {
+      "startPosition": 0,
+      "endPosition": {
+        "x": 1445,
+        "y": 315
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 1,
+      "lineType": 1,
+      "middlePositions": [],
+      "startNodeId": 6
+    },
+    {
+      "startPosition": {
+        "x": 1515,
+        "y": 315
+      },
+      "endPosition": 6,
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 1,
+      "lineType": 1,
+      "middlePositions": [
+        {
+          "x": 1515,
+          "y": 150
+        }
+      ],
+      "endNodeId": 7
+    },
+    {
+      "startPosition": {
+        "x": 1000,
+        "y": 105
+      },
+      "endPosition": 0,
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 1,
+      "lineType": 1,
+      "middlePositions": [
+        {
+          "x": 1000,
+          "y": 140
+        },
+        {
+          "x": 1030,
+          "y": 140
+        }
+      ],
+      "endNodeId": 8
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 114,
+      "position": {
+        "x": 1110,
+        "y": 260
+      },
+      "text": "ThemeParkApp",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "username",
+          "type": "String",
+          "visibility": "public"
+        }
+      ],
+      "methods": [
+        {
+          "name": "register()",
+          "type": "void",
+          "visibility": "private"
+        },
+        {
+          "name": "addBalance()",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 210,
+      "position": {
+        "x": 610,
+        "y": 70
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "isOperating",
+          "type": "bool",
+          "visibility": "public"
+        },
+        {
+          "name": "currentVisitorNr",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "queue",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "entryFee",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "attractionName",
+          "type": "String",
+          "visibility": "public"
+        }
+      ],
+      "methods": [
+        {
+          "name": "open()",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "close()",
+          "type": "void",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 490,
+        "y": 340
+      },
+      "text": "HorstHorrorCoaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "takePicture()",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 710,
+        "y": 340
+      },
+      "text": "Waaierhammer30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "shootFlame()",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 1110,
+        "y": 70
+      },
+      "text": "ThemePark",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "public"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 1590,
+        "y": 280
+      },
+      "text": "Person",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 72,
+      "position": {
+        "x": 1350,
+        "y": 420
+      },
+      "text": "AppWallet",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "balance",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": []
+    },
+    {
+      "type": "CommentNode",
+      "width": 340,
+      "height": 80,
+      "position": {
+        "x": 1560,
+        "y": 110
+      },
+      "text": "For each Person that register in the App, \\na Wallet is automatically created",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      }
+    },
+    {
+      "type": "CommentNode",
+      "width": 260,
+      "height": 60,
+      "position": {
+        "x": 900,
+        "y": 420
+      },
+      "text": "Attractions cannot exist\\nwithout the Theme Park",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      }
+    }
+  ]
+}

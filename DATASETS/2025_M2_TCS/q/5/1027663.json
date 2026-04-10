@@ -1,0 +1,363 @@
+{
+  "edges": [
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 20,
+          "y": 0
+        },
+        "edgeLocation": 0,
+        "value": "0..*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": -35
+        },
+        "edgeLocation": 1,
+        "value": "> enters"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -20,
+          "y": 0
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "middleLabel": {
+        "offset": {
+          "x": -65,
+          "y": 25
+        },
+        "edgeLocation": 1,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 700,
+          "y": 375
+        },
+        {
+          "x": 850,
+          "y": 375
+        }
+      ],
+      "startNodeId": 2,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startLabel": {
+        "offset": {
+          "x": 10,
+          "y": -30
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": -65,
+          "y": 5
+        },
+        "edgeLocation": 1,
+        "value": "^ are a type of"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 16.641005886756872,
+          "y": 11.094003924504582
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 1000,
+          "y": 405
+        },
+        {
+          "x": 1000,
+          "y": 390
+        },
+        {
+          "x": 1000,
+          "y": 375
+        },
+        {
+          "x": 850,
+          "y": 375
+        }
+      ],
+      "startNodeId": 3,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 6,
+      "startLabel": {
+        "offset": {
+          "x": 20,
+          "y": -5
+        },
+        "edgeLocation": 0,
+        "value": "0..*"
+      },
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": -55.5
+        },
+        "edgeLocation": 1,
+        "value": "< makes, \\nstores"
+      },
+      "endLabel": {
+        "offset": {
+          "x": -19.99876554639885,
+          "y": -0.22220850607109832
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 4,
+      "endNodeId": 2
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 130,
+      "position": {
+        "x": 310,
+        "y": 100
+      },
+      "text": "User",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "coins",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getName()",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "getCoins()",
+          "type": "int",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 300,
+      "height": 330,
+      "position": {
+        "x": 700,
+        "y": 0
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "fee",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "Open",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "currentVisitors",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "queue",
+          "type": "List<User>",
+          "visibility": "private"
+        },
+        {
+          "name": "operating",
+          "type": "boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getFee()",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "getOpen()",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "getCurrentVisitors()",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "getQueue()",
+          "type": "List<User>",
+          "visibility": "public"
+        },
+        {
+          "name": "addToQueue(user: User)",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "removeFromQueue(user: User)",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "getOperating()",
+          "type": "boolean",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 220,
+      "height": 72,
+      "position": {
+        "x": 590,
+        "y": 430
+      },
+      "text": "TheHorstHorrorCoaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": [
+        {
+          "name": "getPicture(id: int)",
+          "type": "Picture",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 200,
+      "height": 72,
+      "position": {
+        "x": 900,
+        "y": 430
+      },
+      "text": "WaaierHammer30K",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [],
+      "methods": []
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 90,
+      "position": {
+        "x": 280,
+        "y": 420
+      },
+      "text": "Picture",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "id",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getId()",
+          "type": "int",
+          "visibility": "public"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,392 @@
+{
+  "edges": [
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startLabel": {
+        "offset": {
+          "x": -19.984019174435787,
+          "y": 0.7993607669774315
+        },
+        "edgeLocation": 0,
+        "value": "0..1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 19.984019174435787,
+          "y": -0.7993607669774315
+        },
+        "edgeLocation": 2,
+        "value": "1"
+      },
+      "startStyle": 0,
+      "endStyle": 3,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 3
+    },
+    {
+      "startPosition": 2,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 900,
+          "y": 720
+        },
+        {
+          "x": 900,
+          "y": 630
+        }
+      ],
+      "startNodeId": 4,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 1030,
+          "y": 600
+        },
+        {
+          "x": 900,
+          "y": 600
+        }
+      ],
+      "startNodeId": 5,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startLabel": {
+        "offset": {
+          "x": -19.99763355616518,
+          "y": -0.3076559008640797
+        },
+        "edgeLocation": 0,
+        "value": "1"
+      },
+      "endLabel": {
+        "offset": {
+          "x": 19.99763355616518,
+          "y": 0.3076559008640797
+        },
+        "edgeLocation": 2,
+        "value": "0..1"
+      },
+      "startStyle": 0,
+      "endStyle": 2,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 2,
+      "endNodeId": 1
+    },
+    {
+      "startPosition": 5,
+      "endPosition": 6,
+      "middleLabel": {
+        "offset": {
+          "x": 0,
+          "y": 0
+        },
+        "edgeLocation": 1,
+        "value": "visits an"
+      },
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 610,
+          "y": 450
+        }
+      ],
+      "startNodeId": 3,
+      "endNodeId": 1
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 138,
+      "position": {
+        "x": 1040,
+        "y": 100
+      },
+      "text": "Wallet",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "numberOfCoins",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "addCoins()",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "payCoins()",
+          "type": "void",
+          "visibility": "public"
+        },
+        {
+          "name": "getCoins()",
+          "type": "int",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 240,
+      "height": 258,
+      "position": {
+        "x": 780,
+        "y": 320
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "isOpen",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "currentVisitors",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "isInOperationStatus",
+          "type": "boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "Cost",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getIsOpen()",
+          "type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "getisInOperationStatus()",
+          "type": "boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "getCurrentVisitors()",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "getCost()",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "someMoreSetters()",
+          "type": "void",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 250,
+      "height": 162,
+      "position": {
+        "x": 1150,
+        "y": 370
+      },
+      "text": "Queue",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "length",
+          "type": "int",
+          "visibility": "private"
+        },
+        {
+          "name": "approximateDuration",
+          "type": "int",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getLength()",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "getApproximateDuration()",
+          "type": "int",
+          "visibility": "public"
+        },
+        {
+          "name": "setLength(int length)",
+          "type": "void",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 310,
+      "height": 138,
+      "position": {
+        "x": 610,
+        "y": 100
+      },
+      "text": "Visitor",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "Name",
+          "type": "String",
+          "visibility": "private"
+        },
+        {
+          "name": "attractionsPaidFor",
+          "type": "List<Attraction>",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getName()",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "getAttractionsPaidFor()",
+          "type": "List<Attraction>",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 260,
+      "height": 90,
+      "position": {
+        "x": 520,
+        "y": 680
+      },
+      "text": "The Horst Horror Coaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "pictureFileLocation",
+          "type": "String",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getPictureFileLocation()",
+          "type": "String",
+          "visibility": "public"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 190,
+      "height": 90,
+      "position": {
+        "x": 940,
+        "y": 680
+      },
+      "text": "Waaierhamer 30k",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "flamesOn",
+          "type": "boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getflamesOn()",
+          "type": "boolean",
+          "visibility": "public"
+        }
+      ]
+    }
+  ]
+}

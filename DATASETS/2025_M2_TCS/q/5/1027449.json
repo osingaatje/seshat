@@ -1,0 +1,333 @@
+{
+  "edges": [
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 800,
+          "y": 530
+        },
+        {
+          "x": 600,
+          "y": 530
+        }
+      ],
+      "startNodeId": 3,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 0,
+      "endPosition": 4,
+      "startStyle": 0,
+      "endStyle": 4,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [
+        {
+          "x": 400,
+          "y": 530
+        },
+        {
+          "x": 600,
+          "y": 530
+        }
+      ],
+      "startNodeId": 4,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 4,
+      "endPosition": 0,
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 1,
+      "endNodeId": 2
+    },
+    {
+      "startPosition": 6,
+      "endPosition": 2,
+      "startStyle": 0,
+      "endStyle": 0,
+      "lineStyle": 0,
+      "lineType": 5,
+      "middlePositions": [],
+      "startNodeId": 0,
+      "endNodeId": 1
+    }
+  ],
+  "nodes": [
+    {
+      "type": "ClassNode",
+      "width": 280,
+      "height": 90,
+      "position": {
+        "x": 880,
+        "y": 40
+      },
+      "text": "Register",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "registerStatus",
+          "type": "Boolean",
+          "visibility": "public"
+        }
+      ],
+      "methods": [
+        {
+          "name": "registerPerson(Person person)",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 340,
+      "height": 138,
+      "position": {
+        "x": 430,
+        "y": 10
+      },
+      "text": "Person",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "personName",
+          "type": "String",
+          "visibility": "public"
+        },
+        {
+          "name": "walletAmount",
+          "type": "Double",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getWalletAmount",
+          "type": "walletAmount",
+          "visibility": "private"
+        },
+        {
+          "name": "payAttractionFee(Attraction attraction)",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 260,
+      "height": 304,
+      "position": {
+        "x": 470,
+        "y": 180
+      },
+      "text": "Attraction",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "interface",
+      "attributes": [
+        {
+          "name": "visitors",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "queu",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "openStatus",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "operationStatus",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "entryFee",
+          "type": "Double",
+          "visibility": "public"
+        }
+      ],
+      "methods": [
+        {
+          "name": "getQueu",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "getOpenStatus()",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "getOperationStatus",
+          "type": "Boolean",
+          "visibility": "private"
+        },
+        {
+          "name": "getEntryFee",
+          "type": "Double",
+          "visibility": "private"
+        },
+        {
+          "name": "getVisitors",
+          "type": "Int",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 260,
+      "height": 210,
+      "position": {
+        "x": 670,
+        "y": 560
+      },
+      "text": "TheHorstHorrorCoaster",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "visitors",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "queu",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "openStatus",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "operationStatus",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "entryFee",
+          "type": "Double",
+          "visibility": "public"
+        },
+        {
+          "name": "pictureList",
+          "type": "Arraylist",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "takePicture()",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    },
+    {
+      "type": "ClassNode",
+      "width": 260,
+      "height": 210,
+      "position": {
+        "x": 270,
+        "y": 560
+      },
+      "text": "WaaierhammerThirtyK",
+      "hasDoubleBorder": false,
+      "styleObject": {
+        "fill": "white",
+        "stroke": "black",
+        "stroke-width": 2,
+        "fill-opacity": 1,
+        "stroke-opacity": 0.75
+      },
+      "classType": "class",
+      "attributes": [
+        {
+          "name": "visitors",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "queu",
+          "type": "Int",
+          "visibility": "public"
+        },
+        {
+          "name": "openStatus",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "operationStatus",
+          "type": "Boolean",
+          "visibility": "public"
+        },
+        {
+          "name": "entryFee",
+          "type": "Double",
+          "visibility": "public"
+        },
+        {
+          "name": "flameShooterStatus",
+          "type": "Boolean",
+          "visibility": "private"
+        }
+      ],
+      "methods": [
+        {
+          "name": "flameShooterToggle()",
+          "type": "void",
+          "visibility": "private"
+        }
+      ]
+    }
+  ]
+}
