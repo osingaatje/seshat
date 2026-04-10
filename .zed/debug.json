@@ -15,4 +15,19 @@
     // To filter down to just the test your cursor is in:
     // "args": ["-test.run", "$ZED_SYMBOL"]
   },
+  {
+    "label": "Emit parse tree",
+    "adapter": "Delve",
+    "request": "launch",
+    "mode": "debug",
+    "program": "${ZED_WORKTREE_ROOT}/src/ui/cli/main/main.go",
+    "buildFlags": [],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "envFile": "${ZED_WORKTREE_ROOT}/.env",
+    "args": [
+      "emit",
+      "--in=DATASETS/2025_M2_TCS/q/5/*.json",
+      "--out=DATASETS/output/2025M2TCS/q5",
+    ],
+  },
 ]
