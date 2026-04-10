@@ -8,7 +8,6 @@ import (
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/command"
-	. "github.com/osingaatje/seshat/types/grade"
 	. "github.com/osingaatje/seshat/types/graph/internal-rep"
 	. "github.com/osingaatje/seshat/types/graph/shared"
 )
@@ -23,7 +22,8 @@ const CERTAINTY_THRESHOLD float64 = 0.7 // applicable to the combination of sema
  * 2. Aggregate: 		continually increase Meaningful Unit until it can no longer be aggregated) using structural graph matching
  * 3. Interpret:        produce grades based on present/missing/extra elements and parts of those elements
  */
-func gradeDiag(c *context.Ctx, cmd GradeCmd) *GradeResult {
+func getAlternativeSolutions(
+	c *context.Ctx, cmd GradeCmd) []map[VertexIdentifier]VertexIdentifier {
 	if cmd.ReferenceSolution == nil || cmd.Submission == nil || cmd.Rubric == nil {
 		c.LogErr("Referencesolution, submission, or rubric was not present when grading diagram!")
 		return nil
@@ -96,7 +96,7 @@ func gradeDiag(c *context.Ctx, cmd GradeCmd) *GradeResult {
 		}
 	}
 
-	panic("TODO choose best match")
+	return helper.ValuesMap(fixedVertices)
 }
 
 /*

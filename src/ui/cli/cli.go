@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"path/filepath"
 
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
@@ -54,28 +55,49 @@ func (t *TestCmd) Run(c *context.Ctx) error {
 
 // cmd EMIT
 type EmitCmd struct {
-	Input  string      `arg:"" required:"" name:"in" help:"Input UTML file" default:"./in.utml"`
-	Output string      `arg:"" required:"" name:"out" help:"Output internal repr. file" default:"./out.json"`
+	Input  string      `required:"" name:"in" help:"Input UTML file(s)"`
+	Output string      `required:"" name:"out" help:"Output directory"`
 	Type   g.GraphType `name:"type" help:"" default:"dot"`
 }
 
 func (cmd *EmitCmd) Run(c *context.Ctx) error {
-	utml, parseresfixed, internalRep, dot, err := getReps(c, cmd.Input, cmd.Type)
+	names, utml, parseresfixed, internalRep, dot, err := getRepsOfFiles(c, cmd.Input, cmd.Type)
 	if err != nil {
 		return err // logging is done internally in getReps
 	}
 
 	switch cmd.Type {
 	case g.UTMLResult:
-		return helper.Export(cmd.Output, utml)
+		return exportMany(cmd.Output, names, utml)
+
 	case g.ParseResult:
-		return helper.Export(cmd.Output, parseresfixed)
+		return exportMany(cmd.Output, names, parseresfixed)
+
 	case g.Internal:
-		return helper.Export(cmd.Output, internalRep)
+		return exportMany(cmd.Output, names, internalRep)
+
 	case g.DotFile:
-		return helper.ExportString(cmd.Output, dot.String())
+		return exportMany(cmd.Output, names, dot)
 	}
+
 	return c.LogErrAndReturn("Unknown graph type %s", cmd.Type)
+}
+
+func outFile(dir, infile string) string {
+	return filepath.Join(dir, filepath.Base(infile)+"-fixed.json")
+}
+func exportMany[E any](basedir string, names []string, objs []*E) error {
+	if len(names) != len(objs) {
+		return fmt.Errorf("BUG IN TOOL: NAMES LENGTH != EXPORT OBJECT LENGTH")
+	}
+
+	for i, res := range objs {
+		e := helper.Export(outFile(basedir, names[i]), res)
+		if e != nil {
+			return e
+		}
+	}
+	return nil
 }
 
 // end EMIT
@@ -123,6 +145,28 @@ func (cmd *GradeCmd) Run(c *context.Ctx) error {
 // end GRADE
 
 // ---------------- HELPERS ---------------- //
+
+func getRepsOfFiles(c *context.Ctx, inputGlob string, graphType g.GraphType) ([]string, []*utml.ParseResultUTML, []*parse.ParseResult, []*intern.InternalGraph, []*dot.DotGraph, error) {
+	matches, err := filepath.Glob(inputGlob)
+	if err != nil {
+		return nil, nil, nil, nil, nil, err
+	}
+	names := []string{}
+	resU, resP, resI, resD := []*utml.ParseResultUTML{}, []*parse.ParseResult{}, []*intern.InternalGraph{}, []*dot.DotGraph{}
+	for _, match := range matches {
+		names = append(names, match)
+		u, p, i, d, e := getReps(c, match, graphType)
+		if e != nil {
+			return names, resU, resP, resI, resD, e
+		}
+
+		resU = append(resU, u)
+		resP = append(resP, p)
+		resI = append(resI, i)
+		resD = append(resD, d)
+	}
+	return names, resU, resP, resI, resD, nil
+}
 
 func getReps(c *context.Ctx, inputFile string, graphType g.GraphType) (*utml.ParseResultUTML, *parse.ParseResult, *intern.InternalGraph, *dot.DotGraph, error) {
 	// UTML

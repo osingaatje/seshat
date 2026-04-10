@@ -48,7 +48,7 @@ func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.ParseResul
 
 	res := pr.NewParseResult()
 	for i, n := range utml.Nodes {
-		vertex := convertUTMLVertex(c, i, &n)
+		vertex := convertUTMLVertex(i, &n)
 		if vertex == nil { // errors are logged in function
 			return nil
 		}
@@ -82,8 +82,8 @@ func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.ParseResul
 	return res
 }
 
-func convertUTMLVertex(ctx *context.Ctx, index int, n *ParseResultUTMLNode) *pr.ParsedVertex {
-	extractedProps := extractUTMLVertexProperties(ctx, index, n)
+func convertUTMLVertex(index int, n *ParseResultUTMLNode) *pr.ParsedVertex {
+	extractedProps := extractUTMLVertexProperties(n)
 	extractedVals := extractUTMLVals(n)
 	extractedVisualProps := extractVisualProps(n)
 
@@ -95,19 +95,16 @@ func convertUTMLVertex(ctx *context.Ctx, index int, n *ParseResultUTMLNode) *pr.
 		VisualProperties: extractedVisualProps,
 	}
 }
-func extractUTMLVertexProperties(ctx *context.Ctx, index int, n *ParseResultUTMLNode) VertexProperties {
+func extractUTMLVertexProperties(n *ParseResultUTMLNode) VertexProperties {
 	res := VertexProperties{
 		Type:       "",
 		Visibility: "",
 	}
 
-	// Type:
-	if n.ClassType == nil {
-		ctx.LogWarn("No valid class type for node index '%d'", index)
-		return res
+	res.Type = string(n.Type)
+	if n.ClassType != nil {
+		res.Type = *n.ClassType
 	}
-
-	res.Type = *n.ClassType
 	// Visibility: not present for nodes in UTML :(
 
 	return res

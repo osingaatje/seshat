@@ -2,11 +2,14 @@ package parseresult
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 
 	. "github.com/osingaatje/seshat/types/graph/internal-rep"
 	. "github.com/osingaatje/seshat/types/graph/shared"
 )
+
+var SKIPPED_TYPES []string = []string{"CommentNode"}
 
 /*
  * We define the parse result visually as this:
@@ -63,7 +66,11 @@ func (p *ParseResult) ToInternal() (*InternalGraph, error) {
 	errors := []string{}
 
 	for id, v := range p.Vertices {
-		res.Vertices[id] = v.ToInternal()
+		v, add := v.ToInternal()
+		if !add {
+			continue
+		}
+		res.Vertices[id] = v
 	}
 	for id, e := range p.Edges {
 		iE, err := e.ToInternal()
@@ -110,10 +117,15 @@ func (p *ParsedVertex) Copy() *ParsedVertex {
 	}
 	return res
 }
-func (p *ParsedVertex) ToInternal() *InternalVertex {
+func (p *ParsedVertex) ToInternal() (v *InternalVertex, errReason string) {
 	if p == nil {
-		return nil
+		return nil, "p is nil"
 	}
+
+	if slices.Contains(SKIPPED_TYPES, p.Properties.Type) {
+		return nil, fmt.Sprintf("Vertex (id '%.2f') will be skipped (contains skippable vertex type '%s')", p.Id, p.Properties.Type)
+	}
+
 	res := &InternalVertex{
 		Id:         p.Id,
 		Title:      p.Title,
@@ -123,7 +135,7 @@ func (p *ParsedVertex) ToInternal() *InternalVertex {
 	for k, v := range p.Values {
 		res.Values[k] = v.Copy()
 	}
-	return res
+	return res, ""
 }
 
 type ParsedEdge struct {

@@ -14,8 +14,8 @@ type Vector2D struct {
 
 func (v Vector2D) New(utmlPos UTMLXY) Vector2D {
 	return Vector2D{
-		X: float64(utmlPos.X),
-		Y: float64(utmlPos.Y),
+		X: utmlPos.X,
+		Y: utmlPos.Y,
 	}
 }
 func (v Vector2D) NewInt(x int, y int) Vector2D {
