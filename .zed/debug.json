@@ -13,7 +13,7 @@
     "cwd": "${ZED_WORKTREE_ROOT}/test",
     "envFile": "${ZED_WORKTREE_ROOT}/.env",
     // To filter down to just the test your cursor is in:
-    // "args": ["-test.run", "$ZED_SYMBOL"]
+    "args": ["-test.v"], //["-test.run", "$ZED_SYMBOL"]
   },
   {
     "label": "Emit parse tree",
