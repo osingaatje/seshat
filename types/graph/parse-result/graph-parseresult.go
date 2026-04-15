@@ -66,16 +66,19 @@ func (p *ParseResult) ToInternal() (*InternalGraph, error) {
 	errors := []string{}
 
 	for id, v := range p.Vertices {
-		v, add := v.ToInternal()
-		if !add {
+		iV, err := v.ToInternal()
+		if err != nil {
+			newErrMsg := fmt.Sprintf("Failed converting vertex %s to internal repr.: %s", v.String(), err.Error())
+			errors = append(errors, newErrMsg)
 			continue
 		}
-		res.Vertices[id] = v
+		res.Vertices[id] = iV
 	}
 	for id, e := range p.Edges {
 		iE, err := e.ToInternal()
 		if err != nil {
-			errors = append(errors, err.Error())
+			newErrMsg := fmt.Sprintf("Failed converting edge %s to internal repr.: %s", e.String(), err.Error())
+			errors = append(errors, newErrMsg)
 		}
 		res.Edges[id] = iE
 	}
@@ -117,13 +120,13 @@ func (p *ParsedVertex) Copy() *ParsedVertex {
 	}
 	return res
 }
-func (p *ParsedVertex) ToInternal() (v *InternalVertex, errReason string) {
+func (p *ParsedVertex) ToInternal() (v *InternalVertex, err error) {
 	if p == nil {
-		return nil, "p is nil"
+		return nil, fmt.Errorf("p is nil")
 	}
 
 	if slices.Contains(SKIPPED_TYPES, p.Properties.Type) {
-		return nil, fmt.Sprintf("Vertex (id '%.2f') will be skipped (contains skippable vertex type '%s')", p.Id, p.Properties.Type)
+		return nil, fmt.Errorf("Vertex %s will be skipped (contains skippable vertex type '%s')", p.String(), p.Properties.Type)
 	}
 
 	res := &InternalVertex{
@@ -135,7 +138,13 @@ func (p *ParsedVertex) ToInternal() (v *InternalVertex, errReason string) {
 	for k, v := range p.Values {
 		res.Values[k] = v.Copy()
 	}
-	return res, ""
+	return res, nil
+}
+func (p *ParsedVertex) String() string {
+	if p == nil {
+		return "nil"
+	}
+	return fmt.Sprintf("V(id=%d,title=%s)", p.Id, p.Title)
 }
 
 type ParsedEdge struct {
@@ -195,4 +204,25 @@ func (e *ParsedEdge) ToInternal() (*InternalEdge, error) {
 	res.FromProperties = fromP
 	res.ToProperties = toP
 	return res, nil
+}
+func (e *ParsedEdge) String() string {
+	if e == nil {
+		return "nil"
+	}
+	res := "E("
+	if e.FromId != nil {
+		res += fmt.Sprintf("fromId=%d,", *e.FromId)
+	}
+	if e.FromEdgeId != nil {
+		res += fmt.Sprintf("fromEdgeId=%d,", *e.FromEdgeId)
+	}
+	if e.ToId != nil {
+		res += fmt.Sprintf("toId=%d,", *e.ToId)
+	}
+	if e.ToEdgeId != nil {
+		res += fmt.Sprintf("toEdgeId=%d,", *e.ToEdgeId)
+	}
+	res = res[:len(res)-1] // remove trailing comma
+	res += ")"
+	return res
 }

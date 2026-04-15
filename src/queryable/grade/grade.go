@@ -13,5 +13,6 @@ func gradeDiag(c *context.Ctx, cmd command.GradeCmd) *grade.GradeResult {
 		c.LogErr("BRUH")
 	}
 
+	c.LogErr("TODO MAKE GRADING WORK")
 	return nil
 }

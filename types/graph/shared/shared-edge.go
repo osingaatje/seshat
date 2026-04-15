@@ -3,7 +3,7 @@ package shared
 import (
 	"fmt"
 
-	"github.com/osingaatje/seshat/helper"
+	"github.com/osingaatje/seshat/helper/multiplicity"
 	. "github.com/osingaatje/seshat/types/generic"
 )
 
@@ -15,8 +15,8 @@ type EdgeEndProperties struct { // the properties for the end of an edge ( <>---
 }
 
 type InternalEdgeEndProperties struct {
-	ArrowStyle   ArrowStyleVariant    `json:"arrowstyle"`
-	Multiplicity *helper.Multiplicity `json:"multiplicity,omitempty"`
+	ArrowStyle   ArrowStyleVariant          `json:"arrowstyle"`
+	Multiplicity *multiplicity.Multiplicity `json:"multiplicity,omitempty"`
 }
 
 func (e EdgeEndProperties) ToInternal() (props InternalEdgeEndProperties, err error) {
@@ -25,7 +25,7 @@ func (e EdgeEndProperties) ToInternal() (props InternalEdgeEndProperties, err er
 		Multiplicity: nil,
 	}
 	if e.Label != nil {
-		mult, ok := helper.GetMultiplicity(e.Label.Text)
+		mult, ok := multiplicity.GetMultiplicity(e.Label.Text)
 		if !ok {
 			return props, fmt.Errorf("Could not parse multiplicity '%s'", e.Label.Text)
 		}

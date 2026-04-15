@@ -2,34 +2,11 @@ package helper
 
 import (
 	"fmt"
-	"io/fs"
 	"os"
-	"path"
+	"path/filepath"
+
+	"github.com/bmatcuk/doublestar/v4" // for being able to use the "/**/*.<extension>" syntax in GLOB syntax
 )
-
-func AllUTMLFiles(dirOrFileName string) ([]string, error) {
-	stat, err := os.Stat(dirOrFileName)
-	if err != nil {
-		return nil, fmt.Errorf("Could not fetch UTML files: %s", err.Error())
-	}
-
-	if !stat.IsDir() {
-		return []string{dirOrFileName}, nil
-	}
-
-	root := os.DirFS(dirOrFileName)
-
-	utmlFiles, err := fs.Glob(root, "*.utml")
-	if err != nil {
-		return nil, fmt.Errorf("Cannot find UTML files in '%s': %s", dirOrFileName, err.Error())
-	}
-
-	for i, file := range utmlFiles {
-		utmlFiles[i] = path.Join(dirOrFileName, file)
-	}
-
-	return utmlFiles, nil
-}
 
 func AllUTMLFilesUNSAFE(dirname string) []string {
 	r, err := AllUTMLFiles(dirname)
@@ -37,4 +14,42 @@ func AllUTMLFilesUNSAFE(dirname string) []string {
 		panic(err.Error())
 	}
 	return r
+}
+
+func AllUTMLFiles(path string) ([]string, error) {
+	return AllFiles(path, "*.utml", "*.json")
+}
+
+// Supports the double-star syntax in GLOB ("**/*.go" for example)
+func AllFiles(path string, globs ...string) ([]string, error) {
+	stat, err := os.Stat(path)
+	if err != nil {
+		return nil, fmt.Errorf("Could not fetch UTML files: %s", err.Error())
+	}
+
+	if !stat.IsDir() {
+		return []string{path}, nil
+	}
+
+	root := os.DirFS(path)
+
+	files, err := []string{}, nil
+	for _, gl := range globs {
+		var fs []string
+		fs, err = doublestar.Glob(root, gl) //directly assign to the outer 'err'
+		if err != nil {
+			break
+		}
+		files = append(files, fs...)
+	}
+
+	if err != nil {
+		return nil, fmt.Errorf("Cannot find UTML files in '%s': %s", path, err.Error())
+	}
+
+	for i, file := range files {
+		files[i] = filepath.Join(path, file)
+	}
+
+	return files, nil
 }

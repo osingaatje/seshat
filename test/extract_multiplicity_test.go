@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/go-openapi/testify/v2/assert"
-	. "github.com/osingaatje/seshat/helper"
+	. "github.com/osingaatje/seshat/helper/multiplicity"
 )
 
 type MultTestCaseRes struct {

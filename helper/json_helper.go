@@ -9,21 +9,21 @@ import (
 const INDENT_PREFIX = ""
 const INDENT_STR = "  "
 
-func IndentJSON(fileContents []byte) (string, error) {
+func IndentJSON(fileContents []byte) ([]byte, error) {
 	compact := new(bytes.Buffer)
 	// first compact it
 	err := json.Compact(compact, fileContents)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	// now indent the shit out of it
 	indented := new(bytes.Buffer)
 	err = json.Indent(indented, compact.Bytes(), INDENT_PREFIX, INDENT_STR)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return indented.String(), nil
+	return indented.Bytes(), nil
 }
 
 // Explicitly does not escape HTML codes. That messes up associations containing '>' for ex.

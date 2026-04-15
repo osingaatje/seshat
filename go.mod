@@ -8,11 +8,13 @@ require (
 	github.com/aaaton/golem/v4/dicts/en v1.0.1
 	github.com/agnivade/levenshtein v1.2.1
 	github.com/alecthomas/kong v1.14.0
+	github.com/bmatcuk/doublestar/v4 v4.10.0
 	github.com/fatih/color v1.18.0
 	github.com/go-openapi/testify/v2 v2.3.0
 	github.com/knights-analytics/hugot v0.6.5
 	github.com/nishanths/exhaustive v0.12.0
 	github.com/osingaatje/gostuff v1.0.1-0.20260316113038-50519f7475ff
+	github.com/rogpeppe/go-internal v1.14.1
 	golang.org/x/tools v0.43.0
 )
 
