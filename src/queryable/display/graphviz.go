@@ -10,7 +10,7 @@ import (
 	. "github.com/osingaatje/seshat/types/graph/parse-result"
 )
 
-const POSITION_SCALE_FACTOR float64 = float64(1) / 8
+const POSITION_SCALE_FACTOR float64 = float64(1) / 40
 
 func FindQueries(c *context.Ctx) {
 	c.Queries.DisplayDiagramAsDot = context.DefineQuery(
@@ -35,7 +35,7 @@ func convertInternalToDot(c *context.Ctx, p *ParseResult) *DotGraph {
 		res.Nodes = append(res.Nodes, convertNode(v))
 	}
 	for _, e := range p.Edges {
-		res.Edges = append(res.Edges, convertEdge(c, p, e))
+		res.Edges = append(res.Edges, convertEdge(p, e))
 	}
 
 	return &res
@@ -50,19 +50,19 @@ func convertNode(v *ParsedVertex) DotNode {
 	return res
 }
 func extractTextFromNode(v *ParsedVertex) string {
-	res := v.Title
+	res := fmt.Sprintf("________ %s ________\n", v.Title)
 	vals := []string{}
 	for key, val := range v.Values {
 		value := val.Value
 		if val.Value != "" {
 			value = " default='" + val.Value + "'"
 		}
-		vals = append(vals, fmt.Sprintf("%s%s type='%s',vis='%s'", key, value, val.Properties.Type, val.Properties.Visibility))
+		vals = append(vals, fmt.Sprintf("%s%s : %s (%s)", key, value, val.Properties.Type, val.Properties.Visibility))
 	}
 	slices.Sort(vals) // otherwise the element ordering is random and graphviz doesn't recognise it as the same node
 
 	if len(vals) > 0 {
-		res += "\nvals='" + strings.Join(vals, ",") + "'"
+		res += strings.Join(vals, "\n")
 	}
 
 	res = fmt.Sprintf("\"%s\"", res)
@@ -71,7 +71,7 @@ func extractTextFromNode(v *ParsedVertex) string {
 }
 
 func extractNodeOpts(v *ParsedVertex) DotNodeOptions {
-	newVec := v.VisualProperties.Location.Mul(POSITION_SCALE_FACTOR)
+	newVec := v.VisualProperties.Location.Mul(POSITION_SCALE_FACTOR).MulComponents(1, -1) // Y SCALE IS INVERTED IN DOT!
 	res := DotNodeOptions{
 		Pos:       &newVec,
 		NoJustify: true,
@@ -79,22 +79,19 @@ func extractNodeOpts(v *ParsedVertex) DotNodeOptions {
 	return res
 }
 
-func convertEdge(c *context.Ctx, r *ParseResult, e *ParsedEdge) DotEdge {
-
+func convertEdge(r *ParseResult, e *ParsedEdge) DotEdge {
 	res := DotEdge{
 		FromText: "",
 		ToText:   "",
 	}
 	if e.FromId == nil {
-		c.LogWarn("Invalid edge, not connected to a starting vertex")
-		res.FromText = "No Edge"
+		res.FromText = "\"NO STARTING VERTEX\""
 	} else {
 		res.FromText = extractTextFromNode(r.Vertices[*e.FromId])
 	}
 
 	if e.ToId == nil {
-		c.LogWarn("Invalid edge, not connected to an end vertex")
-		res.FromText = "No Edge"
+		res.ToText = "\"NO ENDING VERTEX\""
 	} else {
 		res.ToText = extractTextFromNode(r.Vertices[*e.ToId])
 	}
