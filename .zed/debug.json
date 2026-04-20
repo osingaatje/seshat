@@ -30,4 +30,20 @@
       "--out=DATASETS/output/2025M2TCS/q5",
     ],
   },
+  {
+    "label": "Emit DOT",
+    "adapter": "Delve",
+    "request": "launch",
+    "mode": "debug",
+    "program": "${ZED_WORKTREE_ROOT}/src/ui/cli/main/main.go",
+    "buildFlags": [],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "envFile": "${ZED_WORKTREE_ROOT}/.env",
+    "args": [
+      "emit",
+      "--in=DATASETS/2025_M2_BIT/q/1/121464.json",
+      "--out=./",
+      "--type=dot",
+    ],
+  },
 ]
