@@ -11,6 +11,7 @@ import (
 	. "github.com/osingaatje/seshat/types/grade"
 
 	"github.com/alecthomas/kong"
+	displaygraph "github.com/osingaatje/seshat/types/graph/dot"
 	dot "github.com/osingaatje/seshat/types/graph/dot"
 	intern "github.com/osingaatje/seshat/types/graph/internal-rep"
 	parse "github.com/osingaatje/seshat/types/graph/parse-result"
@@ -77,7 +78,11 @@ func (cmd *EmitCmd) Run(c *context.Ctx) error {
 		return exportMany(cmd.Output, names, internalRep)
 
 	case g.DotFile:
-		return exportMany(cmd.Output, names, dot)
+		if dot == nil {
+			return c.LogErrAndReturn("Dot graphs were nil! BUG IN CODE")
+		}
+		dotstrings := helper.Map(dot, func(d *displaygraph.DotGraph) string { return d.String() })
+		return exportManyString(cmd.Output, names, dotstrings)
 	}
 
 	return c.LogErrAndReturn("Unknown graph type %s", cmd.Type)
@@ -86,13 +91,25 @@ func (cmd *EmitCmd) Run(c *context.Ctx) error {
 func outFile(dir, infile string) string {
 	return filepath.Join(dir, filepath.Base(infile)+"-fixed.json")
 }
-func exportMany[E any](basedir string, names []string, objs []*E) error {
+
+func exportMany[E any](basedir string, names []string, objs []E) error {
+	return exportManyFunc(basedir, names, objs, func(fn string, obj E) error { return helper.Export(fn, obj) })
+}
+
+func exportManyString(basedir string, names []string, objs []string) error {
+	return exportManyFunc(basedir, names, objs, func(fn string, obj string) error { return helper.ExportString(fn, obj) })
+}
+
+func exportManyFunc[E any](basedir string, names []string, objs []E, exportFunc func(filename string, obj E) error) error {
 	if len(names) != len(objs) {
 		return fmt.Errorf("BUG IN TOOL: NAMES LENGTH != EXPORT OBJECT LENGTH")
 	}
 
 	for i, res := range objs {
-		e := helper.Export(outFile(basedir, names[i]), res)
+		var e error
+		filename := outFile(basedir, names[i])
+
+		e = exportFunc(filename, res)
 		if e != nil {
 			return e
 		}
@@ -150,6 +167,9 @@ func getRepsOfFiles(c *context.Ctx, inputGlob string, graphType g.GraphType) ([]
 	matches, err := filepath.Glob(inputGlob)
 	if err != nil {
 		return nil, nil, nil, nil, nil, err
+	}
+	if len(matches) == 0 {
+		return nil, nil, nil, nil, nil, fmt.Errorf("No matches found for GLOB '%s'", inputGlob)
 	}
 	names := []string{}
 	resU, resP, resI, resD := []*utml.ParseResultUTML{}, []*parse.ParseResult{}, []*intern.InternalGraph{}, []*dot.DotGraph{}
