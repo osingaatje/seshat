@@ -39,11 +39,11 @@ func (g *DotGraph) String() string {
 	res += "\t" + g.EdgeSettings.String()
 
 	for _, n := range g.Nodes {
-		res += "\t" + n.String()
+		res += "\n\t" + n.String()
 	}
 
 	for _, e := range g.Edges {
-		res += "\t" + e.String()
+		res += "\n\t" + e.String()
 	}
 
 	res += "\n}"
@@ -59,7 +59,7 @@ type DotNode struct {
 func (d *DotNode) String() string {
 	res := d.Text
 	res += d.NodeOpts.String()
-	res += ";\n"
+	res += ";"
 
 	return res
 }
@@ -79,7 +79,7 @@ func (o *DotNodeOptions) String() string {
 	elems := []string{}
 	// per case:
 	if o.Pos != nil {
-		elems = append(elems, fmt.Sprintf("pos=\"%.1f,%.1f\"", o.Pos.X, o.Pos.Y))
+		elems = append(elems, fmt.Sprintf("pos=\"%.1f,%.1f!\"", o.Pos.X, o.Pos.Y))
 	}
 	if o.NoJustify {
 		elems = append(elems, "nojustify=true")
@@ -99,11 +99,16 @@ type DotEdge struct {
 }
 
 func (e *DotEdge) String() string {
-	if e.FromText == "" || e.ToText == "" {
-		panic("INVALID EDGE, REQUIRES FROM/TO STRING")
+	fromTxt := e.FromText
+	toTxt := e.ToText
+	if e.FromText == "" {
+		fromTxt = "INVALID START VERTEX"
+	}
+	if e.ToText == "" {
+		toTxt = "INVALID END VERTEX"
 	}
 
-	res := fmt.Sprintf("%s -- %s", e.FromText, e.ToText)
+	res := fmt.Sprintf("%s -- %s", fromTxt, toTxt)
 	if e.StartLabel == nil && e.MiddleLabel == nil && e.EndLabel == nil {
 		return res
 	}
