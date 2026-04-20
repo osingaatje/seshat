@@ -32,6 +32,9 @@ func (p *ParseResultUTML) String() string {
 }
 
 type ParseResultUTML struct {
+	// metadata
+	Filename string `json:"-"`
+
 	Edges []ParseResultUTMLEdge `json:"edges"`
 
 	Nodes []ParseResultUTMLNode `json:"nodes"`
