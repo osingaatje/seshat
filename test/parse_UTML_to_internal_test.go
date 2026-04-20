@@ -16,19 +16,19 @@ func TestConvertSpecificFile(t *testing.T) {
 	parseAndVerify(c, t, "../DATASETS/2025_M2_BIT/q/1/121464.json")
 }
 
-// func TestConvertAllDatasetFiles(t *testing.T) {
-// 	c := driver.NewContext()
+func TestConvertAllDatasetFiles(t *testing.T) {
+	c := driver.NewContext()
 
-// 	filePaths, err := helper.AllDatasetFiles()
-// 	if err != nil {
-// 		t.Errorf("%s", err)
-// 		return
-// 	}
+	filePaths, err := helper.AllDatasetFiles()
+	if err != nil {
+		t.Errorf("%s", err)
+		return
+	}
 
-// 	for _, path := range filePaths {
-// 		parseAndVerify(c, t, path)
-// 	}
-// }
+	for _, path := range filePaths {
+		parseAndVerify(c, t, path)
+	}
+}
 
 func TestConvertSimpleUTMLResultToInternal(t *testing.T) {
 	c := driver.NewContext()
