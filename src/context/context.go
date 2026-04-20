@@ -23,8 +23,17 @@ type Ctx struct {
 }
 
 type ContextLogger struct {
-	log []string
-	out io.Writer
+	prefixes []string // for logging function name while in that function etc.
+	log      []string
+	out      io.Writer
+}
+
+func NewContextLogger() ContextLogger {
+	return ContextLogger{
+		prefixes: []string{},
+		log:      []string{},
+		out:      os.Stderr,
+	}
 }
 
 func (l *ContextLogger) Write(b []byte) (n int, err error) {
@@ -57,7 +66,7 @@ func New() *Ctx {
 		ctx: &c,
 	}
 	c.Trace = []Trace{}
-	c.Logger = ContextLogger{log: []string{}, out: os.Stderr}
+	c.Logger = NewContextLogger()
 
 	// configure logging
 	slog.SetDefault(slog.New(slogcolor.NewHandler(&c.Logger, logOpts())))
@@ -79,19 +88,40 @@ func logOpts() *slogcolor.Options {
 	return opts
 }
 
+const MAX_PREFIX_CHARS = 30
+
+func (c *Ctx) LogPrefixAdd(pref string, args ...any) {
+	c.Logger.prefixes = append(c.Logger.prefixes, fmt.Sprintf(pref, args...)[:MAX_PREFIX_CHARS])
+}
+func (c *Ctx) LogPrefixRm() {
+	prefLen := len(c.Logger.prefixes)
+	if prefLen == 0 {
+		return
+	}
+	c.Logger.prefixes = c.Logger.prefixes[:prefLen-1]
+}
+
 func (c *Ctx) LogDebug(msg string, args ...any) {
-	slog.Debug(fmt.Sprintf(msg, args...))
+	slog.Debug(c.formatLogMsg(msg, args...))
 }
 func (c *Ctx) LogInfo(msg string, args ...any) {
-	slog.Info(fmt.Sprintf(msg, args...))
+	slog.Info(c.formatLogMsg(msg, args...))
 }
 func (c *Ctx) LogWarn(msg string, args ...any) {
-	slog.Warn(fmt.Sprintf(msg, args...))
+	slog.Warn(c.formatLogMsg(msg, args...))
 }
 func (c *Ctx) LogErr(msg string, args ...any) {
-	slog.Error(fmt.Sprintf(msg, args...))
+	slog.Error(c.formatLogMsg(msg, args...))
 }
 func (c *Ctx) LogErrAndReturn(errMsg string, args ...any) error {
 	c.LogErr(errMsg, args...)
 	return fmt.Errorf(errMsg, args...)
+}
+
+func (c *Ctx) formatLogMsg(msg string, args ...any) string {
+	rawLogMsg := fmt.Sprintf(msg, args...)
+	if len(c.Logger.prefixes) == 0 {
+		return rawLogMsg
+	}
+	return strings.Join(c.Logger.prefixes, " - ") + ": " + rawLogMsg
 }
