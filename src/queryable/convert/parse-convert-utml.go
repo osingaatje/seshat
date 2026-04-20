@@ -561,10 +561,10 @@ func extractUTMLEdgeLabel(e *ParseResultUTMLEdge) *ParsedLabel {
 func verifyEdgesLinkToVertices(r *pr.ParseResult) error {
 	incorrectEdges := []string{}
 	for id, e := range r.Edges {
-		var hasFromVertex bool
-		var hasToVertex bool
-		var hasFromEdge bool
-		var hasToEdge bool
+		var hasFromVertex bool = false
+		var hasToVertex bool = false
+		var hasFromEdge bool = false
+		var hasToEdge bool = false
 
 		if e.FromId != nil {
 			_, hasFromVertex = r.Vertices[*e.FromId]
@@ -576,7 +576,7 @@ func verifyEdgesLinkToVertices(r *pr.ParseResult) error {
 			_, hasFromEdge = r.Edges[*e.FromEdgeId]
 		}
 		if e.ToEdgeId != nil {
-			_, hasFromEdge = r.Edges[*e.ToEdgeId]
+			_, hasToEdge = r.Edges[*e.ToEdgeId]
 		}
 
 		// if the edge has both (or neither) a from vertex/edge or a to vertex/edge, then we did something wrong
