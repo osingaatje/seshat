@@ -35,3 +35,11 @@ func AnyBool(arr []bool) bool {
 	}
 	return false
 }
+
+func Map[E any, V any](arr []E, f func(E) V) []V {
+	res := make([]V, len(arr))
+	for i, e := range arr {
+		res[i] = f(e)
+	}
+	return res
+}

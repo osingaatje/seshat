@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	multiplicity          *regexp.Regexp = regexp.MustCompile(`^(\d+|\*)(\.\.(\d+|\*))?$`)
+	multiplicity          *regexp.Regexp = regexp.MustCompile(`^(\d+|\*)(\.+(\d+|\*))?$`)
 	singleMatchCount                     = 2 // first one is always the entire string
 	rangeMatchCount                      = 4
 	fromMultiplicityIndex                = 1
