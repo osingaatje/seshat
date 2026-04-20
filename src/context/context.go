@@ -88,10 +88,14 @@ func logOpts() *slogcolor.Options {
 	return opts
 }
 
-const MAX_PREFIX_CHARS = 30
+const MAX_PREFIX_CHARS = 50
 
 func (c *Ctx) LogPrefixAdd(pref string, args ...any) {
-	c.Logger.prefixes = append(c.Logger.prefixes, fmt.Sprintf(pref, args...)[:MAX_PREFIX_CHARS])
+	pr := fmt.Sprintf(pref, args...)
+	if len(pr) > MAX_PREFIX_CHARS {
+		pr = pr[:MAX_PREFIX_CHARS]
+	}
+	c.Logger.prefixes = append(c.Logger.prefixes, pr)
 }
 func (c *Ctx) LogPrefixRm() {
 	prefLen := len(c.Logger.prefixes)
