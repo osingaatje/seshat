@@ -13,7 +13,7 @@ import (
 )
 
 func TestUTMLParseALLDATASETS(t *testing.T) {
-	VerifyParsingForFiles(t, "../DATASETS", "**/*.json") // uses 'double-star' GLOB syntax, supported by my matching function. Not in default Go!
+	VerifyParsingForFiles(t, helper.DATASET_DIR, helper.DATASET_FILE_GLOB) // uses 'double-star' GLOB syntax, supported by my matching function. Not in default Go!
 }
 
 // Tests whether the parsed and JSONified file and the formatted input file is literally, to the character, the exact same.

@@ -20,6 +20,13 @@ func AllUTMLFiles(path string) ([]string, error) {
 	return AllFiles(path, "*.utml", "*.json")
 }
 
+const DATASET_DIR = "../DATASETS"
+const DATASET_FILE_GLOB = "**/*.json"
+
+func AllDatasetFiles() ([]string, error) {
+	return AllFiles(DATASET_DIR, DATASET_FILE_GLOB)
+}
+
 // Supports the double-star syntax in GLOB ("**/*.go" for example)
 func AllFiles(path string, globs ...string) ([]string, error) {
 	stat, err := os.Stat(path)
