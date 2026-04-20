@@ -49,6 +49,13 @@ func (v Vector2D) Mul(factor float64) Vector2D {
 	}
 }
 
+func (v Vector2D) MulComponents(X float64, Y float64) Vector2D {
+	return Vector2D{
+		X: v.X * X,
+		Y: v.Y * Y,
+	}
+}
+
 // euclidean distance. d(p,q) = sqrt((p1 - q1)^2 + (p2 - q2)^2)
 func (v Vector2D) Dist(vO Vector2D) float64 {
 	return math.Sqrt(math.Pow(v.X-vO.X, 2) + math.Pow(v.Y-vO.Y, 2))
