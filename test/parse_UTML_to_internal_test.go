@@ -41,7 +41,7 @@ func TestConvertSimpleUTMLResultToInternal(t *testing.T) {
 }
 
 func TestConvertBrokenFiles(t *testing.T) {
-	filePaths := helper.AllUTMLFilesUNSAFE("./examples/broken-intern")
+	filePaths := helper.AllUTMLFilesUNSAFE("./examples/broken-internal")
 	for _, path := range filePaths {
 		c := driver.NewContext()
 
