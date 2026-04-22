@@ -2,10 +2,7 @@ package parseresult
 
 import (
 	"fmt"
-	"slices"
-	"strings"
 
-	. "github.com/osingaatje/seshat/types/graph/internal-rep"
 	. "github.com/osingaatje/seshat/types/graph/shared"
 )
 
@@ -54,44 +51,8 @@ func NewParseResult() *ParseResult {
 	return &res
 }
 
-func (p *ParseResult) ToInternal() (*InternalGraph, error) {
-	if p == nil {
-		return nil, fmt.Errorf("Parse Result was nil!")
-	}
-
-	res := &InternalGraph{
-		Vertices: map[VertexIdentifier]*InternalVertex{},
-		Edges:    map[EdgeIdentifier]*InternalEdge{},
-	}
-	errors := []string{}
-
-	for id, v := range p.Vertices {
-		iV, err := v.ToInternal()
-		if err != nil {
-			newErrMsg := fmt.Sprintf("Failed converting vertex %s to internal repr.: %s", v.String(), err.Error())
-			errors = append(errors, newErrMsg)
-			continue
-		}
-		res.Vertices[id] = iV
-	}
-	for id, e := range p.Edges {
-		iE, err := e.ToInternal()
-		if err != nil {
-			newErrMsg := fmt.Sprintf("Failed converting edge %s to internal repr.: %s", e.String(), err.Error())
-			errors = append(errors, newErrMsg)
-		}
-		res.Edges[id] = iE
-	}
-
-	var err error = nil
-	if len(errors) > 0 {
-		err = fmt.Errorf(
-			"Errors happended while converting to internal result: [%s]",
-			strings.Join(errors, ","),
-		)
-	}
-
-	return res, err
+func (g *ParseResult) Empty() bool {
+	return len(g.Edges) == 0 && len(g.Vertices) == 0
 }
 
 type ParsedVertex struct {
@@ -120,26 +81,7 @@ func (p *ParsedVertex) Copy() *ParsedVertex {
 	}
 	return res
 }
-func (p *ParsedVertex) ToInternal() (v *InternalVertex, err error) {
-	if p == nil {
-		return nil, fmt.Errorf("p is nil")
-	}
 
-	if slices.Contains(SKIPPED_TYPES, p.Properties.Type) {
-		return nil, fmt.Errorf("Vertex %s will be skipped (contains skippable vertex type '%s')", p.String(), p.Properties.Type)
-	}
-
-	res := &InternalVertex{
-		Id:         p.Id,
-		Title:      p.Title,
-		Properties: p.Properties,
-		Values:     map[string]ParsedValue{},
-	}
-	for k, v := range p.Values {
-		res.Values[k] = v.Copy()
-	}
-	return res, nil
-}
 func (p *ParsedVertex) String() string {
 	if p == nil {
 		return "nil"
@@ -148,6 +90,7 @@ func (p *ParsedVertex) String() string {
 }
 
 type ParsedEdge struct {
+	Id         EdgeIdentifier    `json:"id"`
 	FromId     *VertexIdentifier `json:"fromId"`     // an edge may be 'floating', i.e. not connected
 	ToId       *VertexIdentifier `json:"toId"`       // an edge may be 'floating', i.e. not connected
 	FromEdgeId *EdgeIdentifier   `json:"fromEdgeId"` // an edge may be connected to another edge
@@ -167,6 +110,7 @@ func (e *ParsedEdge) Copy() *ParsedEdge {
 	}
 
 	res := &ParsedEdge{
+		Id:               e.Id,
 		FromId:           e.FromId,
 		ToId:             e.ToId,
 		FromEdgeId:       e.FromEdgeId,
@@ -180,31 +124,6 @@ func (e *ParsedEdge) Copy() *ParsedEdge {
 	return res
 }
 
-func (e *ParsedEdge) ToInternal() (*InternalEdge, error) {
-	res := &InternalEdge{
-		FromId:          e.FromId,
-		ToId:            e.ToId,
-		FromEdgeId:      e.FromEdgeId,
-		ToEdgeId:        e.ToEdgeId,
-		Label:           e.Label.Copy(),
-		StyleProperties: e.StyleProperties,
-		// visual props omitted
-
-		// FromProps, ToProps added below
-	}
-
-	fromP, errF := e.FromProperties.ToInternal()
-	toP, errT := e.ToProperties.ToInternal()
-	if errF != nil {
-		return nil, fmt.Errorf("Could not parse start properties: %s", errF.Error())
-	}
-	if errT != nil {
-		return nil, fmt.Errorf("Could not parse end properties: %s", errT.Error())
-	}
-	res.FromProperties = fromP
-	res.ToProperties = toP
-	return res, nil
-}
 func (e *ParsedEdge) String() string {
 	if e == nil {
 		return "nil"
@@ -225,4 +144,62 @@ func (e *ParsedEdge) String() string {
 	res = res[:len(res)-1] // remove trailing comma
 	res += ")"
 	return res
+}
+
+func (g *ParseResult) VerticesConnect(v1 VertexIdentifier, v2 VertexIdentifier) ([]EdgeIdentifier, bool) {
+	res := []EdgeIdentifier{}
+	for eId, e := range g.Edges {
+		if e.FromId != nil && e.ToId != nil && (*e.FromId == v1 || *e.FromId == v2) && (*e.ToId == v1 || *e.ToId == v2) {
+			res = append(res, eId)
+		}
+	}
+	return res, len(res) > 0
+}
+
+func (g *ParseResult) ConnectedEdges(v VertexIdentifier) []EdgeIdentifier {
+	res := []EdgeIdentifier{}
+	for eId, e := range g.Edges {
+		if (e.FromId != nil && *e.FromId == v) || (e.ToId != nil && *e.ToId == v) {
+			res = append(res, eId)
+		}
+	}
+	return res
+}
+
+func (g *ParseResult) MergeConnectedEdges(edges []EdgeIdentifier, referenceGraph *ParseResult) {
+	if g == nil || referenceGraph == nil {
+		panic("ONE OF THE GRAPHS WAS NIL WHEN MERGING CONNECTING EDGES!")
+	}
+
+	for _, eId := range edges {
+		edge := referenceGraph.Edges[eId]
+		g.Edges[eId] = edge
+		if edge.FromId != nil {
+			g.Vertices[*edge.FromId] = referenceGraph.Vertices[*edge.FromId]
+		}
+		if edge.ToId != nil {
+			g.Vertices[*edge.ToId] = referenceGraph.Vertices[*edge.ToId]
+		}
+	}
+}
+
+func (g *ParseResult) DeleteEdgesAndTheirVertices(edges []EdgeIdentifier) {
+	if g == nil {
+		panic("GRAPH NIL WHEN DELETING EDGES!")
+	}
+
+	for _, eId := range edges {
+		edge, ok := g.Edges[eId]
+		if !ok || edge == nil {
+			continue
+		}
+
+		if edge.FromId != nil {
+			delete(g.Vertices, *edge.FromId)
+		}
+		if edge.ToId != nil {
+			delete(g.Vertices, *edge.ToId)
+		}
+		delete(g.Edges, eId)
+	}
 }

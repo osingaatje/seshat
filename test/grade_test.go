@@ -41,18 +41,12 @@ func gradeStuff(filename1 string, filename2 string) *grade.GradeResult {
 		c.LogErr("Could not repair ")
 		return nil
 	}
-	internal1 := c.Queries.ConvertGraphToInternal.Get("Convert file 1 to internal", fixed1)
-	internal2 := c.Queries.ConvertGraphToInternal.Get("Convert file 2 to internal", fixed1)
-	if internal1 == nil || internal2 == nil {
-		c.LogErr("Could not convert to internal representation")
-		return nil
-	}
 
 	rubric := grade.NewGradeRubric()
 	grade := c.Queries.GradeDiagram.Get("Grade file 1", command.GradeCmd{
 		Rubric:            &rubric,
-		ReferenceSolution: internal1,
-		Submission:        internal2,
+		ReferenceSolution: fixed1,
+		Submission:        fixed2,
 	})
 
 	return grade

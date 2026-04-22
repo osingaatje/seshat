@@ -16,9 +16,6 @@ func FindQueries(c *context.Ctx) {
 
 	c.Queries.ParseUTMLToParseRes = context.DefineQuery(c,
 		"Parse UTML to parse result", convertUTMLToParseRes)
-
-	c.Queries.ConvertGraphToInternal = context.DefineQuery(c,
-		"Parse Result -> Internal graph", convertParseResToInternal)
 }
 
 // general method that switches based on context

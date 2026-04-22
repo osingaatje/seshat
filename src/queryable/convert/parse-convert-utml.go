@@ -44,8 +44,7 @@ func parseUTML(c *context.Ctx, filepath string) *ParseResultUTML {
 // Converting to internal representation
 func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.ParseResult {
 	c.LogPrefixAdd("UTML -> Internal '%s'", filepath.Base(utml.Filename))
-	defer c.LogPrefixRm() // I love Go
-
+	defer /* I love Go */ c.LogPrefixRm("UTML -> Internal '%s'", filepath.Base(utml.Filename))
 	if utml == nil {
 		c.LogErr("Nil UTML parse result when converting to generic ParseResult.")
 		return nil
@@ -57,15 +56,15 @@ func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.ParseResul
 		if vertex == nil { // errors are logged in function
 			return nil
 		}
-		res.Vertices[VertexIdentifier(vertex.Id)] = vertex
+		res.Vertices[vertex.Id] = vertex
 	}
 
-	for index, e := range utml.Edges {
-		edge := convertUTMLEdge(c, &e)
+	for i, e := range utml.Edges {
+		edge := convertUTMLEdge(c, i, &e)
 		if edge == nil { // inner errors are logged. no error logging here.
 			return nil
 		}
-		res.Edges[EdgeIdentifier(index)] = edge
+		res.Edges[edge.Id] = edge
 	}
 
 	// EXTRA METHODS FOR EDGES:
@@ -159,12 +158,13 @@ func extractVisualProps(n *ParseResultUTMLNode) VertexVisualProperties {
 	return res
 }
 
-func convertUTMLEdge(c *context.Ctx, e *ParseResultUTMLEdge) *pr.ParsedEdge {
+func convertUTMLEdge(c *context.Ctx, index int, e *ParseResultUTMLEdge) *pr.ParsedEdge {
 	if e.StartNodeId != nil && *e.StartNodeId < 0 || e.EndNodeId != nil && *e.EndNodeId < 0 {
 		c.LogErr("FromId or ToId have non-uint64 values for ")
 	}
 
 	res := pr.ParsedEdge{
+		Id:               EdgeIdentifier(index),
 		FromId:           NewVertexIdentifierInt16(e.StartNodeId), // nodeId = location in the array
 		ToId:             NewVertexIdentifierInt16(e.EndNodeId),   // nodeId = location in the array
 		FromEdgeId:       nil,                                     // filled in later

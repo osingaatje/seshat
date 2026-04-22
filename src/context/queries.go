@@ -9,7 +9,6 @@ import (
 	. "github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/grade"
 	. "github.com/osingaatje/seshat/types/graph/dot"
-	. "github.com/osingaatje/seshat/types/graph/internal-rep"
 	. "github.com/osingaatje/seshat/types/graph/parse-result"
 	. "github.com/osingaatje/seshat/types/graph/utml"
 )
@@ -24,8 +23,6 @@ type Queries struct {
 
 	DisplayDiagramAsDot *Query[*ParseResult, *DotGraph]
 	RepairDiagram       *Query[RepairCmd /* parse result + config */, *ParseResult]
-
-	ConvertGraphToInternal *Query[*ParseResult, *InternalGraph]
 
 	GradeDiagram                     *Query[GradeCmd, *GradeResult]
 	SyntacticMatch                   *Query[MatchStringCmd, int]

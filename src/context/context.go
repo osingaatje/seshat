@@ -9,6 +9,7 @@ import (
 	"io"
 	"log/slog"
 	"os"
+	"slices"
 	"strings"
 
 	"github.com/MatusOllah/slogcolor"
@@ -90,19 +91,24 @@ func logOpts() *slogcolor.Options {
 
 const MAX_PREFIX_CHARS = 50
 
-func (c *Ctx) LogPrefixAdd(pref string, args ...any) {
+func formatPrefix(pref string, args ...any) string {
 	pr := fmt.Sprintf(pref, args...)
 	if len(pr) > MAX_PREFIX_CHARS {
 		pr = pr[:MAX_PREFIX_CHARS]
 	}
-	c.Logger.prefixes = append(c.Logger.prefixes, pr)
+	return pr
 }
-func (c *Ctx) LogPrefixRm() {
-	prefLen := len(c.Logger.prefixes)
-	if prefLen == 0 {
-		return
+
+func (c *Ctx) LogPrefixAdd(pref string, args ...any) {
+	c.Logger.prefixes = append(c.Logger.prefixes, formatPrefix(pref, args...))
+}
+func (c *Ctx) LogPrefixRm(prefix string, args ...any) {
+	i := slices.Index(c.Logger.prefixes, formatPrefix(prefix, args...))
+	if i < 0 {
+		panic(fmt.Sprintf("Remove prefix '%s' - not present in prefixes! BUG IN CODE!", prefix))
 	}
-	c.Logger.prefixes = c.Logger.prefixes[:prefLen-1]
+
+	c.Logger.prefixes = append(c.Logger.prefixes[:i], c.Logger.prefixes[i+1:]...)
 }
 
 func (c *Ctx) LogDebug(msg string, args ...any) {
