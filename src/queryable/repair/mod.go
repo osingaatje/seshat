@@ -3,7 +3,7 @@ package repair
 import (
 	"github.com/osingaatje/seshat/src/context"
 	cmd "github.com/osingaatje/seshat/types/command"
-	. "github.com/osingaatje/seshat/types/graph/parse-result"
+	. "github.com/osingaatje/seshat/types/graph/intern"
 )
 
 func FindQueries(c *context.Ctx) {
@@ -13,7 +13,7 @@ func FindQueries(c *context.Ctx) {
 		performRepairs)
 }
 
-func performRepairs(c *context.Ctx, conf cmd.RepairCmd) *ParseResult {
+func performRepairs(c *context.Ctx, conf cmd.RepairCmd) *InternalGraph {
 	if conf.Diagram == nil {
 		return nil // repair(nil) = nil
 	}

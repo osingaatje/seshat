@@ -12,7 +12,7 @@ import (
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/generic"
-	pr "github.com/osingaatje/seshat/types/graph/parse-result"
+	pr "github.com/osingaatje/seshat/types/graph/intern"
 	. "github.com/osingaatje/seshat/types/graph/shared"
 	. "github.com/osingaatje/seshat/types/graph/utml"
 )
@@ -42,7 +42,7 @@ func parseUTML(c *context.Ctx, filepath string) *ParseResultUTML {
 }
 
 // Converting to internal representation
-func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.ParseResult {
+func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.InternalGraph {
 	c.LogPrefixAdd("UTML -> Internal '%s'", filepath.Base(utml.Filename))
 	defer /* I love Go */ c.LogPrefixRm("UTML -> Internal '%s'", filepath.Base(utml.Filename))
 	if utml == nil {
@@ -84,12 +84,12 @@ func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.ParseResul
 	return res
 }
 
-func convertUTMLVertex(index int, n *ParseResultUTMLNode) *pr.ParsedVertex {
+func convertUTMLVertex(index int, n *ParseResultUTMLNode) *pr.InternalVertex {
 	extractedProps := extractUTMLVertexProperties(n)
 	extractedVals := extractUTMLVals(n)
 	extractedVisualProps := extractVisualProps(n)
 
-	return &pr.ParsedVertex{
+	return &pr.InternalVertex{
 		Id:               VertexIdentifier(index), // location in the original UTML array
 		Title:            n.Text,
 		Properties:       extractedProps,
@@ -158,12 +158,12 @@ func extractVisualProps(n *ParseResultUTMLNode) VertexVisualProperties {
 	return res
 }
 
-func convertUTMLEdge(c *context.Ctx, index int, e *ParseResultUTMLEdge) *pr.ParsedEdge {
+func convertUTMLEdge(c *context.Ctx, index int, e *ParseResultUTMLEdge) *pr.InternalEdge {
 	if e.StartNodeId != nil && *e.StartNodeId < 0 || e.EndNodeId != nil && *e.EndNodeId < 0 {
 		c.LogErr("FromId or ToId have non-uint64 values for ")
 	}
 
-	res := pr.ParsedEdge{
+	res := pr.InternalEdge{
 		Id:               EdgeIdentifier(index),
 		FromId:           NewVertexIdentifierInt16(e.StartNodeId), // nodeId = location in the array
 		ToId:             NewVertexIdentifierInt16(e.EndNodeId),   // nodeId = location in the array
@@ -182,7 +182,7 @@ func convertUTMLEdge(c *context.Ctx, index int, e *ParseResultUTMLEdge) *pr.Pars
 	return &res
 }
 
-func _tryAddStartEndLocation(c *context.Ctx, iE *pr.ParsedEdge, pos UTMLEdgeXYOrOffsetPosition, isStart bool) bool {
+func _tryAddStartEndLocation(c *context.Ctx, iE *pr.InternalEdge, pos UTMLEdgeXYOrOffsetPosition, isStart bool) bool {
 	switch pos := pos.Value.(type) {
 	case UTMLEdgeOffsetPosition:
 		// nothing happens here, the offset needs to be filled in later based on the Node.
@@ -212,7 +212,7 @@ func extractUTMLEdgeEndProps(e *ParseResultUTMLEdge, start bool) EdgeEndProperti
 	}
 
 	if lbl != nil {
-		res.Label = &ParsedLabel{
+		res.Label = &Label{
 			Text:     lbl.Value,
 			Location: Vector2D{}, // THIS IS DONE AFTER PARSING!
 		}
@@ -221,7 +221,7 @@ func extractUTMLEdgeEndProps(e *ParseResultUTMLEdge, start bool) EdgeEndProperti
 	return res
 }
 
-func finaliseEdgeProperties(c *context.Ctx, utml *ParseResultUTML, res *pr.ParseResult) error {
+func finaliseEdgeProperties(c *context.Ctx, utml *ParseResultUTML, res *pr.InternalGraph) error {
 	for uEID, uE := range utml.Edges {
 		nFromId := uE.StartNodeId
 		nToId := uE.EndNodeId
@@ -294,7 +294,7 @@ func finaliseEdgeProperties(c *context.Ctx, utml *ParseResultUTML, res *pr.Parse
 }
 
 // some edges may not be connected to both nodes. We hope that the creator of the diagram means to connect it to an edge, which we try to implement here.
-func tryConnectEdgeEnds(graph *pr.ParseResult, id EdgeIdentifier, iE *pr.ParsedEdge) error {
+func tryConnectEdgeEnds(graph *pr.InternalGraph, id EdgeIdentifier, iE *pr.InternalEdge) error {
 	if iE.FromId != nil && iE.ToId != nil {
 		panic("ONLY USE THIS FUNCTION WHEN A FromId OR ToId IS MISSING")
 	}
@@ -418,7 +418,7 @@ func _addEdgeStartEndLocation(
 	nFrom *ParseResultUTMLNode,
 	nTo *ParseResultUTMLNode,
 	e *ParseResultUTMLEdge,
-	res *pr.ParsedEdge) error {
+	res *pr.InternalEdge) error {
 	if e == nil || res == nil {
 		panic("you stupid?")
 	}
@@ -473,9 +473,9 @@ func _addEdgeStartEndLocation(
 func _addLocationToLabel(
 	uE *ParseResultUTMLEdge,
 	uL *UTMLEdgeLabel,
-	iE *pr.ParsedEdge,
+	iE *pr.InternalEdge,
 	labelPos EdgeLabelPos,
-	resL *ParsedLabel) {
+	resL *Label) {
 	if uE == nil || uL == nil || resL == nil {
 		panic("Internal bug, something is nil.")
 	}
@@ -546,19 +546,19 @@ func extractUTMLEdgeProps(e *ParseResultUTMLEdge) EdgeStyleProperties {
 	return res
 }
 
-func extractUTMLEdgeLabel(e *ParseResultUTMLEdge) *ParsedLabel {
+func extractUTMLEdgeLabel(e *ParseResultUTMLEdge) *Label {
 	if e.MiddleLabel == nil {
 		return nil
 	}
 
-	res := &ParsedLabel{
+	res := &Label{
 		Text: e.MiddleLabel.Value,
 		//Location: Vector2D{}.New(e.MiddleLabel.Offset), ADDED LATER!
 	}
 	return res
 }
 
-func verifyEdgesLinkToVertices(r *pr.ParseResult) error {
+func verifyEdgesLinkToVertices(r *pr.InternalGraph) error {
 	incorrectEdges := []string{}
 	for id, e := range r.Edges {
 		var hasFromVertex bool = false

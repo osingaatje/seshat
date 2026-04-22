@@ -9,7 +9,7 @@ import (
 	. "github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/grade"
 	. "github.com/osingaatje/seshat/types/graph/dot"
-	. "github.com/osingaatje/seshat/types/graph/parse-result"
+	. "github.com/osingaatje/seshat/types/graph/intern"
 	. "github.com/osingaatje/seshat/types/graph/utml"
 )
 
@@ -17,12 +17,12 @@ type Queries struct {
 	ctx *Ctx
 
 	// queries are placed here. Note that you need to add this query to DefineQueries() and then let the Driver call the function in order to use it!
-	Parse               *Query[ParseCmd, *ParseResult]
+	Parse               *Query[ParseCmd, *InternalGraph]
 	ParseUTML           *Query[string /* file path */, *ParseResultUTML]
-	ParseUTMLToParseRes *Query[*ParseResultUTML, *ParseResult]
+	ParseUTMLToParseRes *Query[*ParseResultUTML, *InternalGraph]
 
-	DisplayDiagramAsDot *Query[*ParseResult, *DotGraph]
-	RepairDiagram       *Query[RepairCmd /* parse result + config */, *ParseResult]
+	DisplayDiagramAsDot *Query[*InternalGraph, *DotGraph]
+	RepairDiagram       *Query[RepairCmd /* parse result + config */, *InternalGraph]
 
 	GradeDiagram                     *Query[GradeCmd, *GradeResult]
 	SyntacticMatch                   *Query[MatchStringCmd, int]

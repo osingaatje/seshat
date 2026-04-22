@@ -2,11 +2,11 @@ package command
 
 import (
 	. "github.com/osingaatje/seshat/types/grade"
-	. "github.com/osingaatje/seshat/types/graph/parse-result"
+	. "github.com/osingaatje/seshat/types/graph/intern"
 )
 
 type GradeCmd struct {
 	Rubric            *GradeRubric
-	ReferenceSolution *ParseResult
-	Submission        *ParseResult
+	ReferenceSolution *InternalGraph
+	Submission        *InternalGraph
 }

@@ -8,7 +8,7 @@ import (
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/command"
-	. "github.com/osingaatje/seshat/types/graph/parse-result"
+	. "github.com/osingaatje/seshat/types/graph/intern"
 	. "github.com/osingaatje/seshat/types/graph/shared"
 )
 
@@ -35,11 +35,11 @@ func getAlternativeSolutions(
 	/*
 	 * This map contains the minimal meaningful units, mapped from REFERENCE -> SUBMISSION
 	 */
-	minimalUnits := map[*ParseResult]*ParseResult{}
+	minimalUnits := map[*InternalGraph]*InternalGraph{}
 	// per graph->graph matching: a map of vertex->vertex
-	fixedVertices := map[*ParseResult]map[VertexIdentifier]VertexIdentifier{}
+	fixedVertices := map[*InternalGraph]map[VertexIdentifier]VertexIdentifier{}
 
-	progresses := map[*ParseResult]bool{} // if the graph was further expanded this refinement step
+	progresses := map[*InternalGraph]bool{} // if the graph was further expanded this refinement step
 
 	for refId, subIdMap := range potentialMatches {
 		var smallestSyntacticDistance int = math.MaxInt
@@ -108,10 +108,10 @@ func getAlternativeSolutions(
  *
  */
 func growUnits(
-	refGraph *ParseResult,
-	subGraph *ParseResult,
-	refMU *ParseResult,
-	subMU *ParseResult,
+	refGraph *InternalGraph,
+	subGraph *InternalGraph,
+	refMU *InternalGraph,
+	subMU *InternalGraph,
 	certaintyMap map[VertexIdentifier]map[VertexIdentifier]float64,
 	fixedIds map[VertexIdentifier]VertexIdentifier) /*progress*/ bool {
 
@@ -194,9 +194,9 @@ func growUnits(
 
 	return true
 }
-func getNewEdges(originalGraph *ParseResult, mu *ParseResult) (map[EdgeIdentifier]*ParsedEdge, map[VertexIdentifier]*ParsedVertex) {
-	newEdges := map[EdgeIdentifier]*ParsedEdge{}
-	newVerts := map[VertexIdentifier]*ParsedVertex{}
+func getNewEdges(originalGraph *InternalGraph, mu *InternalGraph) (map[EdgeIdentifier]*InternalEdge, map[VertexIdentifier]*InternalVertex) {
+	newEdges := map[EdgeIdentifier]*InternalEdge{}
+	newVerts := map[VertexIdentifier]*InternalVertex{}
 	for vId, _ := range mu.Vertices {
 		newEIds := originalGraph.ConnectedEdges(vId)
 		for _, eId := range newEIds {
@@ -219,8 +219,8 @@ func getNewEdges(originalGraph *ParseResult, mu *ParseResult) (map[EdgeIdentifie
 }
 
 func combineSyntacticSemanticScore(
-	refGraph *ParseResult,
-	subGraph *ParseResult,
+	refGraph *InternalGraph,
+	subGraph *InternalGraph,
 	syntDist map[VertexIdentifier]map[VertexIdentifier]int,
 	semDist map[VertexIdentifier]map[VertexIdentifier]float64) map[VertexIdentifier]map[VertexIdentifier]float64 {
 
@@ -251,7 +251,7 @@ func combineSyntacticSemanticScore(
 	return res
 }
 
-func combineScores(refV *ParsedVertex, subV *ParsedVertex, syn int, sem float64) float64 {
+func combineScores(refV *InternalVertex, subV *InternalVertex, syn int, sem float64) float64 {
 	if syn == 0 { // exactly equal strings get special treatment :)
 		return 1
 	}
@@ -324,7 +324,7 @@ func getPotentialMatchingVertices(c *context.Ctx, cmd GradeCmd) (
 	return potentialMatches, syntacticDistance /*semanticWordNet, */, semanticMiniLM
 }
 
-func vertexToStr(v *ParsedVertex) string {
+func vertexToStr(v *InternalVertex) string {
 	r := new(strings.Builder)
 	r.WriteString(v.Title)
 	r.WriteRune(' ')

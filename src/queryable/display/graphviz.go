@@ -7,7 +7,7 @@ import (
 
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/graph/dot"
-	. "github.com/osingaatje/seshat/types/graph/parse-result"
+	. "github.com/osingaatje/seshat/types/graph/intern"
 )
 
 const POSITION_SCALE_FACTOR float64 = float64(1) / 40
@@ -20,7 +20,7 @@ func FindQueries(c *context.Ctx) {
 	)
 }
 
-func convertInternalToDot(c *context.Ctx, p *ParseResult) *DotGraph {
+func convertInternalToDot(c *context.Ctx, p *InternalGraph) *DotGraph {
 	if p == nil {
 		c.LogWarn("Nil ParseResult in call to Dot conversion!")
 		return nil
@@ -41,7 +41,7 @@ func convertInternalToDot(c *context.Ctx, p *ParseResult) *DotGraph {
 	return &res
 }
 
-func convertNode(v *ParsedVertex) DotNode {
+func convertNode(v *InternalVertex) DotNode {
 	res := DotNode{
 		Text:     extractTextFromNode(v),
 		NodeOpts: extractNodeOpts(v),
@@ -49,7 +49,7 @@ func convertNode(v *ParsedVertex) DotNode {
 
 	return res
 }
-func extractTextFromNode(v *ParsedVertex) string {
+func extractTextFromNode(v *InternalVertex) string {
 	res := fmt.Sprintf("________ %s ________\n", v.Title)
 	vals := []string{}
 	for key, val := range v.Values {
@@ -70,7 +70,7 @@ func extractTextFromNode(v *ParsedVertex) string {
 	return res
 }
 
-func extractNodeOpts(v *ParsedVertex) DotNodeOptions {
+func extractNodeOpts(v *InternalVertex) DotNodeOptions {
 	newVec := v.VisualProperties.Location.Mul(POSITION_SCALE_FACTOR).MulComponents(1, -1) // Y SCALE IS INVERTED IN DOT!
 	res := DotNodeOptions{
 		Pos:       &newVec,
@@ -79,7 +79,7 @@ func extractNodeOpts(v *ParsedVertex) DotNodeOptions {
 	return res
 }
 
-func convertEdge(r *ParseResult, e *ParsedEdge) DotEdge {
+func convertEdge(r *InternalGraph, e *InternalEdge) DotEdge {
 	res := DotEdge{
 		FromText: "",
 		ToText:   "",

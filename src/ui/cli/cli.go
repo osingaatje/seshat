@@ -13,7 +13,7 @@ import (
 	"github.com/alecthomas/kong"
 	displaygraph "github.com/osingaatje/seshat/types/graph/dot"
 	dot "github.com/osingaatje/seshat/types/graph/dot"
-	parse "github.com/osingaatje/seshat/types/graph/parse-result"
+	parse "github.com/osingaatje/seshat/types/graph/intern"
 	utml "github.com/osingaatje/seshat/types/graph/utml"
 )
 
@@ -61,7 +61,7 @@ type EmitCmd struct {
 }
 
 func (cmd *EmitCmd) Run(c *context.Ctx) error {
-	names, utml, parseresfixed, dot, err := getRepsOfFiles(c, cmd.Input, cmd.Type)
+	names, utml, internal, dot, err := getRepsOfFiles(c, cmd.Input, cmd.Type)
 	if err != nil {
 		return err // logging is done internally in getReps
 	}
@@ -70,8 +70,8 @@ func (cmd *EmitCmd) Run(c *context.Ctx) error {
 	case g.UTMLResult:
 		return exportMany(cmd.Output, names, utml)
 
-	case g.ParseResult:
-		return exportMany(cmd.Output, names, parseresfixed)
+	case g.InternalRep:
+		return exportMany(cmd.Output, names, internal)
 
 	case g.DotFile:
 		if dot == nil {
@@ -131,7 +131,7 @@ func (cmd *GradeCmd) Run(c *context.Ctx) error {
 		return c.LogErrAndReturn("%s", err.Error())
 	}
 
-	_, refRep, _, errRef := getReps(c, cmd.ReferenceSubmission, g.ParseResult)
+	_, refRep, _, errRef := getReps(c, cmd.ReferenceSubmission, g.InternalRep)
 	if errRef != nil {
 		return c.LogErrAndReturn("Could not parse Reference Submission: %s", errRef.Error())
 	}
@@ -139,7 +139,7 @@ func (cmd *GradeCmd) Run(c *context.Ctx) error {
 	results := map[string]*GradeResult{}
 
 	for _, f := range allSubmissions {
-		_, submissionRep, _, err := getReps(c, f, g.ParseResult)
+		_, submissionRep, _, err := getReps(c, f, g.InternalRep)
 		if err != nil {
 			return c.LogErrAndReturn("Could not parse student submission '%s': %s", f, err.Error())
 		}
@@ -159,7 +159,7 @@ func (cmd *GradeCmd) Run(c *context.Ctx) error {
 
 // ---------------- HELPERS ---------------- //
 
-func getRepsOfFiles(c *context.Ctx, inputGlob string, graphType g.GraphType) ([]string, []*utml.ParseResultUTML, []*parse.ParseResult, []*dot.DotGraph, error) {
+func getRepsOfFiles(c *context.Ctx, inputGlob string, graphType g.GraphType) ([]string, []*utml.ParseResultUTML, []*parse.InternalGraph, []*dot.DotGraph, error) {
 	matches, err := filepath.Glob(inputGlob)
 	if err != nil {
 		return nil, nil, nil, nil, err
@@ -168,7 +168,7 @@ func getRepsOfFiles(c *context.Ctx, inputGlob string, graphType g.GraphType) ([]
 		return nil, nil, nil, nil, fmt.Errorf("No matches found for GLOB '%s'", inputGlob)
 	}
 	names := []string{}
-	resU, resP, resD := []*utml.ParseResultUTML{}, []*parse.ParseResult{}, []*dot.DotGraph{}
+	resU, resP, resD := []*utml.ParseResultUTML{}, []*parse.InternalGraph{}, []*dot.DotGraph{}
 	for _, match := range matches {
 		names = append(names, match)
 		u, p, d, e := getReps(c, match, graphType)
@@ -183,7 +183,7 @@ func getRepsOfFiles(c *context.Ctx, inputGlob string, graphType g.GraphType) ([]
 	return names, resU, resP, resD, nil
 }
 
-func getReps(c *context.Ctx, inputFile string, graphType g.GraphType) (*utml.ParseResultUTML, *parse.ParseResult, *dot.DotGraph, error) {
+func getReps(c *context.Ctx, inputFile string, graphType g.GraphType) (*utml.ParseResultUTML, *parse.InternalGraph, *dot.DotGraph, error) {
 	// UTML
 	utml := c.Queries.ParseUTML.Get("Parse UTML", inputFile)
 	if utml == nil {
@@ -207,7 +207,7 @@ func getReps(c *context.Ctx, inputFile string, graphType g.GraphType) (*utml.Par
 	if fixed == nil {
 		return utml, parseres, nil, c.LogErrAndReturn("Failed fixing diagram '%s'!", inputFile)
 	}
-	if graphType == g.ParseResult {
+	if graphType == g.InternalRep {
 		return utml, fixed, nil, nil
 	}
 

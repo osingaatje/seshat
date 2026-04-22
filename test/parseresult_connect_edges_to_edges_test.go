@@ -6,7 +6,7 @@ import (
 	"github.com/go-openapi/testify/v2/assert"
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/driver"
-	pr "github.com/osingaatje/seshat/types/graph/parse-result"
+	pr "github.com/osingaatje/seshat/types/graph/intern"
 	. "github.com/osingaatje/seshat/types/graph/shared"
 )
 
@@ -23,7 +23,7 @@ func TestConnectEdgeToOtherEdge(t *testing.T) {
 		return
 	}
 
-	internal := c.Queries.ParseUTMLToParseRes.Get("UTML -> internal", utml)
+	internal := c.Queries.ParseUTMLToParseRes.Get("UTML -> internal repr.", utml)
 	if internal == nil {
 		t.Fatal("Failed to parse internal repr.")
 		return
@@ -38,11 +38,11 @@ func TestConnectEdgeToOtherEdge(t *testing.T) {
 	manyClsId, _, _ := _findVertexByNameOrFail(t, internal, "ManyClass")
 	assClsId, _, _ := _findVertexByNameOrFail(t, internal, "AssociationClass")
 
-	oneToManyEdgeId, _, _ := _findEdgeByFuncOrFail(t, internal, func(e *pr.ParsedEdge) bool {
+	oneToManyEdgeId, _, _ := _findEdgeByFuncOrFail(t, internal, func(e *pr.InternalEdge) bool {
 		return e.FromId != nil && (*e.FromId) == (*oneClsId) && e.ToId != nil && (*e.ToId) == (*manyClsId)
 	})
 
-	_, assEdge, _ := _findEdgeByFuncOrFail(t, internal, func(e *pr.ParsedEdge) bool {
+	_, assEdge, _ := _findEdgeByFuncOrFail(t, internal, func(e *pr.InternalEdge) bool {
 		return e.FromId == nil && e.ToId != nil && (*e.ToId) == (*assClsId)
 	})
 
@@ -51,8 +51,8 @@ func TestConnectEdgeToOtherEdge(t *testing.T) {
 	assert.Equal(t, *assEdge.FromEdgeId, *oneToManyEdgeId)
 }
 
-func _findVertexByNameOrFail(t *testing.T, graph *pr.ParseResult, vertexName string) (*VertexIdentifier, *pr.ParsedVertex, bool) {
-	id, pv, ok := helper.FindValue(graph.Vertices, func(pv *pr.ParsedVertex) bool {
+func _findVertexByNameOrFail(t *testing.T, graph *pr.InternalGraph, vertexName string) (*VertexIdentifier, *pr.InternalVertex, bool) {
+	id, pv, ok := helper.FindValue(graph.Vertices, func(pv *pr.InternalVertex) bool {
 		return pv.Title == vertexName
 	})
 
@@ -63,7 +63,7 @@ func _findVertexByNameOrFail(t *testing.T, graph *pr.ParseResult, vertexName str
 	return id, *pv, ok
 }
 
-func _findEdgeByFuncOrFail(t *testing.T, graph *pr.ParseResult, f func(e *pr.ParsedEdge) bool) (*EdgeIdentifier, *pr.ParsedEdge, bool) {
+func _findEdgeByFuncOrFail(t *testing.T, graph *pr.InternalGraph, f func(e *pr.InternalEdge) bool) (*EdgeIdentifier, *pr.InternalEdge, bool) {
 	id, pe, ok := helper.FindValue(graph.Edges, f)
 	if !ok {
 		t.Fatal("Could not find edge")

@@ -3,7 +3,7 @@ package repair
 import (
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/generic"
-	pr "github.com/osingaatje/seshat/types/graph/parse-result"
+	pr "github.com/osingaatje/seshat/types/graph/intern"
 	. "github.com/osingaatje/seshat/types/graph/shared"
 )
 
@@ -32,14 +32,14 @@ ex. of usefulness: if a student has dragged them to a location of where another 
 		..but if a student starts dragging labels to other vertices then we can consider that a failure in their thinking.
 			(at least I (Douwe) think so. We should not account for such major failures)
 */
-func swapEdgeLabels(c *context.Ctx, p *pr.ParseResult) {
-	if p == nil {
+func swapEdgeLabels(c *context.Ctx, g *pr.InternalGraph) {
+	if g == nil {
 		c.LogWarn("Trying to swap edge labels on an empty parse result - BUG")
 		return
 	}
 
-	for _, e := range p.Edges {
-		swapEdgeLabelsForEdge(c, p, e)
+	for _, e := range g.Edges {
+		swapEdgeLabelsForEdge(c, e)
 	}
 }
 
@@ -55,7 +55,7 @@ const DIST_INF float64 = 999999999999
  * conditions:
  * - when the label is farther to one side of the edge than to its own side.
  */
-func swapEdgeLabelsForEdge(c *context.Ctx, p *pr.ParseResult, e *pr.ParsedEdge) {
+func swapEdgeLabelsForEdge(c *context.Ctx, e *pr.InternalEdge) {
 	if e == nil {
 		return
 	}
@@ -66,7 +66,7 @@ func swapEdgeLabelsForEdge(c *context.Ctx, p *pr.ParseResult, e *pr.ParsedEdge) 
 	// center between A ---- B == A + (B-A)/2
 	centerPos := fromPos.Add(toPos.Sub(fromPos).Div(2))
 
-	labels := []**ParsedLabel{
+	labels := []**Label{
 		&e.FromProperties.Label, &e.Label, &e.ToProperties.Label,
 	}
 	labelTexts := []string{
@@ -150,7 +150,7 @@ func labelDistance(lblPos Vector2D, referencePos Vector2D, scale float64) float6
 	return lblPos.Dist(referencePos) * scale
 }
 
-func swapLabels(c *context.Ctx, label1Txt string, label2Txt string, lbl1 **ParsedLabel, lbl2 **ParsedLabel) {
+func swapLabels(c *context.Ctx, label1Txt string, label2Txt string, lbl1 **Label, lbl2 **Label) {
 	c.LogDebug("Swapping labels %s and %s...", label1Txt, label2Txt)
 
 	if *lbl1 != nil {

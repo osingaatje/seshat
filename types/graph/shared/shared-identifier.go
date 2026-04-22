@@ -39,16 +39,16 @@ func (p ParsedValue) Copy() ParsedValue {
 }
 
 // like in the UML text along an edge. Also contains a location so we can route the edge along this label
-type ParsedLabel struct {
+type Label struct {
 	Text     string   `json:"text"`
 	Location Vector2D `json:"location"`
 }
 
-func (l *ParsedLabel) Copy() *ParsedLabel {
+func (l *Label) Copy() *Label {
 	if l == nil {
 		return nil
 	}
-	return &ParsedLabel{
+	return &Label{
 		Text:     l.Text,
 		Location: l.Location,
 	}

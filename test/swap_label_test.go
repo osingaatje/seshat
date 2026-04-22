@@ -8,7 +8,7 @@ import (
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/driver"
 	"github.com/osingaatje/seshat/types/command"
-	. "github.com/osingaatje/seshat/types/graph/parse-result"
+	. "github.com/osingaatje/seshat/types/graph/intern"
 	"github.com/osingaatje/seshat/types/repair"
 )
 
@@ -100,7 +100,7 @@ func TestReplaceMiddleRight(t *testing.T) {
 	}
 }
 
-func parseAndFix(t *testing.T, filePath string) (internal *ParseResult, fixed *ParseResult) {
+func parseAndFix(t *testing.T, filePath string) (internal *InternalGraph, fixed *InternalGraph) {
 	c := driver.NewContext()
 	utml := c.Queries.ParseUTML.Get("Parse UTML", filePath)
 	if utml == nil {
@@ -108,7 +108,7 @@ func parseAndFix(t *testing.T, filePath string) (internal *ParseResult, fixed *P
 		return
 	}
 
-	internal = c.Queries.ParseUTMLToParseRes.Get("UTML -> internal", utml)
+	internal = c.Queries.ParseUTMLToParseRes.Get("UTML -> internal repr.", utml)
 	if internal == nil {
 		t.Fatal("Failed to parse internal repr.")
 		return

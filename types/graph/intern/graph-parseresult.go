@@ -24,12 +24,12 @@ var SKIPPED_TYPES []string = []string{"CommentNode"}
  *
  */
 
-type ParseResult struct {
-	Vertices map[VertexIdentifier]*ParsedVertex `json:"vertices"`
-	Edges    map[EdgeIdentifier]*ParsedEdge     `json:"edges"`
+type InternalGraph struct {
+	Vertices map[VertexIdentifier]*InternalVertex `json:"vertices"`
+	Edges    map[EdgeIdentifier]*InternalEdge     `json:"edges"`
 }
 
-func (p *ParseResult) Copy() *ParseResult {
+func (p *InternalGraph) Copy() *InternalGraph {
 	if p == nil {
 		return nil
 	}
@@ -44,18 +44,18 @@ func (p *ParseResult) Copy() *ParseResult {
 	return res
 }
 
-func NewParseResult() *ParseResult {
-	res := ParseResult{}
-	res.Vertices = map[VertexIdentifier]*ParsedVertex{}
-	res.Edges = map[EdgeIdentifier]*ParsedEdge{}
+func NewParseResult() *InternalGraph {
+	res := InternalGraph{}
+	res.Vertices = map[VertexIdentifier]*InternalVertex{}
+	res.Edges = map[EdgeIdentifier]*InternalEdge{}
 	return &res
 }
 
-func (g *ParseResult) Empty() bool {
+func (g *InternalGraph) Empty() bool {
 	return len(g.Edges) == 0 && len(g.Vertices) == 0
 }
 
-type ParsedVertex struct {
+type InternalVertex struct {
 	Id         VertexIdentifier       `json:"id"`         // unique ID to refer to from edges
 	Title      string                 `json:"title"`      // in UML, the classname
 	Properties VertexProperties       `json:"properties"` // things like the visibility, inheritance properties etc.
@@ -64,12 +64,12 @@ type ParsedVertex struct {
 	VisualProperties VertexVisualProperties `json:"visual_properties"`
 }
 
-func (p *ParsedVertex) Copy() *ParsedVertex {
+func (p *InternalVertex) Copy() *InternalVertex {
 	if p == nil {
 		return nil
 	}
 
-	res := &ParsedVertex{
+	res := &InternalVertex{
 		Id:               p.Id,
 		Title:            p.Title,
 		Properties:       p.Properties,
@@ -82,14 +82,14 @@ func (p *ParsedVertex) Copy() *ParsedVertex {
 	return res
 }
 
-func (p *ParsedVertex) String() string {
+func (p *InternalVertex) String() string {
 	if p == nil {
 		return "nil"
 	}
 	return fmt.Sprintf("V(id=%d,title=%s)", p.Id, p.Title)
 }
 
-type ParsedEdge struct {
+type InternalEdge struct {
 	Id         EdgeIdentifier    `json:"id"`
 	FromId     *VertexIdentifier `json:"fromId"`     // an edge may be 'floating', i.e. not connected
 	ToId       *VertexIdentifier `json:"toId"`       // an edge may be 'floating', i.e. not connected
@@ -97,19 +97,19 @@ type ParsedEdge struct {
 	ToEdgeId   *EdgeIdentifier   `json:"toEdgeId"`   // an edge may be connected to another edge
 
 	FromProperties EdgeEndProperties `json:"fromProperties"`  // things like multiplicity and arrow head style
-	Label          *ParsedLabel      `json:"label,omitempty"` // for ex.: "teaches >"
+	Label          *Label            `json:"label,omitempty"` // for ex.: "teaches >"
 	ToProperties   EdgeEndProperties `json:"toProperties"`
 
 	StyleProperties  EdgeStyleProperties  `json:"styleProperties"` // general properties such as edge label text etc.
 	VisualProperties EdgeVisualProperties `json:"visualProperties"`
 }
 
-func (e *ParsedEdge) Copy() *ParsedEdge {
+func (e *InternalEdge) Copy() *InternalEdge {
 	if e == nil {
 		return nil
 	}
 
-	res := &ParsedEdge{
+	res := &InternalEdge{
 		Id:               e.Id,
 		FromId:           e.FromId,
 		ToId:             e.ToId,
@@ -124,7 +124,7 @@ func (e *ParsedEdge) Copy() *ParsedEdge {
 	return res
 }
 
-func (e *ParsedEdge) String() string {
+func (e *InternalEdge) String() string {
 	if e == nil {
 		return "nil"
 	}
@@ -146,7 +146,7 @@ func (e *ParsedEdge) String() string {
 	return res
 }
 
-func (g *ParseResult) VerticesConnect(v1 VertexIdentifier, v2 VertexIdentifier) ([]EdgeIdentifier, bool) {
+func (g *InternalGraph) VerticesConnect(v1 VertexIdentifier, v2 VertexIdentifier) ([]EdgeIdentifier, bool) {
 	res := []EdgeIdentifier{}
 	for eId, e := range g.Edges {
 		if e.FromId != nil && e.ToId != nil && (*e.FromId == v1 || *e.FromId == v2) && (*e.ToId == v1 || *e.ToId == v2) {
@@ -156,7 +156,7 @@ func (g *ParseResult) VerticesConnect(v1 VertexIdentifier, v2 VertexIdentifier) 
 	return res, len(res) > 0
 }
 
-func (g *ParseResult) ConnectedEdges(v VertexIdentifier) []EdgeIdentifier {
+func (g *InternalGraph) ConnectedEdges(v VertexIdentifier) []EdgeIdentifier {
 	res := []EdgeIdentifier{}
 	for eId, e := range g.Edges {
 		if (e.FromId != nil && *e.FromId == v) || (e.ToId != nil && *e.ToId == v) {
@@ -166,7 +166,7 @@ func (g *ParseResult) ConnectedEdges(v VertexIdentifier) []EdgeIdentifier {
 	return res
 }
 
-func (g *ParseResult) MergeConnectedEdges(edges []EdgeIdentifier, referenceGraph *ParseResult) {
+func (g *InternalGraph) MergeConnectedEdges(edges []EdgeIdentifier, referenceGraph *InternalGraph) {
 	if g == nil || referenceGraph == nil {
 		panic("ONE OF THE GRAPHS WAS NIL WHEN MERGING CONNECTING EDGES!")
 	}
@@ -183,7 +183,7 @@ func (g *ParseResult) MergeConnectedEdges(edges []EdgeIdentifier, referenceGraph
 	}
 }
 
-func (g *ParseResult) DeleteEdgesAndTheirVertices(edges []EdgeIdentifier) {
+func (g *InternalGraph) DeleteEdgesAndTheirVertices(edges []EdgeIdentifier) {
 	if g == nil {
 		panic("GRAPH NIL WHEN DELETING EDGES!")
 	}

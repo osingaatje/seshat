@@ -1,7 +1,7 @@
 package command
 
 import (
-	. "github.com/osingaatje/seshat/types/graph/parse-result"
+	. "github.com/osingaatje/seshat/types/graph/intern"
 )
 
 type MatchStringCmd struct {
@@ -15,7 +15,7 @@ type MatchStringRes struct {
 }
 
 type MatchVertexCmd struct {
-	V1 *ParsedVertex
-	V2 *ParsedVertex
+	V1 *InternalVertex
+	V2 *InternalVertex
 	// can also put matching options in here such as matching with specific algorithms, should we need it
 }

@@ -5,7 +5,7 @@ import (
 
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/command"
-	. "github.com/osingaatje/seshat/types/graph/parse-result"
+	. "github.com/osingaatje/seshat/types/graph/intern"
 )
 
 func FindQueries(c *context.Ctx) {
@@ -19,7 +19,7 @@ func FindQueries(c *context.Ctx) {
 }
 
 // general method that switches based on context
-func parseFile(c *context.Ctx, cmd ParseCmd) *ParseResult {
+func parseFile(c *context.Ctx, cmd ParseCmd) *InternalGraph {
 	switch cmd.DiagramFormat {
 
 	case DiagramFormatUTML:
