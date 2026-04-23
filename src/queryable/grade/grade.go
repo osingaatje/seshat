@@ -39,14 +39,15 @@ func gradeDiag(c *context.Ctx, cmd command.GradeCmd) *grade.GradeResult {
 	// extra vertices in the submission should be treated as "erroneous" and points should be deducted
 	// then, for all of the edges, do the same thing.
 
-	// vertexGrades := gradeKnownVertices(cmd, bestMapping)
-
 	c.LogErr("TODO MAKE GRADING WORK")
 	return nil
 }
 
-func gradeKnownVertices(cmd command.GradeCmd, bestMapping map[VertexIdentifier]VertexIdentifier) {
-	// TODO
+func gradeVertex(cmd command.GradeCmd, refV VertexIdentifier, subV VertexIdentifier) {
+
+}
+
+func gradeEdge(cmd command.GradeCmd, refE EdgeIdentifier, subE EdgeIdentifier) {
 
 }
 

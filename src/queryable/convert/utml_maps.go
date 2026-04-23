@@ -5,12 +5,6 @@ import (
 	. "github.com/osingaatje/seshat/types/graph/utml"
 )
 
-var UTMLClassTypeToInternal map[UTMLClassType]string = map[UTMLClassType]string{
-	UTMLClassTypeClass:     "class",
-	UTMLClassTypeAbstract:  "abstract",
-	UTMLClassTypeInterface: "interface",
-}
-
 var UTMLLineStyleToParsedStyle map[UTMLLineStyle]EdgeLineStyle = map[UTMLLineStyle]EdgeLineStyle{
 	UTMLLineStyleDashed: EdgeLineStyleDotted,
 	UTMLLineStyleDotted: EdgeLineStyleDotted,

@@ -10,15 +10,11 @@ import (
 	. "github.com/osingaatje/seshat/types/graph/shared"
 )
 
-type UTMLClassType string
+var SKIPPED_VERTEX_TYPES []string = []string{"CommentNode"}
 
 type UTMLVisibility string
 
 const (
-	UTMLClassTypeClass     UTMLClassType = "class"
-	UTMLClassTypeInterface UTMLClassType = "interface"
-	UTMLClassTypeAbstract  UTMLClassType = "abstract"
-
 	UTMLVisibilityPrivate   UTMLVisibility = "private"
 	UTMLVisibilityPublic    UTMLVisibility = "public"
 	UTMLVisibilityProtected UTMLVisibility = "protected"
@@ -87,12 +83,12 @@ const (
 )
 
 type ParseResultUTMLNode struct {
-	Type            UTMLClassType `json:"type"`
-	Width           int           `json:"width"`
-	Height          int           `json:"height"`
-	Position        UTMLXY        `json:"position"`
-	Text            string        `json:"text"`
-	HasDoubleBorder bool          `json:"hasDoubleBorder"`
+	Type            string `json:"type"`
+	Width           int    `json:"width"`
+	Height          int    `json:"height"`
+	Position        UTMLXY `json:"position"`
+	Text            string `json:"text"`
+	HasDoubleBorder bool   `json:"hasDoubleBorder"`
 	StyleObject     *struct {
 		Fill          string  `json:"fill"`
 		Stroke        string  `json:"stroke"`

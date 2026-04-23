@@ -38,6 +38,7 @@ func NewGraderConfig() GraderConfig {
 type DiagramMatchScores struct {
 	VertexScore                  RubricScoring `json:"vertex"`                   // presence/absence of vertex / node
 	VertexTypeScore              RubricScoring `json:"vertex_type"`              // type of vertex
+	VertexVisibilityScore        RubricScoring `json:"vertex_visibility"`        // type of vertex
 	VertexAttributeScore         RubricScoring `json:"vertex_attribute"`         // vertex attribute(s)
 	VertexAttributeTypeScore     RubricScoring `json:"vertex_attribute_type"`    // vertex attribute type(s)
 	AssociationScore             RubricScoring `json:"association"`              // presence/absence |v1|-----|v2|

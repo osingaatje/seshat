@@ -7,8 +7,6 @@ import (
 	. "github.com/osingaatje/seshat/types/graph/shared"
 )
 
-var SKIPPED_TYPES []string = []string{"CommentNode"}
-
 /*
  * We define the parse result visually as this:
  *     --------> x

@@ -7,6 +7,7 @@ import (
 	"math"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 
 	"github.com/osingaatje/seshat/helper"
@@ -14,6 +15,7 @@ import (
 	. "github.com/osingaatje/seshat/types/generic"
 	pr "github.com/osingaatje/seshat/types/graph/intern"
 	. "github.com/osingaatje/seshat/types/graph/shared"
+	"github.com/osingaatje/seshat/types/graph/utml"
 	. "github.com/osingaatje/seshat/types/graph/utml"
 )
 
@@ -54,10 +56,14 @@ func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.InternalGr
 	res.Metadata = utml.Metadata.Copy() // don't forget to add metadata such as filename!
 
 	for i, n := range utml.Nodes {
-		vertex := convertUTMLVertex(i, &n)
-		if vertex == nil { // errors are logged in function
+		vertex, err := convertUTMLVertex(c, i, &n)
+		if err != nil { // errors are logged in function
 			return nil
 		}
+		if vertex == nil { // allow for skipping vertices.
+			continue
+		}
+
 		res.Vertices[vertex.Id] = vertex
 	}
 
@@ -86,8 +92,14 @@ func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.InternalGr
 	return res
 }
 
-func convertUTMLVertex(index int, n *ParseResultUTMLNode) *pr.InternalVertex {
+func convertUTMLVertex(c *context.Ctx, index int, n *ParseResultUTMLNode) (*pr.InternalVertex, error) {
 	extractedProps := extractUTMLVertexProperties(n)
+
+	if slices.Contains(utml.SKIPPED_VERTEX_TYPES, extractedProps.Type) {
+		c.LogDebug("Skipping vertex type '%s', in SKIPPED_TYPES...", extractedProps.Type)
+		return nil, nil
+	}
+
 	extractedVals := extractUTMLVals(n)
 	extractedVisualProps := extractVisualProps(n)
 
@@ -97,7 +109,7 @@ func convertUTMLVertex(index int, n *ParseResultUTMLNode) *pr.InternalVertex {
 		Properties:       extractedProps,
 		Values:           extractedVals,
 		VisualProperties: extractedVisualProps,
-	}
+	}, nil
 }
 func extractUTMLVertexProperties(n *ParseResultUTMLNode) VertexProperties {
 	res := VertexProperties{

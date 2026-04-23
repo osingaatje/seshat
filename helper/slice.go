@@ -1,5 +1,15 @@
 package helper
 
+func Filter[E any](arr []E, f func(E) bool) []E {
+	res := []E{}
+	for _, e := range arr {
+		if f(e) {
+			res = append(res, e)
+		}
+	}
+	return res
+}
+
 func FindValue[K comparable, V any](mp map[K]V, f func(V) bool) (*K, *V, bool) {
 	for k, v := range mp {
 		if f(v) {

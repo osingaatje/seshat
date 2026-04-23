@@ -1,6 +1,7 @@
 package test
 
 import (
+	"slices"
 	"testing"
 
 	"github.com/go-openapi/testify/v2/assert"
@@ -69,7 +70,10 @@ func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string) {
 
 	// BASIC CHECKS
 	assert.Equal(t, len(utml.Edges), len(intern.Edges), "Edges not equal!")
-	assert.Equal(t, len(utml.Nodes), len(intern.Vertices), "Nodes not equal!")
+	filteredUTMLNodes := helper.Filter(utml.Nodes, func(n ParseResultUTMLNode) bool {
+		return !slices.Contains(SKIPPED_VERTEX_TYPES, n.Type)
+	})
+	assert.Equal(t, len(filteredUTMLNodes), len(intern.Vertices), "Nodes not equal!")
 
 	// MORE ADVANCED CHECKS
 	for id, iEdge := range intern.Edges {
@@ -78,36 +82,6 @@ func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string) {
 		if ok {
 			uEdge = &utml.Edges[int(id)]
 		}
-		/* OLD COMPLICATED LOGIC: helper.Find(utml.Edges, func(e *ParseResultUTMLEdge) bool {
-
-		// match based on start/end location if there is no start/end node
-		match := true
-		if e.StartNodeId != nil {
-			match = match && iEdge.FromId != nil && int64(*iEdge.FromId) == int64(*e.StartNodeId)
-		} else {
-			match = match && iEdge.FromId == nil
-			switch val := e.StartPosition.Value.(type) {
-			case UTMLXY:
-				match = match && Vector2D{}.New(val) == iEdge.VisualProperties.StartLocation
-			default:
-				return false
-			}
-		}
-
-		if e.EndNodeId != nil {
-			match = match && iEdge.ToId != nil && int64(*iEdge.ToId) == int64(*e.EndNodeId)
-		} else {
-			match = match && iEdge.FromId == nil
-			switch val := e.EndPosition.Value.(type) {
-			case UTMLXY:
-				match = match && Vector2D{}.New(val) == iEdge.VisualProperties.EndLocation
-			default:
-				return false
-			}
-		}
-
-		return match
-		})*/
 
 		if !ok {
 			t.Fatalf("Could not find edge %d -> %d in UTML result", iEdge.FromId, iEdge.ToId)
