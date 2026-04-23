@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/osingaatje/seshat/helper/multiplicity"
-	. "github.com/osingaatje/seshat/types/generic"
+	"github.com/osingaatje/seshat/types/generic"
 )
 
 // EDGES
@@ -56,8 +56,8 @@ func (s *EdgeStyleProperties) Copy() *EdgeStyleProperties {
 }
 
 type EdgeVisualProperties struct {
-	StartLocation Vector2D `json:"start_location"`
-	EndLocation   Vector2D `json:"end_location"`
+	StartLocation generic.Vector2D `json:"start_location"`
+	EndLocation   generic.Vector2D `json:"end_location"`
 }
 
 func (s *EdgeVisualProperties) Copy() *EdgeVisualProperties {

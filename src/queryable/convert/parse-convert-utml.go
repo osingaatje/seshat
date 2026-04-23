@@ -36,21 +36,23 @@ func parseUTML(c *context.Ctx, filepath string) *ParseResultUTML {
 		return nil
 	}
 
-	jsonRes.Filename = filepath
+	jsonRes.Metadata = NewGraphMetadata(filepath)
 
 	return jsonRes
 }
 
 // Converting to internal representation
 func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.InternalGraph {
-	c.LogPrefixAdd("UTML -> Internal '%s'", filepath.Base(utml.Filename))
-	defer /* I love Go */ c.LogPrefixRm("UTML -> Internal '%s'", filepath.Base(utml.Filename))
+	c.LogPrefixAdd("UTML -> Internal '%s'", filepath.Base(utml.Metadata.Filename))
+	defer /* I love Go */ c.LogPrefixRm("UTML -> Internal '%s'", filepath.Base(utml.Metadata.Filename))
 	if utml == nil {
 		c.LogErr("Nil UTML parse result when converting to generic ParseResult.")
 		return nil
 	}
 
 	res := pr.NewParseResult()
+	res.Metadata = utml.Metadata.Copy() // don't forget to add metadata such as filename!
+
 	for i, n := range utml.Nodes {
 		vertex := convertUTMLVertex(i, &n)
 		if vertex == nil { // errors are logged in function

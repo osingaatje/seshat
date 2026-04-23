@@ -6,6 +6,8 @@ import (
 	"hash/fnv"
 
 	"github.com/osingaatje/seshat/helper"
+	. "github.com/osingaatje/seshat/types/generic"
+	. "github.com/osingaatje/seshat/types/graph/shared"
 )
 
 type UTMLClassType string
@@ -33,7 +35,7 @@ func (p *ParseResultUTML) String() string {
 
 type ParseResultUTML struct {
 	// metadata
-	Filename string `json:"-"`
+	Metadata GraphMetadata `json:"-"` // we don't serialise it because then it's not the original JSON file.
 
 	Edges []ParseResultUTMLEdge `json:"edges"`
 
@@ -114,11 +116,6 @@ type UTMLFieldOrMethod struct {
 	Name       string         `json:"name"`
 	Type       string         `json:"type"`
 	Visibility UTMLVisibility `json:"visibility"`
-}
-
-type UTMLXY struct {
-	X float64 `json:"x"`
-	Y float64 `json:"y"`
 }
 
 type UTMLEdgeXYOrOffsetPosition struct {

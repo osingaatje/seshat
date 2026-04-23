@@ -1,8 +1,9 @@
-package parseresult
+package intern
 
 import (
 	"fmt"
 
+	"github.com/osingaatje/seshat/types/graph/shared"
 	. "github.com/osingaatje/seshat/types/graph/shared"
 )
 
@@ -25,6 +26,8 @@ var SKIPPED_TYPES []string = []string{"CommentNode"}
  */
 
 type InternalGraph struct {
+	Metadata shared.GraphMetadata `json:"metadata"`
+
 	Vertices map[VertexIdentifier]*InternalVertex `json:"vertices"`
 	Edges    map[EdgeIdentifier]*InternalEdge     `json:"edges"`
 }

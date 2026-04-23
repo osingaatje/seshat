@@ -1,7 +1,7 @@
 package shared
 
 import (
-	. "github.com/osingaatje/seshat/types/generic"
+	"github.com/osingaatje/seshat/types/generic"
 )
 
 type VertexIdentifier uint32
@@ -40,8 +40,8 @@ func (p ParsedValue) Copy() ParsedValue {
 
 // like in the UML text along an edge. Also contains a location so we can route the edge along this label
 type Label struct {
-	Text     string   `json:"text"`
-	Location Vector2D `json:"location"`
+	Text     string           `json:"text"`
+	Location generic.Vector2D `json:"location"`
 }
 
 func (l *Label) Copy() *Label {

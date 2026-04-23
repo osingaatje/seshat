@@ -256,7 +256,7 @@ func combineScores(refV *InternalVertex, subV *InternalVertex, syn int, sem floa
 		return 1
 	}
 	//cursed but nice oneliner
-	longestWord := math.Max(float64(len(vertexToStr(refV))), float64(len(vertexToStr(subV))))
+	longestWord := math.Max(float64(len(toSemanticString(refV))), float64(len(toSemanticString(subV))))
 
 	/*
 			 *  (1 - syn/wordlength) + sem
@@ -286,7 +286,7 @@ func getPotentialMatchingVertices(c *context.Ctx, cmd GradeCmd) (
 		semanticMiniLM[refId] = map[VertexIdentifier]float64{}
 
 		for subId, subV := range cmd.Submission.Vertices {
-			syntacticMatchCmd := MatchStringCmd{Ref: refV.Title, Act: subV.Title}
+			syntacticMatchCmd := MatchStringCmd{Ref: refV.Title, Act: subV.Title} // SYNTACTICALLY MATCH TITLE
 			syntDist := c.Queries.SyntacticMatch.Get("Syntactic match", syntacticMatchCmd)
 			syntacticDistance[refId][subId] = syntDist
 			if syntDist <= SYNTACTIC_DISTANCE_THRESHOLD {
@@ -297,7 +297,7 @@ func getPotentialMatchingVertices(c *context.Ctx, cmd GradeCmd) (
 				// continue
 			}
 
-			semanticMatchCmd := MatchStringCmd{Ref: vertexToStr(refV), Act: vertexToStr(subV)}
+			semanticMatchCmd := MatchStringCmd{Ref: toSemanticString(refV), Act: toSemanticString(subV)} // SEMANTICALLY MATCH CONTENTS OF VERTEX + TITLE
 
 			resMini := c.Queries.SemanticMatchSentenceTransformer.Get("Semantic Match - MiniLM", semanticMatchCmd)
 			if resMini.Err != nil {
@@ -324,15 +324,15 @@ func getPotentialMatchingVertices(c *context.Ctx, cmd GradeCmd) (
 	return potentialMatches, syntacticDistance /*semanticWordNet, */, semanticMiniLM
 }
 
-func vertexToStr(v *InternalVertex) string {
+func toSemanticString(v *InternalVertex) string {
 	r := new(strings.Builder)
 	r.WriteString(v.Title)
 	r.WriteRune(' ')
 	for n, v := range v.Values {
 		r.WriteString(n)
 		r.WriteRune(' ')
-		valProps := []string{v.Value, v.Properties.Type, string(v.Properties.Visibility)}
-		r.WriteString(strings.Join(valProps, ","))
+		valProps := []string{v.Value, v.Properties.Type} // ex.: "strProperty : string" //, string(v.Properties.Visibility)}
+		r.WriteString(strings.Join(valProps, " : "))
 		r.WriteRune(' ')
 	}
 	return r.String()

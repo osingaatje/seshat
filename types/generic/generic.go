@@ -2,9 +2,12 @@ package generic
 
 import (
 	"math"
-
-	. "github.com/osingaatje/seshat/types/graph/utml"
 )
+
+type UTMLXY struct {
+	X float64 `json:"x"`
+	Y float64 `json:"y"`
+}
 
 // location on some grid or whatever
 type Vector2D struct {

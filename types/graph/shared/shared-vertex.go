@@ -3,7 +3,7 @@ package shared
 import (
 	"image/color"
 
-	. "github.com/osingaatje/seshat/types/generic"
+	"github.com/osingaatje/seshat/types/generic"
 )
 
 // VERTICES
@@ -14,9 +14,9 @@ type VertexProperties struct {
 
 type VertexVisualProperties struct {
 	// additional stuff for possible visualisation later on:
-	Location               Vector2D   `json:"location"`
-	Size                   Vector2D   `json:"size"`
-	VertexStyleFillHex     color.RGBA `json:"fill_col"`
-	VertexStyleStrokeHex   color.RGBA `json:"stroke_col"`
-	VertexStyleStrokeWidth uint16     `json:"stroke_width"`
+	Location               generic.Vector2D `json:"location"`
+	Size                   generic.Vector2D `json:"size"`
+	VertexStyleFillHex     color.RGBA       `json:"fill_col"`
+	VertexStyleStrokeHex   color.RGBA       `json:"stroke_col"`
+	VertexStyleStrokeWidth uint16           `json:"stroke_width"`
 }
