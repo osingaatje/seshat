@@ -12,6 +12,10 @@ import (
 
 var SKIPPED_VERTEX_TYPES []string = []string{"CommentNode"}
 
+func GetNodeType(n *ParseResultUTMLNode) string {
+	return n.Type
+}
+
 type UTMLVisibility string
 
 const (
@@ -50,8 +54,8 @@ type ParseResultUTMLEdge struct {
 	LineStyle       UTMLLineStyle      `json:"lineStyle"`             // line styling
 	LineType        int                `json:"lineType"`              // line styling
 	MiddlePositions []UTMLXY           `json:"middlePositions"`       // no clue what this is
-	StartNodeId     *int16             `json:"startNodeId,omitempty"` // node pointer
-	EndNodeId       *int16             `json:"endNodeId,omitempty"`   // node pointer
+	StartNodeId     *int               `json:"startNodeId,omitempty"` // node pointer
+	EndNodeId       *int               `json:"endNodeId,omitempty"`   // node pointer
 }
 
 func (p ParseResultUTMLEdge) Hash() int { // at least 32 bits in size so shifting 16-bit vals should be fine.

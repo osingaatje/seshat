@@ -69,7 +69,20 @@ func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string) {
 	}
 
 	// BASIC CHECKS
-	assert.Equal(t, len(utml.Edges), len(intern.Edges), "Edges not equal!")
+	filteredUTMLEdges := helper.Filter(utml.Edges, func(e ParseResultUTMLEdge) bool {
+		add := true
+		if e.StartNodeId != nil {
+			n := utml.Nodes[(*e.StartNodeId)]
+			add = add && !slices.Contains(SKIPPED_VERTEX_TYPES, GetNodeType(&n))
+		}
+		if e.EndNodeId != nil {
+			n := utml.Nodes[(*e.EndNodeId)]
+			add = add && !slices.Contains(SKIPPED_VERTEX_TYPES, GetNodeType(&n))
+		}
+		return add
+	})
+	assert.Equal(t, len(filteredUTMLEdges), len(intern.Edges), "Edges not equal!")
+
 	filteredUTMLNodes := helper.Filter(utml.Nodes, func(n ParseResultUTMLNode) bool {
 		return !slices.Contains(SKIPPED_VERTEX_TYPES, n.Type)
 	})

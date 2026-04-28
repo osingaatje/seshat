@@ -15,7 +15,6 @@ import (
 	. "github.com/osingaatje/seshat/types/generic"
 	pr "github.com/osingaatje/seshat/types/graph/intern"
 	. "github.com/osingaatje/seshat/types/graph/shared"
-	"github.com/osingaatje/seshat/types/graph/utml"
 	. "github.com/osingaatje/seshat/types/graph/utml"
 )
 
@@ -56,7 +55,7 @@ func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.InternalGr
 	res.Metadata = utml.Metadata.Copy() // don't forget to add metadata such as filename!
 
 	for i, n := range utml.Nodes {
-		vertex, err := convertUTMLVertex(c, i, &n)
+		vertex, err := convertUTMLVertex(c, i, utml, &n)
 		if err != nil { // errors are logged in function
 			return nil
 		}
@@ -68,9 +67,12 @@ func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.InternalGr
 	}
 
 	for i, e := range utml.Edges {
-		edge := convertUTMLEdge(c, i, &e)
-		if edge == nil { // inner errors are logged. no error logging here.
+		edge, err := convertUTMLEdge(c, i, utml, &e)
+		if err != nil { // inner errors are logged. no error logging here.
 			return nil
+		}
+		if edge == nil { // some edges don't need to be converted, so skip them
+			continue
 		}
 		res.Edges[edge.Id] = edge
 	}
@@ -92,14 +94,14 @@ func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.InternalGr
 	return res
 }
 
-func convertUTMLVertex(c *context.Ctx, index int, n *ParseResultUTMLNode) (*pr.InternalVertex, error) {
-	extractedProps := extractUTMLVertexProperties(n)
-
-	if slices.Contains(utml.SKIPPED_VERTEX_TYPES, extractedProps.Type) {
-		c.LogDebug("Skipping vertex type '%s', in SKIPPED_TYPES...", extractedProps.Type)
+func convertUTMLVertex(c *context.Ctx, index int, u *ParseResultUTML, n *ParseResultUTMLNode) (*pr.InternalVertex, error) {
+	ntype := GetNodeType(n)
+	if slices.Contains(SKIPPED_VERTEX_TYPES, ntype) {
+		c.LogDebug("Skipping vertex '%d' because it has skippable type '%s'", index, ntype)
 		return nil, nil
 	}
 
+	extractedProps := extractUTMLVertexProperties(n)
 	extractedVals := extractUTMLVals(n)
 	extractedVisualProps := extractVisualProps(n)
 
@@ -172,17 +174,44 @@ func extractVisualProps(n *ParseResultUTMLNode) VertexVisualProperties {
 	return res
 }
 
-func convertUTMLEdge(c *context.Ctx, index int, e *ParseResultUTMLEdge) *pr.InternalEdge {
+func convertUTMLEdge(c *context.Ctx, index int, u *ParseResultUTML, e *ParseResultUTMLEdge) (*pr.InternalEdge, error) {
 	if e.StartNodeId != nil && *e.StartNodeId < 0 || e.EndNodeId != nil && *e.EndNodeId < 0 {
 		c.LogErr("FromId or ToId have non-uint64 values for ")
 	}
 
+	// remove Edges that are connected to skipped types:
+	if e.StartNodeId != nil {
+		if (*e.StartNodeId) < 0 || int(*e.StartNodeId) >= len(u.Nodes) {
+			return nil, fmt.Errorf("Start node ID '%d' in edge '%d' is not a valid node!", *e.StartNodeId, index)
+		}
+		// Don't convert edge if it is connected to a Comment Node or other skipped types
+		node := u.Nodes[*e.StartNodeId]
+		ntype := GetNodeType(&node)
+		if slices.Contains(SKIPPED_VERTEX_TYPES, ntype) {
+			c.LogDebug("Skipping edge '%d' because its starting node has a skippable type '%s'", index, ntype)
+			return nil, nil
+		}
+	}
+	if e.EndNodeId != nil {
+		if (*e.EndNodeId) < 0 || int(*e.EndNodeId) >= len(u.Nodes) {
+			return nil, fmt.Errorf("Start node ID '%d' in edge '%d' is not a valid node!", *e.EndNodeId, index)
+		}
+		// Don't convert edge if it is connected to a Comment Node or other skipped types
+		node := u.Nodes[*e.EndNodeId]
+		ntype := GetNodeType(&node)
+		if slices.Contains(SKIPPED_VERTEX_TYPES, ntype) {
+			c.LogDebug("Skipping edge '%d' because its starting node has a skippable type '%s'", index, ntype)
+			return nil, nil
+		}
+	}
+
+	// regular conversion stuff
 	res := pr.InternalEdge{
 		Id:               EdgeIdentifier(index),
-		FromId:           NewVertexIdentifierInt16(e.StartNodeId), // nodeId = location in the array
-		ToId:             NewVertexIdentifierInt16(e.EndNodeId),   // nodeId = location in the array
-		FromEdgeId:       nil,                                     // filled in later
-		ToEdgeId:         nil,                                     // filled in later
+		FromId:           NewVertexIdentifierInt(e.StartNodeId), // nodeId = location in the array
+		ToId:             NewVertexIdentifierInt(e.EndNodeId),   // nodeId = location in the array
+		FromEdgeId:       nil,                                   // filled in later
+		ToEdgeId:         nil,                                   // filled in later
 		FromProperties:   extractUTMLEdgeEndProps(e, true),
 		Label:            extractUTMLEdgeLabel(e),
 		ToProperties:     extractUTMLEdgeEndProps(e, false),
@@ -190,13 +219,19 @@ func convertUTMLEdge(c *context.Ctx, index int, e *ParseResultUTMLEdge) *pr.Inte
 		VisualProperties: EdgeVisualProperties{ /* filled in either with absolute XY in this func, or based on the offset in the finalisation stage */ },
 	}
 
-	_tryAddStartEndLocation(c, &res, e.StartPosition, true)
-	_tryAddStartEndLocation(c, &res, e.EndPosition, false)
+	err := _tryAddStartEndLocation(c, &res, e.StartPosition, true)
+	if err != nil {
+		return nil, err
+	}
+	err = _tryAddStartEndLocation(c, &res, e.EndPosition, false)
+	if err != nil {
+		return nil, err
+	}
 
-	return &res
+	return &res, nil
 }
 
-func _tryAddStartEndLocation(c *context.Ctx, iE *pr.InternalEdge, pos UTMLEdgeXYOrOffsetPosition, isStart bool) bool {
+func _tryAddStartEndLocation(c *context.Ctx, iE *pr.InternalEdge, pos UTMLEdgeXYOrOffsetPosition, isStart bool) error {
 	switch pos := pos.Value.(type) {
 	case UTMLEdgeOffsetPosition:
 		// nothing happens here, the offset needs to be filled in later based on the Node.
@@ -208,10 +243,9 @@ func _tryAddStartEndLocation(c *context.Ctx, iE *pr.InternalEdge, pos UTMLEdgeXY
 			iE.VisualProperties.EndLocation = Vector2D{}.New(pos)
 		}
 	default:
-		c.LogErr("UTML Edge StartPosition was neither an offset nor an X/Y position!")
-		return false
+		return fmt.Errorf("UTML Edge StartPosition was neither an offset nor an X/Y position!")
 	}
-	return true
+	return nil
 }
 
 func extractUTMLEdgeEndProps(e *ParseResultUTMLEdge, start bool) EdgeEndProperties {
@@ -242,8 +276,8 @@ func finaliseEdgeProperties(c *context.Ctx, utml *ParseResultUTML, res *pr.Inter
 
 		iE, ok := res.Edges[EdgeIdentifier(uEID)]
 		if !ok {
-			errMsg := fmt.Sprintf("MISSING EDGE - bug in UTML -> Internal conversion. (from,to) = (%d,%d)", uE.StartNodeId, uE.EndNodeId)
-			return errors.New(errMsg)
+			// apparently this edge was skipped. Ignore it.
+			continue
 		}
 
 		if nFromId != nil && nToId != nil && (*nFromId < 0 || int(*nFromId) >= len(utml.Nodes) || *nToId < 0 || int(*nToId) >= len(utml.Nodes)) {

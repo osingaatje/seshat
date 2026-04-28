@@ -10,7 +10,7 @@ type EdgeIdentifier uint32
 const INVALID_VERT_ID = VertexIdentifier(1<<32 - 1)
 const INVALID_EDGE_ID = EdgeIdentifier(1<<32 - 1)
 
-func NewVertexIdentifierInt16(nId *int16) *VertexIdentifier {
+func NewVertexIdentifierInt(nId *int) *VertexIdentifier {
 	if nId == nil {
 		return nil
 	}
