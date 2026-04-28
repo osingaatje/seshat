@@ -1,23 +1,24 @@
 package grade
 
 import (
-	"github.com/osingaatje/seshat/types/graph/intern"
 	"github.com/osingaatje/seshat/types/graph/shared"
 )
 
 type GradeResult struct {
-	Reference  *intern.InternalGraph `json:"reference"`
-	Submission *intern.InternalGraph `json:"submission"`
-	Rubric     *GradeRubric          `json:"rubric"`
-	Result     GradeRes              `json:"result"`
-}
-
-type GradeRes struct {
 	MissingVertices []shared.VertexIdentifier                     `json:"missing_vertices"`
 	VertexGrades    map[shared.VertexIdentifier]GradeResultVertex `json:"vertex_grades"`
 
 	MissingEdges []shared.EdgeIdentifier
 	EdgeGrades   map[shared.EdgeIdentifier]GradeResultEdge `json:"edge_grades"`
+}
+
+func NewGradeResult() GradeResult {
+	return GradeResult{
+		MissingVertices: []shared.VertexIdentifier{},
+		VertexGrades:    map[shared.VertexIdentifier]GradeResultVertex{},
+		MissingEdges:    []shared.EdgeIdentifier{},
+		EdgeGrades:      map[shared.EdgeIdentifier]GradeResultEdge{},
+	}
 }
 
 type GradeResultVertex struct {

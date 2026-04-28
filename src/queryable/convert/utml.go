@@ -377,7 +377,7 @@ func tryConnectEdgeEnds(graph *pr.InternalGraph, id EdgeIdentifier, iE *pr.Inter
 		var smallestDistVertexId VertexIdentifier = INVALID_VERT_ID
 		var smallestDistEdgeId EdgeIdentifier = INVALID_EDGE_ID
 
-		for id, otherVertex := range graph.Vertices {
+		for otherVertId, otherVertex := range graph.Vertices {
 			h, w := otherVertex.VisualProperties.Size.X, otherVertex.VisualProperties.Size.Y
 
 			// calculate to distance from the center, then subtract half the size again (dirty hack)
@@ -392,16 +392,21 @@ func tryConnectEdgeEnds(graph *pr.InternalGraph, id EdgeIdentifier, iE *pr.Inter
 			normalisedDist := dist / ((h + w) / 2)
 			if normalisedDist < float64(VERTEX_CLOSENESS_PERCENT) && normalisedDist < smallestDist {
 				smallestDist = normalisedDist
-				smallestDistVertexId = id
+				smallestDistVertexId = otherVertId
 				smallestDistEdgeId = INVALID_EDGE_ID
 			}
 		}
 
-		for id, otherEdge := range graph.Edges {
+		for otherEdgeId, otherEdge := range graph.Edges {
+			if id == otherEdgeId {
+				continue
+			}
+
 			dist, edgeLen := _calculateDistanceToLine(&otherEdge.VisualProperties.StartLocation, &otherEdge.VisualProperties.EndLocation, location)
-			if dist/edgeLen < float64(LINE_CLOSENESS_PERCENT) && dist < smallestDist {
-				smallestDist = dist
-				smallestDistEdgeId = id
+			normalisedDist := dist / edgeLen
+			if normalisedDist < float64(LINE_CLOSENESS_PERCENT) && normalisedDist < smallestDist {
+				smallestDist = normalisedDist
+				smallestDistEdgeId = otherEdgeId
 				smallestDistVertexId = INVALID_VERT_ID
 			}
 		}

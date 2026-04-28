@@ -8,6 +8,18 @@ import (
 	"github.com/osingaatje/seshat/types/grade"
 )
 
+func TestGradeEdgeToEdgeGraphs(t *testing.T) {
+	FILE1 := "./examples/similar/edge-to-edge/double-association.utml"
+	FILE2 := "./examples/similar/edge-to-edge/double-association-wrong.utml"
+
+	r := gradeStuff(FILE1, FILE2)
+	if r == nil {
+		t.Error("Grade result was nil. :(")
+		return
+	}
+	t.Error("TODO COMPLETE THIS TEST")
+}
+
 func TestGradeSimilarDiagWrongMultiplicities(t *testing.T) {
 	FILE1 := "./examples/similar/diff-assoc/simple-assocation-2-to-1-5.utml"
 	FILE2 := "./examples/similar/diff-assoc/simple-assocation-one-to-many.utml"

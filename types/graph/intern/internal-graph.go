@@ -36,6 +36,8 @@ func (p *InternalGraph) Copy() *InternalGraph {
 	}
 
 	res := NewParseResult()
+	res.Metadata = p.Metadata.Copy()
+
 	for k, v := range p.Vertices {
 		res.Vertices[k] = v.Copy()
 	}
@@ -157,13 +159,41 @@ func (g *InternalGraph) VerticesConnect(v1 VertexIdentifier, v2 VertexIdentifier
 	return res, len(res) > 0
 }
 
-func (g *InternalGraph) ConnectedEdges(v VertexIdentifier) []EdgeIdentifier {
+// get all connected edges in a subgraph gsub
+func (g *InternalGraph) ConnectedEdges(gsub *InternalGraph) []EdgeIdentifier {
 	res := []EdgeIdentifier{}
 	for eId, e := range g.Edges {
-		if (e.FromId != nil && *e.FromId == v) || (e.ToId != nil && *e.ToId == v) {
-			res = append(res, eId)
+		if _, ok := gsub.Edges[eId]; ok { // skip already contained edges
+			continue
+		}
+
+		if e.FromId != nil {
+			if _, ok := gsub.Vertices[*e.FromId]; ok {
+				res = append(res, eId)
+				continue
+			}
+		}
+		if e.ToId != nil {
+			if _, ok := gsub.Vertices[*e.ToId]; ok {
+				res = append(res, eId)
+				continue
+			}
+		}
+
+		if e.FromEdgeId != nil {
+			if _, ok := gsub.Edges[*e.FromEdgeId]; ok {
+				res = append(res, eId)
+				continue
+			}
+		}
+		if e.ToEdgeId != nil {
+			if _, ok := gsub.Edges[*e.ToEdgeId]; ok {
+				res = append(res, eId)
+				continue
+			}
 		}
 	}
+
 	return res
 }
 
