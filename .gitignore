@@ -39,4 +39,5 @@ go.work.sum
 
 # Ignore sentence transformer files:
 */sentence-transformer/model
+*/al-MiniLM-L6-v2
 
