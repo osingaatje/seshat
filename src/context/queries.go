@@ -24,7 +24,7 @@ type Queries struct {
 	DisplayDiagramAsDot *Query[*InternalGraph, *DotGraph]
 	RepairDiagram       *Query[RepairCmd /* parse result + config */, *InternalGraph]
 
-	GradeDiagram                     *Query[GradeCmd, *GradeResult]
+	GradeDiagram                     *Query[GradeCmd, *GradeCalculation]
 	SyntacticMatch                   *Query[MatchStringCmd, int]
 	SemanticMatchWordnet             *Query[MatchStringCmd, MatchStringRes]
 	SemanticMatchSentenceTransformer *Query[MatchStringCmd, MatchStringRes]

@@ -32,7 +32,7 @@ func TestGradeSimilarDiagWrongMultiplicities(t *testing.T) {
 	t.Error("TODO COMPLETE THIS TEST")
 }
 
-func gradeStuff(filename1 string, filename2 string) *grade.GradeResult {
+func gradeStuff(filename1 string, filename2 string) *grade.GradeCalculation {
 	c := driver.NewContext()
 
 	utml1 := c.Queries.ParseUTML.Get("Parse UTML file 1", filename1)

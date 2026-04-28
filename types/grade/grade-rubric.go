@@ -26,7 +26,7 @@ type ILO struct {
 }
 
 type GraderConfig struct {
-	ClassContentSimilarity float32 `json:"syntactic_certainty"` // how much do classes need to look alike in order to be matched?
+	ClassContentSimilarity float64 `json:"syntactic_certainty"` // how much do classes need to look alike in order to be matched?
 }
 
 func NewGraderConfig() GraderConfig {
@@ -54,9 +54,9 @@ func NewDiagramMatchScores() DiagramMatchScores {
 }
 
 type RubricScoring struct {
-	PointsForPresence    float32 `json:"present"`     // if we have an element, how many points to award for presence
-	PointsForAbsence     float32 `json:"absent"`      // if this element is missing, how many points to deduct
-	PointsForSuperfluous float32 `json:"superfluous"` // if we have an extra element, how many points to deduct
+	PointsForPresence    float64 `json:"present"`     // if we have an element, how many points to award for presence
+	PointsForAbsence     float64 `json:"absent"`      // if this element is missing, how many points to deduct
+	PointsForSuperfluous float64 `json:"superfluous"` // if we have an extra element, how many points to deduct
 
 	ILOWeight []ILOWeight `json:"ilo_weights,omitempty"` // optional
 }
@@ -72,5 +72,5 @@ func NewRubricScore() RubricScoring {
 
 type ILOWeight struct {
 	ILO    uint32  `json:"ilo_id"`
-	Weight float32 `json:"weight"` // 0.1, or 10 points, whatever the grader wants
+	Weight float64 `json:"weight"` // 0.1, or 10 points, whatever the grader wants
 }

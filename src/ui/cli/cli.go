@@ -136,7 +136,7 @@ func (cmd *GradeCmd) Run(c *context.Ctx) error {
 		return c.LogErrAndReturn("Could not parse Reference Submission: %s", errRef.Error())
 	}
 
-	results := map[string]*GradeResult{}
+	results := map[string]*GradeCalculation{}
 
 	for _, f := range allSubmissions {
 		_, submissionRep, _, err := getReps(c, f, g.InternalRep)

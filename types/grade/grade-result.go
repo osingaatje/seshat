@@ -4,20 +4,34 @@ import (
 	"github.com/osingaatje/seshat/types/graph/shared"
 )
 
-type GradeResult struct {
-	MissingVertices []shared.VertexIdentifier                     `json:"missing_vertices"`
-	VertexGrades    map[shared.VertexIdentifier]GradeResultVertex `json:"vertex_grades"`
+type GradeReason string
 
-	MissingEdges []shared.EdgeIdentifier
-	EdgeGrades   map[shared.EdgeIdentifier]GradeResultEdge `json:"edge_grades"`
+const (
+	GRADE_REASON_PRESENT     GradeReason = "present"
+	GRADE_REASON_ABSENT      GradeReason = "appears in reference solution but is not in submission"
+	GRADE_REASON_SUPERFLUOUS GradeReason = "does not appear in reference solution"
+)
+
+type GradeResult struct {
+	FinalGrade  float64          `json:"final_grade"`
+	Calculation GradeCalculation `json:"reason"`
 }
 
-func NewGradeResult() GradeResult {
-	return GradeResult{
-		MissingVertices: []shared.VertexIdentifier{},
-		VertexGrades:    map[shared.VertexIdentifier]GradeResultVertex{},
-		MissingEdges:    []shared.EdgeIdentifier{},
-		EdgeGrades:      map[shared.EdgeIdentifier]GradeResultEdge{},
+type GradeCalculation struct {
+	MissingReferenceVertices map[shared.VertexIdentifier]GradeResultVertex `json:"missing_reference_vertices"`
+	VertexGrades             map[shared.VertexIdentifier]GradeResultVertex `json:"vertex_grades"`
+
+	MissingReferenceEdges map[shared.EdgeIdentifier]GradeResultEdge `json:"missing_reference_edges"`
+	EdgeGrades            map[shared.EdgeIdentifier]GradeResultEdge `json:"edge_grades"`
+}
+
+func NewGradeCalculation() GradeCalculation {
+	return GradeCalculation{
+		MissingReferenceVertices: map[shared.VertexIdentifier]GradeResultVertex{},
+		VertexGrades:             map[shared.VertexIdentifier]GradeResultVertex{},
+
+		MissingReferenceEdges: map[shared.EdgeIdentifier]GradeResultEdge{},
+		EdgeGrades:            map[shared.EdgeIdentifier]GradeResultEdge{},
 	}
 }
 
@@ -49,10 +63,10 @@ type EdgeStyle struct {
 }
 
 type EdgeEndScore struct {
-	MultiplicityScore Grade
+	MultiplicityScore Grade `json:"multiplicity"`
 }
 
 type Grade struct {
-	Grade  float64 `json:"grade"`
-	Reason string  `json:"reason"`
+	Grade  float64     `json:"grade"`
+	Reason GradeReason `json:"reason"`
 }
