@@ -1,6 +1,7 @@
 package grade
 
 import (
+	"github.com/osingaatje/seshat/helper/multiplicity"
 	"github.com/osingaatje/seshat/src/context"
 	"github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/grade"
@@ -58,23 +59,23 @@ func gradeDiag(c *context.Ctx, cmd command.GradeCmd) *GradeCalculation {
 	result := NewGradeCalculation()
 	for refEId, refE := range cmd.ReferenceSolution.Edges {
 		subEId, ok := finalEdgeMapping[refEId]
-		if !ok {
+		if !ok && cmd.Rubric.Scores.EdgeScore.AbsenceIncompleteScore != 0 {
 			// missing edge
-			// TODO deduct points
+			result.EdgeGrades[subEId] = GradeResultEdgeMissing(cmd.Rubric.Scores.EdgeScore.AbsenceIncompleteScore)
 			continue
 		}
-		gradeEdge(cmd, &result, refE, cmd.Submission.Edges[subEId])
+		gradeEdge(c, cmd, &result, refE, cmd.Submission.Edges[subEId])
 		gradedSubEdges[subEId] = true
 	}
 
 	for refVId, refV := range cmd.ReferenceSolution.Vertices {
 		subVId, ok := finalVertexMapping[refVId]
-		if !ok {
+		if !ok && cmd.Rubric.Scores.VertexScore.AbsenceIncompleteScore != 0 {
 			// missing vertex
-			// TODO deduct points
+			result.VertexGrades[subVId] = GradeResultVertexMissing(cmd.Rubric.Scores.VertexScore.AbsenceIncompleteScore)
 			continue
 		}
-		gradeVertex(cmd, &result, refV, cmd.Submission.Vertices[subVId])
+		gradeVertex(c, cmd, &result, refV, cmd.Submission.Vertices[subVId])
 		gradedSubVertices[subVId] = true
 	}
 
@@ -82,48 +83,182 @@ func gradeDiag(c *context.Ctx, cmd command.GradeCmd) *GradeCalculation {
 		if _, ok := gradedSubEdges[subEId]; ok {
 			continue
 		}
+		// skip non-impacting scores
+		if cmd.Rubric.Scores.VertexScore.SuperfluousScore == 0 {
+			continue
+		}
 		// extra edge that should have points deducted
-		// TODO deduct points
+		result.EdgeGrades[subEId] = GradeResultEdgeExtra(cmd.Rubric.Scores.EdgeScore.SuperfluousScore)
 	}
+
 	for subVId, _ := range cmd.Submission.Vertices {
 		if _, ok := gradedSubVertices[subVId]; ok {
 			continue
 		}
+		if cmd.Rubric.Scores.VertexScore.SuperfluousScore == 0 {
+			continue
+		}
 		// extra vertex that should have points deducted
-		// TODO deduct points
+		result.VertexGrades[subVId] = GradeResultVertexExtra(cmd.Rubric.Scores.VertexScore.SuperfluousScore)
 	}
 
-	result.EdgeGrades = nil // todo sdflksjdflkdsjfljdkf make grading
-
-	return nil // &result
+	return &result
 }
 
-func gradeVertex(cmd command.GradeCmd, res *GradeCalculation, refV *InternalVertex, subV *InternalVertex) {
+func gradeVertex(c *context.Ctx, cmd command.GradeCmd, res *GradeCalculation, refV *InternalVertex, subV *InternalVertex) {
 	if res == nil || refV == nil || subV == nil {
 		panic("BUG CODE - gradeVertex nil vertex")
 	}
 
-	typeScore := Grade{}
-
-	titleScore := Grade{}
-
-	attrScores := map[string]AttributeScore{}
-	// TODO traverse attributes
+	typeScore := calculateVertexTypeScore(c, cmd, refV, subV)
+	titleScore := calculateVertexTitleScore(c, cmd, refV, subV)
+	attrScores := calcalateVertexAttrScores(c, cmd, refV, subV)
 
 	res.VertexGrades[subV.Id] = GradeResultVertex{
 		PresenceScore: Grade{
-			Grade:  cmd.Rubric.Scores.VertexScore.PointsForPresence,
+			Grade:  cmd.Rubric.Scores.VertexScore.PresenceScore,
 			Reason: GRADE_REASON_PRESENT,
 		},
-		TypeScore:       typeScore,
-		TitleScore:      titleScore,
+		TypeScore:       &typeScore,
+		TitleScore:      &titleScore,
 		AttributeScores: attrScores,
 	}
 }
 
-func gradeEdge(cmd command.GradeCmd, res *GradeCalculation, refE *InternalEdge, subE *InternalEdge) {
+func calculateVertexTypeScore(c *context.Ctx, cmd command.GradeCmd, refV *InternalVertex, subV *InternalVertex) Grade {
+	return syntacticSemanticMatch(c,
+		refV.Properties.Type, subV.Properties.Type,
+		cmd.Rubric.Scores.VertexTypeScore,
+	)
+}
+
+func calculateVertexTitleScore(c *context.Ctx, cmd command.GradeCmd, refV *InternalVertex, subV *InternalVertex) Grade {
+	return syntacticSemanticMatch(c,
+		refV.Title, subV.Title,
+		cmd.Rubric.Scores.VertexTitleScore,
+	)
+}
+
+func calcalateVertexAttrScores(c *context.Ctx, cmd command.GradeCmd, refV *InternalVertex, subV *InternalVertex) map[string]GradeResultVertexAttr {
+	res := map[string]GradeResultVertexAttr{}
+
+	for refName, refVal := range refV.Values {
+		subVal, ok := subV.Values[refName]
+		if !ok { // possible TODO: make this not add a grade if the penalty is 0
+			res[refName] = GradeResultAttrMissing(cmd.Rubric.Scores.VertexAttributeScore.AbsenceIncompleteScore)
+		}
+
+		attrTypeScore := calculateVertexAttrTypeScore(c, cmd, refVal.Properties.Type, subVal.Properties.Type)
+		attrVisibilityScore := calculateVertexAttrVisScore(c, cmd, refVal.Properties.Visibility, subVal.Properties.Visibility)
+
+		res[refName] = GradeResultVertexAttr{
+			NameScore:       Grade{Grade: cmd.Rubric.Scores.VertexAttributeScore.PresenceScore, Reason: GRADE_REASON_PRESENT},
+			TypeScore:       &attrTypeScore,
+			VisibilityScore: &attrVisibilityScore,
+		}
+	}
+
+	for subName, _ := range subV.Values {
+		if _, ok := res[subName]; ok {
+			continue
+		}
+		if cmd.Rubric.Scores.VertexAttributeScore.SuperfluousScore == 0 {
+			continue
+		}
+		// superfluous attribute:
+		res[subName] = GradeResultAttrExtra(cmd.Rubric.Scores.VertexAttributeScore.SuperfluousScore)
+	}
+
+	return res
+}
+
+func calculateVertexAttrTypeScore(c *context.Ctx, cmd command.GradeCmd, refType string, subType string) Grade {
+	return syntacticSemanticMatch(c, refType, subType, cmd.Rubric.Scores.VertexTypeScore)
+}
+func calculateVertexAttrVisScore(c *context.Ctx, cmd command.GradeCmd, refVisibility ValuePropVisibilityVar, subVisibility ValuePropVisibilityVar) Grade {
+	return formatPresentOrAbsenceGrade(refVisibility == subVisibility, cmd.Rubric.Scores.VertexTypeScore, GradeReasonIncorrect(string(refVisibility)))
+}
+
+func gradeEdge(c *context.Ctx, cmd command.GradeCmd, res *GradeCalculation, refE *InternalEdge, subE *InternalEdge) {
 	if res == nil || refE == nil || subE == nil {
 		panic("BUG CODE - gradeEdge nil edge")
+	}
+
+	edgeStyleScore := calculateEdgeTypeScore(cmd, refE, subE)
+	edgeLabelScore := calculateEdgeLabelScore(c, cmd, refE.Label, subE.Label)
+	edgeFromScore := calculateEdgeEndScore(c, cmd, refE.FromProperties, subE.FromProperties)
+	edgeToScore := calculateEdgeEndScore(c, cmd, refE.ToProperties, subE.ToProperties)
+
+	res.EdgeGrades[subE.Id] = GradeResultEdge{
+		PresenceScore:  Grade{Grade: cmd.Rubric.Scores.EdgeScore.PresenceScore, Reason: GRADE_REASON_PRESENT},
+		EdgeTypeScore:  &edgeStyleScore,
+		EdgeLabelScore: &edgeLabelScore,
+		StartScore:     &edgeFromScore,
+		EndScore:       &edgeToScore,
+	}
+}
+
+func calculateEdgeTypeScore(cmd command.GradeCmd, ref *InternalEdge, act *InternalEdge) Grade {
+	return formatPresentOrAbsenceGrade(
+		ref.FromProperties.ArrowStyle == act.FromProperties.ArrowStyle &&
+			ref.StyleProperties.LineStyle == act.StyleProperties.LineStyle &&
+			ref.ToProperties.ArrowStyle == act.ToProperties.ArrowStyle,
+		cmd.Rubric.Scores.EdgeTypeScore,
+		GRADE_REASON_INCORRECT,
+	)
+}
+func calculateEdgeLabelScore(c *context.Ctx, cmd command.GradeCmd, refLbl *Label, actLbl *Label) Grade {
+	if refLbl != nil {
+		return formatPresentOrAbsenceGrade(
+			actLbl == nil,
+			cmd.Rubric.Scores.EdgeLabelScore,
+			GRADE_REASON_INCORRECT,
+		)
+	}
+	if actLbl == nil {
+		return Grade{
+			Grade:  cmd.Rubric.Scores.EdgeLabelScore.AbsenceIncompleteScore,
+			Reason: GRADE_REASON_ABSENT,
+		}
+	}
+
+	return syntacticSemanticMatch(c, refLbl.Text, actLbl.Text, cmd.Rubric.Scores.EdgeLabelScore)
+}
+
+func calculateEdgeEndScore(c *context.Ctx, cmd command.GradeCmd, refEdge *InternalEdge, subEdge *InternalEdge, ref EdgeEndProperties, act EdgeEndProperties) Grade {
+	score := cmd.Rubric.Scores.EdgeEndLabelScore
+	if ref.Label == nil {
+		if act.Label == nil {
+			return Grade{Grade: score.PresenceScore, Reason: GRADE_REASON_CORRECT}
+		}
+		return Grade{Grade: score.SuperfluousScore, Reason: GRADE_REASON_SUPERFLUOUS}
+	}
+
+	if act.Label == nil {
+		return Grade{Grade: score.AbsenceIncompleteScore, Reason: GRADE_REASON_ABSENT}
+	}
+
+	// figure out if we need to grade a multiplicity or something else:
+	refMult, ok := multiplicity.GetMultiplicity(ref.Label.Text)
+	if ok {
+		actMult, ok := multiplicity.GetMultiplicity(act.Label.Text)
+		if !ok {
+			return Grade{Grade: score.AbsenceIncompleteScore, Reason: GradeReasonIncorrectMultiplicity(ref.Label.Text)}
+		}
+
+		// TODO DO GRADING WITH REF MULT AND ACT MULT
+		r := *refMult == *actMult
+		r = r && true
+		c.LogErr("TODO MULTIPLICITY GRADING!!")
+		panic("TODO MULTIPLICITY GRADING")
+
+	} else {
+		c.LogErr("Grading of anything other than a multiplicity in the start/end of an edge is"+
+			"not supported yet! (reference edge '%s', submission edge '%s')", refEdge.Id, subEdge.Id)
+		return Grade{
+			Grade:  0,
+			Reason: GradeReasonUnsupported("non-multiplicity in edge end"),
+		}
 	}
 }
 
@@ -140,4 +275,34 @@ func mappingScore(
 	score += float64(len(edgeMap)) / 2 // add .5 for every discovered edge
 
 	return score
+}
+
+func syntacticSemanticMatch(c *context.Ctx, ref string, act string, score RubricScoring) Grade {
+	matchCmd := command.MatchStringCmd{Ref: ref, Act: act}
+	syntacticSimilarity := c.Queries.SyntacticMatch.Get("Syntactic similarity", matchCmd)
+	semanticSimilarity := c.Queries.SemanticMatchSentenceTransformer.Get("Semantic similarity", matchCmd)
+
+	if semanticSimilarity.Err != nil {
+		c.LogErr("Could not calculate semantic similarity between '%s' and '%s': %s", ref, act, semanticSimilarity.Err.Error())
+		semanticSimilarity.Score = 0
+	}
+
+	return formatPresentOrAbsenceGrade(
+		syntacticSimilarity < SYNTACTIC_DISTANCE_THRESHOLD ||
+			semanticSimilarity.Score > COSINE_SIMILARITY_THRESHOLD,
+		score,
+		GRADE_REASON_ABSENT_OR_INCORRECT,
+	)
+}
+
+func formatPresentOrAbsenceGrade(correctGradeCondition bool, score RubricScoring, incorrectMsg GradeReason) Grade {
+	res := Grade{
+		Grade:  score.PresenceScore,
+		Reason: GRADE_REASON_PRESENT,
+	}
+	if !correctGradeCondition {
+		res.Grade = score.AbsenceIncompleteScore
+		res.Reason = incorrectMsg
+	}
+	return res
 }

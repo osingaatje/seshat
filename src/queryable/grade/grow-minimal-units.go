@@ -13,8 +13,6 @@ import (
 	. "github.com/osingaatje/seshat/types/graph/shared"
 )
 
-const CERTAINTY_THRESHOLD float64 = 0.7 // applicable to the combination of semantic and syntactic scores ('certaintyMap')
-
 /*
  * Idea (inspired by Smith (2004), Thomas (2009), Vachharajani (2014), Bian (2020))
  * (steps inspired by Smith 2004, skipping segmentation and assimilation because the internal graph repr. already does that)
