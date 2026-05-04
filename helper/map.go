@@ -24,3 +24,13 @@ func ValuesMap[K comparable, V any](m map[K]V) []V {
 	}
 	return res
 }
+
+func FilterMap[K comparable, V any](m map[K]V, f func(K, V) bool) map[K]V {
+	res := map[K]V{}
+	for k, v := range m {
+		if f(k, v) {
+			res[k] = v
+		}
+	}
+	return res
+}
