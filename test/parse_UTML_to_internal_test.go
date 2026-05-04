@@ -14,7 +14,7 @@ import (
 
 func TestConvertSpecificFile(t *testing.T) {
 	c := driver.NewContext()
-	parseAndVerify(c, t, "../DATASETS/2025_M2_BIT/q/1/121464.json")
+	parseAndVerify(c, t, "../DATASETS/2025_M2_BIT/q/1/152654.json")
 }
 
 func TestConvertAllDatasetFiles(t *testing.T) {
@@ -67,6 +67,9 @@ func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string) {
 		t.Fatalf("path='%s': Internal representation was nil!", inputFilePath)
 		return
 	}
+
+	// dot := c.Queries.DisplayDiagramAsDot.Get("dot", intern)
+	// c.LogInfo("%s", dot.String())
 
 	// BASIC CHECKS
 	filteredUTMLEdges := helper.Filter(utml.Edges, func(e ParseResultUTMLEdge) bool {

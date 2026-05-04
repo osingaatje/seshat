@@ -18,8 +18,8 @@ import (
 	. "github.com/osingaatje/seshat/types/graph/utml"
 )
 
-const LINE_CLOSENESS_PERCENT uint8 = 10  // 0-255%, 100% is the full length of the edge
-const VERTEX_CLOSENESS_PERCENT uint8 = 2 // 0-255%, 100% = size of node (avg. width and height)
+const LINE_CLOSENESS_PERCENT uint8 = 10    // NOTE: From ANY point in the edge - 0-255%, 100% is the full length of the edge
+const VERTEX_CLOSENESS_PERCENT uint8 = 100 // NOTE: From the CENTER of the vertex - 0-255%, 100% = size of node (avg. width and height)
 
 // Parsing raw file to UTML
 func parseUTML(c *context.Ctx, filepath string) *ParseResultUTML {
@@ -382,15 +382,12 @@ func tryConnectEdgeEnds(graph *pr.InternalGraph, id EdgeIdentifier, iE *pr.Inter
 
 			// calculate to distance from the center, then subtract half the size again (dirty hack)
 			topLeftPos := otherVertex.VisualProperties.Location
-			halfNodeSize := otherVertex.VisualProperties.Size.Mul(0.5)
-			centerNodePos := topLeftPos.Add(halfNodeSize)
+			centerNodePos := topLeftPos.Add(otherVertex.VisualProperties.Size.Mul(0.5))
 
-			halfNodeDistance := topLeftPos.Dist(centerNodePos)
 			dist := centerNodePos.Dist(*location)
-			dist -= halfNodeDistance
 
 			normalisedDist := dist / ((h + w) / 2)
-			if normalisedDist < float64(VERTEX_CLOSENESS_PERCENT) && normalisedDist < smallestDist {
+			if normalisedDist < float64(VERTEX_CLOSENESS_PERCENT)/100 && normalisedDist < smallestDist {
 				smallestDist = normalisedDist
 				smallestDistVertexId = otherVertId
 				smallestDistEdgeId = INVALID_EDGE_ID
@@ -404,7 +401,7 @@ func tryConnectEdgeEnds(graph *pr.InternalGraph, id EdgeIdentifier, iE *pr.Inter
 
 			dist, edgeLen := _calculateDistanceToLine(&otherEdge.VisualProperties.StartLocation, &otherEdge.VisualProperties.EndLocation, location)
 			normalisedDist := dist / edgeLen
-			if normalisedDist < float64(LINE_CLOSENESS_PERCENT) && normalisedDist < smallestDist {
+			if normalisedDist < float64(LINE_CLOSENESS_PERCENT)/100 && normalisedDist < smallestDist {
 				smallestDist = normalisedDist
 				smallestDistEdgeId = otherEdgeId
 				smallestDistVertexId = INVALID_VERT_ID

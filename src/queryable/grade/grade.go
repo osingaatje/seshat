@@ -201,11 +201,12 @@ func gradeEdge(c *context.Ctx, cmd command.GradeCmd, res *GradeCalculation, refE
 }
 
 func calculateEdgeTypeScore(cmd command.GradeCmd, ref *InternalEdge, act *InternalEdge) Grade {
-	return formatPresentOrAbsenceGrade(
+	return formatPresentOrAbsenceGradeWithCorrectMsg(
 		ref.FromProperties.ArrowStyle == act.FromProperties.ArrowStyle &&
 			ref.StyleProperties.LineStyle == act.StyleProperties.LineStyle &&
 			ref.ToProperties.ArrowStyle == act.ToProperties.ArrowStyle,
 		cmd.Rubric.Scores.EdgeTypeScore,
+		GRADE_REASON_EQUAL,
 		GRADE_REASON_INCORRECT,
 	)
 }

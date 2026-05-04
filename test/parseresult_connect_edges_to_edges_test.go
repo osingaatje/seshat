@@ -29,6 +29,13 @@ func TestConnectEdgeToOtherEdge(t *testing.T) {
 		return
 	}
 
+	//debug conversion to .dot file:
+	// dot := c.Queries.DisplayDiagramAsDot.Get("dot", internal)
+	// if dot == nil {
+	// 	panic("DAADLSKFSDLKFJSD")
+	// }
+	// t.Log(dot.String())
+
 	// vertex names: "OneClass" 1-----* "ManyClass" ---- "ShouldNotConnect"
 	// 								|
 	// 								| <--- dotted
@@ -38,13 +45,20 @@ func TestConnectEdgeToOtherEdge(t *testing.T) {
 	manyClsId, _, _ := _findVertexByNameOrFail(t, internal, "ManyClass")
 	assClsId, _, _ := _findVertexByNameOrFail(t, internal, "AssociationClass")
 
-	oneToManyEdgeId, _, _ := _findEdgeByFuncOrFail(t, internal, func(e *pr.InternalEdge) bool {
+	oneToManyEdgeId, _, ok := _findEdgeByFunc(t, internal, func(e *pr.InternalEdge) bool {
 		return e.FromId != nil && (*e.FromId) == (*oneClsId) && e.ToId != nil && (*e.ToId) == (*manyClsId)
 	})
+	if !ok {
+		t.Fatal("Could not find 1..* edge")
+		return
+	}
 
-	_, assEdge, _ := _findEdgeByFuncOrFail(t, internal, func(e *pr.InternalEdge) bool {
+	_, assEdge, ok := _findEdgeByFunc(t, internal, func(e *pr.InternalEdge) bool {
 		return e.FromId == nil && e.ToId != nil && (*e.ToId) == (*assClsId)
 	})
+	if !ok {
+		t.Fatal("Could not find association edge")
+	}
 
 	assert.Nil(t, assEdge.FromId)
 	assert.NotNil(t, assEdge.FromEdgeId)
@@ -63,10 +77,9 @@ func _findVertexByNameOrFail(t *testing.T, graph *pr.InternalGraph, vertexName s
 	return id, *pv, ok
 }
 
-func _findEdgeByFuncOrFail(t *testing.T, graph *pr.InternalGraph, f func(e *pr.InternalEdge) bool) (*EdgeIdentifier, *pr.InternalEdge, bool) {
+func _findEdgeByFunc(t *testing.T, graph *pr.InternalGraph, f func(e *pr.InternalEdge) bool) (*EdgeIdentifier, *pr.InternalEdge, bool) {
 	id, pe, ok := helper.FindValue(graph.Edges, f)
 	if !ok {
-		t.Fatal("Could not find edge")
 		return nil, nil, false
 	}
 	return id, *pe, true
