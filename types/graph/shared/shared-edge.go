@@ -29,7 +29,7 @@ func (e EdgeEndProperties) ToInternal() (props InternalEdgeEndProperties, err er
 		if !ok {
 			return props, fmt.Errorf("Could not parse multiplicity '%s'", e.Label.Text)
 		}
-		props.Multiplicity = mult
+		props.Multiplicity = &mult
 	}
 	return props, nil
 }

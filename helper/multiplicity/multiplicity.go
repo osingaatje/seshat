@@ -9,16 +9,15 @@ import (
 var (
 	multiplicity          *regexp.Regexp = regexp.MustCompile(`^(\d+|\*)(\.+(\d+|\*))?$`)
 	singleMatchCount                     = 2 // first one is always the entire string
-	rangeMatchCount                      = 4
 	fromMultiplicityIndex                = 1
 	toMultiplicityIndex                  = 3
 )
 
-func GetMultiplicity(in string) (*Multiplicity, bool) {
+func GetMultiplicity(in string) (Multiplicity, bool) {
 	groups := multiplicity.FindStringSubmatch(in)
 
 	if len(groups) < singleMatchCount || groups[fromMultiplicityIndex] == "" {
-		return nil, false
+		return Multiplicity{}, false
 	}
 
 	if groups[toMultiplicityIndex] == "" { // single match
@@ -26,10 +25,10 @@ func GetMultiplicity(in string) (*Multiplicity, bool) {
 
 		fromMultInt, err := stringToMult(fromMult)
 		if err != nil {
-			return nil, false
+			return Multiplicity{}, false
 		}
 
-		return &Multiplicity{Start: fromMultInt, HasEndMult: false}, true // only a start index
+		return Multiplicity{Start: fromMultInt, HasEndMult: false}, true // only a start index
 	}
 	fromMult := groups[fromMultiplicityIndex]
 	toMult := groups[toMultiplicityIndex]
@@ -38,7 +37,7 @@ func GetMultiplicity(in string) (*Multiplicity, bool) {
 	toMultInt, errTo := stringToMult(toMult)
 
 	if errFrom != nil || errTo != nil { // not integers
-		return nil, false
+		return Multiplicity{}, false
 	}
 
 	if fromMultInt > toMultInt { // swap around range if inverted
@@ -48,10 +47,10 @@ func GetMultiplicity(in string) (*Multiplicity, bool) {
 	}
 
 	if fromMultInt == toMultInt { // squash 1..1 for example into just 1
-		return &Multiplicity{Start: fromMultInt, HasEndMult: false}, true
+		return Multiplicity{Start: fromMultInt, HasEndMult: false}, true
 	}
 
-	return &Multiplicity{
+	return Multiplicity{
 		Start:      fromMultInt,
 		End:        toMultInt,
 		HasEndMult: true,
@@ -69,6 +68,21 @@ func (m Multiplicity) String() string {
 		return multToString(m.Start)
 	}
 	return multToString(m.Start) + ".." + multToString(m.End)
+}
+
+// returns how correct the multiplicity is between 0 and 1
+// 0   == not at all correct
+// 0.5 == only starting/ending multiplicity
+// 1   == fully correct
+func (m Multiplicity) Equal(other Multiplicity) (correctnessPercentage float64) {
+	correctnessPercentage = 0
+	if m.Start == other.Start {
+		correctnessPercentage += 0.5
+	}
+	if m.HasEndMult && other.HasEndMult && m.End == other.End {
+		correctnessPercentage += 0.5
+	}
+	return correctnessPercentage
 }
 
 func stringToMult(in string) (int, error) {

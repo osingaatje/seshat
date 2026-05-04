@@ -1,6 +1,8 @@
 package grade
 
 import (
+	"fmt"
+
 	"github.com/osingaatje/seshat/helper/multiplicity"
 	"github.com/osingaatje/seshat/src/context"
 	"github.com/osingaatje/seshat/types/command"
@@ -59,9 +61,9 @@ func gradeDiag(c *context.Ctx, cmd command.GradeCmd) *GradeCalculation {
 	result := NewGradeCalculation()
 	for refEId, refE := range cmd.ReferenceSolution.Edges {
 		subEId, ok := finalEdgeMapping[refEId]
-		if !ok && cmd.Rubric.Scores.EdgeScore.AbsenceIncompleteScore != 0 {
+		if !ok {
 			// missing edge
-			result.EdgeGrades[subEId] = GradeResultEdgeMissing(cmd.Rubric.Scores.EdgeScore.AbsenceIncompleteScore)
+			result.MissingReferenceEdges[refEId] = GradeResultEdgeMissing(cmd.Rubric.Scores.EdgeScore.AbsenceIncompleteScore)
 			continue
 		}
 		gradeEdge(c, cmd, &result, refE, cmd.Submission.Edges[subEId])
@@ -72,7 +74,7 @@ func gradeDiag(c *context.Ctx, cmd command.GradeCmd) *GradeCalculation {
 		subVId, ok := finalVertexMapping[refVId]
 		if !ok && cmd.Rubric.Scores.VertexScore.AbsenceIncompleteScore != 0 {
 			// missing vertex
-			result.VertexGrades[subVId] = GradeResultVertexMissing(cmd.Rubric.Scores.VertexScore.AbsenceIncompleteScore)
+			result.MissingReferenceVertices[refVId] = GradeResultVertexMissing(cmd.Rubric.Scores.VertexScore.AbsenceIncompleteScore)
 			continue
 		}
 		gradeVertex(c, cmd, &result, refV, cmd.Submission.Vertices[subVId])
@@ -186,8 +188,8 @@ func gradeEdge(c *context.Ctx, cmd command.GradeCmd, res *GradeCalculation, refE
 
 	edgeStyleScore := calculateEdgeTypeScore(cmd, refE, subE)
 	edgeLabelScore := calculateEdgeLabelScore(c, cmd, refE.Label, subE.Label)
-	edgeFromScore := calculateEdgeEndScore(c, cmd, refE.FromProperties, subE.FromProperties)
-	edgeToScore := calculateEdgeEndScore(c, cmd, refE.ToProperties, subE.ToProperties)
+	edgeFromScore := calculateEdgeEndScore(c, cmd, refE, subE, refE.FromProperties, subE.FromProperties)
+	edgeToScore := calculateEdgeEndScore(c, cmd, refE, subE, refE.ToProperties, subE.ToProperties)
 
 	res.EdgeGrades[subE.Id] = GradeResultEdge{
 		PresenceScore:  Grade{Grade: cmd.Rubric.Scores.EdgeScore.PresenceScore, Reason: GRADE_REASON_PRESENT},
@@ -208,10 +210,11 @@ func calculateEdgeTypeScore(cmd command.GradeCmd, ref *InternalEdge, act *Intern
 	)
 }
 func calculateEdgeLabelScore(c *context.Ctx, cmd command.GradeCmd, refLbl *Label, actLbl *Label) Grade {
-	if refLbl != nil {
-		return formatPresentOrAbsenceGrade(
+	if refLbl == nil {
+		return formatPresentOrAbsenceGradeWithCorrectMsg(
 			actLbl == nil,
 			cmd.Rubric.Scores.EdgeLabelScore,
+			GRADE_REASON_EQUAL,
 			GRADE_REASON_INCORRECT,
 		)
 	}
@@ -229,7 +232,7 @@ func calculateEdgeEndScore(c *context.Ctx, cmd command.GradeCmd, refEdge *Intern
 	score := cmd.Rubric.Scores.EdgeEndLabelScore
 	if ref.Label == nil {
 		if act.Label == nil {
-			return Grade{Grade: score.PresenceScore, Reason: GRADE_REASON_CORRECT}
+			return Grade{Grade: score.PresenceScore, Reason: GRADE_REASON_EQUAL}
 		}
 		return Grade{Grade: score.SuperfluousScore, Reason: GRADE_REASON_SUPERFLUOUS}
 	}
@@ -243,14 +246,26 @@ func calculateEdgeEndScore(c *context.Ctx, cmd command.GradeCmd, refEdge *Intern
 	if ok {
 		actMult, ok := multiplicity.GetMultiplicity(act.Label.Text)
 		if !ok {
-			return Grade{Grade: score.AbsenceIncompleteScore, Reason: GradeReasonIncorrectMultiplicity(ref.Label.Text)}
+			return Grade{Grade: score.AbsenceIncompleteScore, Reason: GradeReasonIncorrectMultiplicity("", ref.Label.Text)}
 		}
 
-		// TODO DO GRADING WITH REF MULT AND ACT MULT
-		r := *refMult == *actMult
-		r = r && true
-		c.LogErr("TODO MULTIPLICITY GRADING!!")
-		panic("TODO MULTIPLICITY GRADING")
+		correctnessPercentage := refMult.Equal(actMult)
+		if correctnessPercentage < 0.01 {
+			return Grade{
+				Grade:  score.AbsenceIncompleteScore,
+				Reason: GradeReasonIncorrectMultiplicity("", ref.Label.Text),
+			}
+		} else if correctnessPercentage < 0.99 {
+			return Grade{
+				Grade: correctnessPercentage * score.PresenceScore,
+				Reason: GradeReasonIncorrectMultiplicity(
+					fmt.Sprintf("partially (%.2f) ", correctnessPercentage),
+					ref.Label.Text,
+				),
+			}
+		} else {
+			return Grade{Grade: score.PresenceScore, Reason: GRADE_REASON_EQUAL}
+		}
 
 	} else {
 		c.LogErr("Grading of anything other than a multiplicity in the start/end of an edge is"+
@@ -287,18 +302,23 @@ func syntacticSemanticMatch(c *context.Ctx, ref string, act string, score Rubric
 		semanticSimilarity.Score = 0
 	}
 
-	return formatPresentOrAbsenceGrade(
+	return formatPresentOrAbsenceGradeWithCorrectMsg(
 		syntacticSimilarity < SYNTACTIC_DISTANCE_THRESHOLD ||
 			semanticSimilarity.Score > COSINE_SIMILARITY_THRESHOLD,
 		score,
+		GRADE_REASON_EQUAL,
 		GRADE_REASON_ABSENT_OR_INCORRECT,
 	)
 }
 
 func formatPresentOrAbsenceGrade(correctGradeCondition bool, score RubricScoring, incorrectMsg GradeReason) Grade {
+	return formatPresentOrAbsenceGradeWithCorrectMsg(correctGradeCondition, score, GRADE_REASON_PRESENT, incorrectMsg)
+}
+
+func formatPresentOrAbsenceGradeWithCorrectMsg(correctGradeCondition bool, score RubricScoring, correctMsg GradeReason, incorrectMsg GradeReason) Grade {
 	res := Grade{
 		Grade:  score.PresenceScore,
-		Reason: GRADE_REASON_PRESENT,
+		Reason: correctMsg,
 	}
 	if !correctGradeCondition {
 		res.Grade = score.AbsenceIncompleteScore

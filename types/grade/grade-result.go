@@ -9,9 +9,10 @@ import (
 type GradeReason string
 
 const (
+	GRADE_REASON_EQUAL               GradeReason = "equal to sample solution"
 	GRADE_REASON_PRESENT             GradeReason = "present"
 	GRADE_REASON_CORRECT             GradeReason = "correct"
-	GRADE_REASON_ABSENT_OR_INCORRECT GradeReason = "is either missing in the submission or is incorrect"
+	GRADE_REASON_ABSENT_OR_INCORRECT GradeReason = "is missing in the submission or is incorrect"
 	GRADE_REASON_ABSENT              GradeReason = "is missing from the submission"
 	GRADE_REASON_INCORRECT           GradeReason = "is incorrect"
 	GRADE_REASON_SUPERFLUOUS         GradeReason = "superfluous: does not appear in reference solution"
@@ -23,8 +24,8 @@ func GradeReasonIncorrect(shouldHaveBeenName string) GradeReason {
 func GradeReasonUnsupported(unsupportedThing string) GradeReason {
 	return GradeReason(fmt.Sprintf("unsupported feature: %s", unsupportedThing))
 }
-func GradeReasonIncorrectMultiplicity(shouldBe string) GradeReason {
-	return GradeReason(fmt.Sprintf("No multplicity where there should have been '%s'", shouldBe))
+func GradeReasonIncorrectMultiplicity(incorrectModifier string, shouldBe string) GradeReason {
+	return GradeReason(fmt.Sprintf("%sincorrect multiplicity: should have been '%s'", incorrectModifier, shouldBe))
 }
 
 type GradeResult struct {
@@ -61,7 +62,7 @@ func GradeResultVertexMissing(missingScore float64) GradeResultVertex {
 	return GradeResultVertex{
 		PresenceScore: Grade{
 			Grade:  missingScore,
-			Reason: GRADE_REASON_ABSENT_OR_INCORRECT,
+			Reason: GRADE_REASON_ABSENT,
 		},
 	}
 }
@@ -77,7 +78,6 @@ func GradeResultVertexExtra(superfluousScore float64) GradeResultVertex {
 
 type GradeResultEdge struct {
 	PresenceScore  Grade  `json:"presence"`
-	TypeScore      *Grade `json:"type"`         // optional
 	EdgeTypeScore  *Grade `json:"line_style"`   // optional, whether the edge has the correct arrow styles and line style
 	EdgeLabelScore *Grade `json:"label"`        // optional
 	StartScore     *Grade `json:"vertex_start"` // optional
@@ -88,7 +88,7 @@ func GradeResultEdgeMissing(missingScore float64) GradeResultEdge {
 	return GradeResultEdge{
 		PresenceScore: Grade{
 			Grade:  missingScore,
-			Reason: GRADE_REASON_ABSENT_OR_INCORRECT,
+			Reason: GRADE_REASON_ABSENT,
 		},
 	}
 }
