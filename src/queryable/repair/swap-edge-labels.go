@@ -6,6 +6,7 @@ import (
 	. "github.com/osingaatje/seshat/types/generic"
 	pr "github.com/osingaatje/seshat/types/graph/intern"
 	. "github.com/osingaatje/seshat/types/graph/shared"
+	. "github.com/osingaatje/seshat/types/repair"
 )
 
 /*
@@ -15,47 +16,32 @@ ex. of usefulness: if a student has dragged them to a location of where another 
 
 | class1 | * ------------- 1 | class2|
 
-			(student drags * and 1 to other place:)
-	 HOW IT VISUALLY   LOOKS: | class1 | 1 ------------- * | class2|
-	 HOW IT INTERNALLY LOOKS: | class1 | * ------------- 1 | class2|
+				(student drags * and 1 to other place:)
+		 HOW IT VISUALLY   LOOKS: | class1 | 1 ------------- * | class2|
+		 HOW IT INTERNALLY LOOKS: | class1 | * ------------- 1 | class2|
 
-	it would be unfair to grade students based on code / data they cannot see. This is why we implement this.
+		it would be unfair to grade students based on code / data they cannot see. This is why we implement this.
 
 
-	NOTE: This does not take into account dragging labels to other vertices
-		ex.:  |class1| (A) ----------------- (B) |class2| (C) -------------- (D) |class3|
-					(student drags B<->D and A<->C)
-		HOW IT VISUALLY   LOOKS: |class1| (A) ----------------- (D) |class2| (C) -------------- (B) |class3|
-		HOW IT INTERNALLY LOOKS: |class1| (C) ----------------- (B) |class2| (A) -------------- (D) |class3|
+		NOTE: This does not take into account dragging labels to other vertices
+			ex.:  |class1| (A) ----------------- (B) |class2| (C) -------------- (D) |class3|
+						(student drags B<->D and A<->C)
+			HOW IT VISUALLY   LOOKS: |class1| (A) ----------------- (D) |class2| (C) -------------- (B) |class3|
+			HOW IT INTERNALLY LOOKS: |class1| (C) ----------------- (B) |class2| (A) -------------- (D) |class3|
 
-		we would consider the second case to be a pretty big 'skill issue'.
-		If a student drags the labels within one edge because the software isn't cooperating, fine.
-		..but if a student starts dragging labels to other vertices then we can consider that a failure in their thinking.
-			(at least I (Douwe) think so. We should not account for such major failures)
+			we would consider the second case to be a pretty big 'skill issue'.
+			If a student drags the labels within one edge because the software isn't cooperating, fine.
+			..but if a student starts dragging labels to other vertices then we can consider that a failure in their thinking.
+				(at least I (Douwe) think so. We should not account for such major failures)
+
+	 * Couple cases:
+	 * Start label swapped with either Middle or End label
+	 * Middle label swapped with Start/End label
+	 * End label swapped with Start/Middle label
+	 *
+	 * conditions:
+	 * - when the label is farther to one side of the edge than to its own side.
 */
-func swapEdgeLabels(c *context.Ctx, g *pr.InternalGraph) {
-	if g == nil {
-		c.LogWarn("Trying to swap edge labels on an empty parse result - BUG")
-		return
-	}
-
-	for _, e := range g.Edges {
-		swapEdgeLabelsForEdge(c, e)
-	}
-}
-
-const DISTANCE_PERC_THRESHOLD float64 = 0.35
-const DIST_INF float64 = 999999999999
-
-/*
- * Couple cases:
- * Start label swapped with either Middle or End label
- * Middle label swapped with Start/End label
- * End label swapped with Start/Middle label
- *
- * conditions:
- * - when the label is farther to one side of the edge than to its own side.
- */
 func swapEdgeLabelsForEdge(c *context.Ctx, e *pr.InternalEdge) {
 	if e == nil {
 		return

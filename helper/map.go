@@ -34,3 +34,12 @@ func FilterMap[K comparable, V any](m map[K]V, f func(K, V) bool) map[K]V {
 	}
 	return res
 }
+
+func MapMap[K comparable, V any](m map[K]V, f func(K, V) (K, V)) map[K]V {
+	res := map[K]V{}
+	for k, v := range m {
+		newK, newV := f(k, v)
+		res[newK] = newV
+	}
+	return res
+}

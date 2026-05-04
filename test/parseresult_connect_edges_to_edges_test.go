@@ -6,6 +6,7 @@ import (
 	"github.com/go-openapi/testify/v2/assert"
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/driver"
+	"github.com/osingaatje/seshat/types/command"
 	pr "github.com/osingaatje/seshat/types/graph/intern"
 	. "github.com/osingaatje/seshat/types/graph/shared"
 )
@@ -28,7 +29,11 @@ func TestConnectEdgeToOtherEdge(t *testing.T) {
 		t.Fatal("Failed to parse internal repr.")
 		return
 	}
-
+	internal = c.Queries.RepairDiagram.Get("Fix internal rep.", command.NewRepairCmdDefOpt(internal))
+	if internal == nil {
+		t.Fatal("Failed to repair internal repr.")
+		return
+	}
 	//debug conversion to .dot file:
 	// dot := c.Queries.DisplayDiagramAsDot.Get("dot", internal)
 	// if dot == nil {
@@ -62,6 +67,9 @@ func TestConnectEdgeToOtherEdge(t *testing.T) {
 
 	assert.Nil(t, assEdge.FromId)
 	assert.NotNil(t, assEdge.FromEdgeId)
+	if assEdge.FromEdgeId == nil {
+		return
+	}
 	assert.Equal(t, *assEdge.FromEdgeId, *oneToManyEdgeId)
 }
 
