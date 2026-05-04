@@ -50,7 +50,7 @@ func convertNode(v *InternalVertex) DotNode {
 	return res
 }
 func extractTextFromNode(v *InternalVertex) string {
-	res := fmt.Sprintf("________ %s ________\n", v.Title)
+	res := fmt.Sprintf("________ (id '%d') %s ________\n", v.Id, v.Title)
 	vals := []string{}
 	for key, val := range v.Values {
 		value := val.Value
@@ -81,8 +81,9 @@ func extractNodeOpts(v *InternalVertex) DotNodeOptions {
 
 func convertEdge(r *InternalGraph, e *InternalEdge) DotEdge {
 	res := DotEdge{
-		FromText: "",
-		ToText:   "",
+		FromText:    "",
+		MiddleLabel: fmt.Sprintf("(id '%d')", e.Id),
+		ToText:      "",
 	}
 	if e.FromId == nil {
 		res.FromText = "\"NO STARTING VERTEX\""
@@ -100,7 +101,7 @@ func convertEdge(r *InternalGraph, e *InternalEdge) DotEdge {
 		res.StartLabel = &e.FromProperties.Label.Text
 	}
 	if e.Label != nil {
-		res.MiddleLabel = &e.Label.Text
+		res.MiddleLabel += " " + e.Label.Text
 	}
 	if e.ToProperties.Label != nil {
 		res.EndLabel = &e.ToProperties.Label.Text

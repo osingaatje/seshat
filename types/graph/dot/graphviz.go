@@ -93,7 +93,7 @@ func (o *DotNodeOptions) String() string {
 type DotEdge struct {
 	FromText    string
 	ToText      string
-	MiddleLabel *string // maps to "label"
+	MiddleLabel string  // maps to "label"
 	StartLabel  *string // maps to "taillabel"
 	EndLabel    *string // maps to "headlabel"
 }
@@ -109,7 +109,7 @@ func (e *DotEdge) String() string {
 	}
 
 	res := fmt.Sprintf("%s -- %s", fromTxt, toTxt)
-	if e.StartLabel == nil && e.MiddleLabel == nil && e.EndLabel == nil {
+	if e.StartLabel == nil && e.MiddleLabel == "" && e.EndLabel == nil {
 		return res
 	}
 
@@ -118,8 +118,8 @@ func (e *DotEdge) String() string {
 	if e.StartLabel != nil {
 		elems = append(elems, fmt.Sprintf("taillabel=\"%s\"", *e.StartLabel))
 	}
-	if e.MiddleLabel != nil {
-		elems = append(elems, fmt.Sprintf("label=\"%s\"", *e.MiddleLabel))
+	if e.MiddleLabel != "" {
+		elems = append(elems, fmt.Sprintf("label=\"%s\"", e.MiddleLabel))
 	}
 	if e.EndLabel != nil {
 		elems = append(elems, fmt.Sprintf("headlabel=\"%s\"", *e.EndLabel))
