@@ -123,7 +123,7 @@ type GradeCmd struct {
 }
 
 func (cmd *GradeCmd) Run(c *context.Ctx) error {
-	c.LogWarn("TODO GRADING RUBRIC!")
+	c.LogErr("TODO load grading rubric/scheme from command")
 	rubric := GradeRubric{}
 
 	allSubmissions, err := helper.AllUTMLFiles(cmd.SubmissionDir)
@@ -152,6 +152,7 @@ func (cmd *GradeCmd) Run(c *context.Ctx) error {
 		results[f] = res
 	}
 
+	c.LogErr("TODO do something with results")
 	return nil
 }
 
