@@ -56,15 +56,15 @@ func (s *EdgeStyleProperties) Copy() *EdgeStyleProperties {
 }
 
 type EdgeVisualProperties struct {
-	StartLocation generic.Vector2D `json:"start_location"`
-	EndLocation   generic.Vector2D `json:"end_location"`
+	Path []generic.Vector2D `json:"path"`
 }
 
 func (s *EdgeVisualProperties) Copy() *EdgeVisualProperties {
-	return &EdgeVisualProperties{
-		StartLocation: s.StartLocation,
-		EndLocation:   s.EndLocation,
+	res := &EdgeVisualProperties{
+		Path: nil,
 	}
+	copy(res.Path, s.Path)
+	return res
 }
 
 // more detailed datatypes

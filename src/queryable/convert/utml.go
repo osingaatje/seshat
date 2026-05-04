@@ -219,11 +219,7 @@ func convertUTMLEdge(c *context.Ctx, index int, u *ParseResultUTML, e *ParseResu
 		VisualProperties: EdgeVisualProperties{ /* filled in either with absolute XY in this func, or based on the offset in the finalisation stage */ },
 	}
 
-	err := _tryAddStartEndLocation(c, &res, e.StartPosition, true)
-	if err != nil {
-		return nil, err
-	}
-	err = _tryAddStartEndLocation(c, &res, e.EndPosition, false)
+	err := _tryAddPath(c, &res, e)
 	if err != nil {
 		return nil, err
 	}
@@ -231,20 +227,39 @@ func convertUTMLEdge(c *context.Ctx, index int, u *ParseResultUTML, e *ParseResu
 	return &res, nil
 }
 
-func _tryAddStartEndLocation(c *context.Ctx, iE *pr.InternalEdge, pos UTMLEdgeXYOrOffsetPosition, isStart bool) error {
-	switch pos := pos.Value.(type) {
-	case UTMLEdgeOffsetPosition:
-		// nothing happens here, the offset needs to be filled in later based on the Node.
+func _tryAddPath(c *context.Ctx, iE *pr.InternalEdge, e *ParseResultUTMLEdge) error {
+	path := []Vector2D{{}, {}} //always start with start/end
 
-	case UTMLXY:
-		if isStart {
-			iE.VisualProperties.StartLocation = Vector2D{}.New(pos)
-		} else {
-			iE.VisualProperties.EndLocation = Vector2D{}.New(pos)
+	for isStart, pos := range map[bool]UTMLEdgeXYOrOffsetPosition{
+		true:  e.StartPosition,
+		false: e.EndPosition,
+	} {
+		switch pos := pos.Value.(type) {
+		case UTMLEdgeOffsetPosition:
+			// nothing happens here, the offset needs to be filled in later based on the Node.
+
+		case UTMLXY:
+			if isStart {
+				path[0] = Vector2D{}.New(pos)
+			} else {
+				path[1] = Vector2D{}.New(pos)
+			}
+		default:
+			return fmt.Errorf("UTML Edge StartPosition was neither an offset nor an X/Y position!")
 		}
-	default:
-		return fmt.Errorf("UTML Edge StartPosition was neither an offset nor an X/Y position!")
 	}
+
+	if len(e.MiddlePositions) > 0 {
+		last := path[1]
+		path = path[:1] // only start
+
+		for _, mpos := range e.MiddlePositions {
+			path = append(path, Vector2D{}.New(mpos))
+		}
+		path = append(path, last)
+	}
+	iE.VisualProperties.Path = path
+
 	return nil
 }
 
@@ -351,6 +366,9 @@ func tryConnectEdgeEnds(graph *pr.InternalGraph, id EdgeIdentifier, iE *pr.Inter
 	if ((iE.FromId == nil) != (iE.FromEdgeId == nil)) && ((iE.ToId == nil) != (iE.ToEdgeId == nil)) {
 		return nil
 	}
+	if len(iE.VisualProperties.Path) < 2 {
+		panic("CANNOT HAVE LESS THAN TWO PATH POSITIONS")
+	}
 
 	// just so that we don't have to make another function.
 	for range 2 {
@@ -362,12 +380,12 @@ func tryConnectEdgeEnds(graph *pr.InternalGraph, id EdgeIdentifier, iE *pr.Inter
 		if iE.FromId == nil && iE.FromEdgeId == nil {
 			vertexIdToFix = &iE.FromId
 			edgeIdToFix = &iE.FromEdgeId
-			location = &iE.VisualProperties.StartLocation
+			location = &iE.VisualProperties.Path[0]
 			edgeName = "start"
 		} else if iE.ToId == nil && iE.ToEdgeId == nil {
 			vertexIdToFix = &iE.ToId
 			edgeIdToFix = &iE.ToEdgeId
-			location = &iE.VisualProperties.EndLocation
+			location = &iE.VisualProperties.Path[len(iE.VisualProperties.Path)-1]
 			edgeName = "end"
 		} else {
 			break
@@ -398,13 +416,21 @@ func tryConnectEdgeEnds(graph *pr.InternalGraph, id EdgeIdentifier, iE *pr.Inter
 			if id == otherEdgeId {
 				continue
 			}
+			if len(otherEdge.VisualProperties.Path) < 2 {
+				panic("CANNOT HAVE LESS THAN TWO PATH POSITIONS")
+			}
 
-			dist, edgeLen := _calculateDistanceToLine(&otherEdge.VisualProperties.StartLocation, &otherEdge.VisualProperties.EndLocation, location)
-			normalisedDist := dist / edgeLen
-			if normalisedDist < float64(LINE_CLOSENESS_PERCENT)/100 && normalisedDist < smallestDist {
-				smallestDist = normalisedDist
-				smallestDistEdgeId = otherEdgeId
-				smallestDistVertexId = INVALID_VERT_ID
+			// make sublines of the path of the edge and try to see if we have a distance match:
+			for i := range len(otherEdge.VisualProperties.Path) - 1 {
+				startLineSegment, endLineSegment := otherEdge.VisualProperties.Path[i], otherEdge.VisualProperties.Path[i+1]
+
+				dist, edgeLen := _calculateDistanceToLine(&startLineSegment, &endLineSegment, location)
+				normalisedDist := dist / edgeLen
+				if normalisedDist < float64(LINE_CLOSENESS_PERCENT)/100 && normalisedDist < smallestDist {
+					smallestDist = normalisedDist
+					smallestDistEdgeId = otherEdgeId
+					smallestDistVertexId = INVALID_VERT_ID
+				}
 			}
 		}
 
@@ -472,6 +498,9 @@ func _addEdgeStartEndLocation(
 	if e == nil || res == nil {
 		panic("you stupid?")
 	}
+	if len(res.VisualProperties.Path) < 2 {
+		panic("INTERNAL EDGE SHOULD ALWAYS HAVE AT LEAST TWO PATH LOCATIONS!!")
+	}
 
 	// figure out if we still need to add the location based on the start/end nodes
 	var startIsOffset bool
@@ -505,7 +534,7 @@ func _addEdgeStartEndLocation(
 		fromSize := Vector2D{}.NewInt(nFrom.Width, nFrom.Height)
 
 		offsetStart := _determineXYOffsetBasedOnEdgePos(fromSize, e.StartPosition.Value.(UTMLEdgeOffsetPosition) /* cast it to the correct type (is checked beforehand) */)
-		res.VisualProperties.StartLocation = fromPos.Add(offsetStart)
+		res.VisualProperties.Path[0] = fromPos.Add(offsetStart)
 	}
 
 	if endIsOffset {
@@ -513,7 +542,7 @@ func _addEdgeStartEndLocation(
 		toSize := Vector2D{}.NewInt(nTo.Width, nTo.Height)
 
 		offsetEnd := _determineXYOffsetBasedOnEdgePos(toSize, e.EndPosition.Value.(UTMLEdgeOffsetPosition))
-		res.VisualProperties.EndLocation = toPos.Add(offsetEnd)
+		res.VisualProperties.Path[len(res.VisualProperties.Path)-1] = toPos.Add(offsetEnd)
 	}
 	return nil
 }
@@ -528,6 +557,9 @@ func _addLocationToLabel(
 	resL *Label) {
 	if uE == nil || uL == nil || resL == nil {
 		panic("Internal bug, something is nil.")
+	}
+	if len(iE.VisualProperties.Path) < 2 {
+		panic("INTERNAL EDGE MUST HAVE >= 2 PATH POSITIONS!")
 	}
 
 	// Edging in progress
@@ -544,43 +576,17 @@ func _addLocationToLabel(
 	case EdgeLabelPosStart:
 		offset := Vector2D{}.New(uL.Offset)
 		// solid base case. We can make it pretty later
-		position = iE.VisualProperties.StartLocation.Add(offset)
+		position = iE.VisualProperties.Path[0].Add(offset)
 
 	case EdgeLabelPosMiddle:
-		// the visual properties are to be added before this function. If not, this horribly breaks.
-		nFromPos := iE.VisualProperties.StartLocation
-		nToPos := iE.VisualProperties.EndLocation
-
-		// if we don't have 'middle positions' then position it between two nodes
-		// otherwise take the center-most middle pos.
-		if len(uE.MiddlePositions) == 0 {
-			position = Vector2D{
-				X: (nToPos.X - nFromPos.X) / 2,
-				Y: (nToPos.Y - nFromPos.Y) / 2,
-			}
-		} else {
-			var centerPos Vector2D
-			middlePosLen := len(uE.MiddlePositions)
-			if middlePosLen%2 == 0 {
-				rMiddlePos := Vector2D{}.New(uE.MiddlePositions[middlePosLen/2])
-				lMiddlePos := Vector2D{}.New(uE.MiddlePositions[middlePosLen/2-1])
-
-				centerPos = Vector2D{
-					X: (rMiddlePos.X - lMiddlePos.X) / 2,
-					Y: (rMiddlePos.Y - lMiddlePos.Y) / 2,
-				}
-			} else {
-				centerPos = Vector2D{}.New(uE.MiddlePositions[middlePosLen/2])
-			}
-
-			offset := Vector2D{}.New(uL.Offset)
-			position = centerPos.Add(offset)
-		}
+		centerPos := helper.GetCenterPos(iE.VisualProperties.Path)
+		offset := Vector2D{}.New(uL.Offset)
+		position = centerPos.Add(offset)
 
 	case EdgeLabelPosEnd:
 		offset := Vector2D{}.New(uL.Offset)
 		// solid base case. We can make it pretty later
-		position = iE.VisualProperties.EndLocation.Add(offset)
+		position = iE.VisualProperties.Path[len(iE.VisualProperties.Path)-1].Add(offset)
 	}
 
 	resL.Location = position

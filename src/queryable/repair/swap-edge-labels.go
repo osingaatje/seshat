@@ -1,6 +1,7 @@
 package repair
 
 import (
+	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/generic"
 	pr "github.com/osingaatje/seshat/types/graph/intern"
@@ -59,12 +60,14 @@ func swapEdgeLabelsForEdge(c *context.Ctx, e *pr.InternalEdge) {
 	if e == nil {
 		return
 	}
+	if len(e.VisualProperties.Path) < 2 {
+		panic("INTERNAL EDGE SHOULD HAVE AT LEAST TWO PATH POSITIONS!")
+	}
 
-	fromPos := e.VisualProperties.StartLocation // old: fromNode.VisualProperties.Location.Add(fromNode.VisualProperties.Size.Div(2)) // center of the node
-	toPos := e.VisualProperties.EndLocation     // old: toNode.VisualProperties.Location.Add(toNode.VisualProperties.Size.Div(2))       // center of the node
+	fromPos := e.VisualProperties.Path[0]
+	toPos := e.VisualProperties.Path[len(e.VisualProperties.Path)-1]
 
-	// center between A ---- B == A + (B-A)/2
-	centerPos := fromPos.Add(toPos.Sub(fromPos).Div(2))
+	centerPos := helper.GetCenterPos(e.VisualProperties.Path)
 
 	labels := []**Label{
 		&e.FromProperties.Label, &e.Label, &e.ToProperties.Label,
