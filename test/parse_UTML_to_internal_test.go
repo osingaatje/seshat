@@ -8,7 +8,10 @@ import (
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
 	"github.com/osingaatje/seshat/src/driver"
+	"github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/generic"
+	"github.com/osingaatje/seshat/types/graph/intern"
+	"github.com/osingaatje/seshat/types/graph/utml"
 	. "github.com/osingaatje/seshat/types/graph/utml"
 )
 
@@ -55,48 +58,56 @@ func TestConvertBrokenFiles(t *testing.T) {
 }
 
 func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string) {
-	utml := c.Queries.ParseUTML.Get("Parse UTML", inputFilePath)
-	intern := c.Queries.ParseUTMLToParseRes.Get("UTML -> internal repr.", utml)
+	uGraph := c.Queries.ParseUTML.Get("Parse UTML", inputFilePath)
+	iGraph := c.Queries.ParseUTMLToParseRes.Get("UTML -> internal repr.", uGraph)
 
-	if utml == nil {
+	if uGraph == nil {
 		t.Fatalf("path='%s': UTML repr. was nil!", inputFilePath)
 		return
 	}
 
-	if intern == nil {
+	if iGraph == nil {
 		t.Fatalf("path='%s': Internal representation was nil!", inputFilePath)
 		return
 	}
 
-	// dot := c.Queries.DisplayDiagramAsDot.Get("dot", intern)
+	verifyConvertedDiag(t, uGraph, iGraph)
+	rGraph := c.Queries.RepairDiagram.Get("Repair internal graph", command.NewRepairCmdDefOpt(iGraph))
+
+	// DEBUG
+	// dot := c.Queries.DisplayDiagramAsDot.Get("dot", rGraph)
 	// c.LogInfo("%s", dot.String())
 
+	verifyRepairedDiag(t, uGraph, rGraph)
+}
+
+func verifyConvertedDiag(t *testing.T, utmlGraph *utml.ParseResultUTML, internGraph *intern.InternalGraph) {
 	// BASIC CHECKS
-	filteredUTMLEdges := helper.Filter(utml.Edges, func(e ParseResultUTMLEdge) bool {
+	utmlEdgesNotConnectedToSkippedVertices := helper.Filter(utmlGraph.Edges, func(e ParseResultUTMLEdge) bool {
 		add := true
 		if e.StartNodeId != nil {
-			n := utml.Nodes[(*e.StartNodeId)]
+			n := utmlGraph.Nodes[(*e.StartNodeId)]
 			add = add && !slices.Contains(SKIPPED_VERTEX_TYPES, GetNodeType(&n))
 		}
 		if e.EndNodeId != nil {
-			n := utml.Nodes[(*e.EndNodeId)]
+			n := utmlGraph.Nodes[(*e.EndNodeId)]
 			add = add && !slices.Contains(SKIPPED_VERTEX_TYPES, GetNodeType(&n))
 		}
 		return add
 	})
-	assert.Equal(t, len(filteredUTMLEdges), len(intern.Edges), "Edges not equal!")
+	assert.Equal(t, len(utmlEdgesNotConnectedToSkippedVertices), len(internGraph.Edges), "Edges not equal!")
 
-	filteredUTMLNodes := helper.Filter(utml.Nodes, func(n ParseResultUTMLNode) bool {
+	nonSkippedUTMLNodes := helper.Filter(utmlGraph.Nodes, func(n ParseResultUTMLNode) bool {
 		return !slices.Contains(SKIPPED_VERTEX_TYPES, n.Type)
 	})
-	assert.Equal(t, len(filteredUTMLNodes), len(intern.Vertices), "Nodes not equal!")
+	assert.Equal(t, len(nonSkippedUTMLNodes), len(internGraph.Vertices), "Nodes not equal!")
 
 	// MORE ADVANCED CHECKS
-	for id, iEdge := range intern.Edges {
+	for id, iEdge := range internGraph.Edges {
 		var uEdge *ParseResultUTMLEdge
-		var ok bool = int(id) < int(len(utml.Edges))
+		var ok bool = int(id) < int(len(utmlGraph.Edges))
 		if ok {
-			uEdge = &utml.Edges[int(id)]
+			uEdge = &utmlGraph.Edges[int(id)]
 		}
 
 		if !ok {
@@ -109,7 +120,7 @@ func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string) {
 		// NODES/VERTICES
 		if iEdge.FromId != nil {
 			if uEdge.StartNodeId == nil {
-				t.Logf("TODO VERIFY WHETHER THE NODE IS WITHIN DISTANCE OF THE EDGE")
+				t.Errorf("Adding start nodes to edges should not happen until the 'repair' step!")
 			} else {
 				assert.Equal(t, int64(*iEdge.FromId), int64(*uEdge.StartNodeId))
 			}
@@ -117,7 +128,7 @@ func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string) {
 
 		if iEdge.ToId != nil {
 			if uEdge.EndNodeId == nil {
-				t.Logf("TODO VERIFY WHETHER THE NODE IS WITHIN DISTANCE OF THE EDGE")
+				t.Errorf("Adding end nodes to edges should not happen until the 'repair' step!")
 			} else {
 				assert.Equal(t, int64(*iEdge.ToId), int64(*uEdge.EndNodeId))
 			}
@@ -143,13 +154,13 @@ func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string) {
 
 	}
 
-	for i, iVertex := range intern.Vertices {
-		if i < 0 || int64(i) > int64(len(utml.Nodes)) {
-			t.Fatalf("A vertex identifier in internal repr. does not match UTML repr.! Id=%d", i)
+	for i, iVertex := range internGraph.Vertices {
+		if i < 0 || int64(i) > int64(len(utmlGraph.Nodes)) {
+			t.Fatalf("A vertex ID in internal repr. does not match UTML repr.! Internal Id=%d", i)
 			return
 		}
 
-		uVertex := utml.Nodes[i]
+		uVertex := utmlGraph.Nodes[i]
 
 		assert.Equal(t, iVertex.Id, i)
 
@@ -159,4 +170,9 @@ func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string) {
 
 		assert.Equal(t, string(iVertex.Properties.Visibility), "") // utml has no visibility per class.
 	}
+}
+
+func verifyRepairedDiag(t *testing.T, u *utml.ParseResultUTML, g *intern.InternalGraph) {
+	assert.NotNil(t, g, "Repairing a diagram should succeed!")
+	// t.Logf("Todo more checks in verify repaired diagram")
 }

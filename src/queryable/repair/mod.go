@@ -20,6 +20,9 @@ func FindQueries(c *context.Ctx) {
 }
 
 func performRepairs(c *context.Ctx, conf cmd.RepairCmd) *InternalGraph {
+	c.LogPrefixAdd("Repair '%s'", conf.Diagram.Metadata.Filename)
+	defer c.LogPrefixRm("Repair '%s'", conf.Diagram.Metadata.Filename)
+
 	if conf.Diagram == nil {
 		return nil // identity: repair(nil) = nil
 	}
@@ -57,12 +60,13 @@ func performRepairs(c *context.Ctx, conf cmd.RepairCmd) *InternalGraph {
 		keys := helper.Keys(fails)
 		keyStrings := helper.Map(keys, func(k shared.EdgeIdentifier) string { return fmt.Sprintf("%d", k) })
 
-		errMsg := fmt.Sprintf("Repairs failed for edges [%s]", strings.Join(keyStrings, ","))
+		var errMsg strings.Builder
+		fmt.Fprintf(&errMsg, "Repairs failed for edges [%s]", strings.Join(keyStrings, ","))
 		for k, v := range fails {
 			errStrings := helper.Map(v, func(e error) string { return e.Error() })
-			errMsg += fmt.Sprintf("\nID '%d': [%s]", k, strings.Join(errStrings, ","))
+			fmt.Fprintf(&errMsg, "\nID '%d': [%s]", k, strings.Join(errStrings, ","))
 		}
-		c.LogErr(errMsg)
+		c.LogErr(errMsg.String())
 		return nil
 	}
 
