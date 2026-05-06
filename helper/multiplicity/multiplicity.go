@@ -28,6 +28,11 @@ func GetMultiplicity(in string) (Multiplicity, bool) {
 			return Multiplicity{}, false
 		}
 
+		// special case for '*'
+		if fromMultInt == -1 {
+			return Multiplicity{Start: 0, HasEndMult: true, End: -1}, true
+		}
+
 		return Multiplicity{Start: fromMultInt, HasEndMult: false}, true // only a start index
 	}
 	fromMult := groups[fromMultiplicityIndex]
@@ -47,6 +52,10 @@ func GetMultiplicity(in string) (Multiplicity, bool) {
 	}
 
 	if fromMultInt == toMultInt { // squash 1..1 for example into just 1
+		// special case for '*..*'
+		if fromMultInt == -1 {
+			return Multiplicity{Start: 0, HasEndMult: true, End: -1}, true
+		}
 		return Multiplicity{Start: fromMultInt, HasEndMult: false}, true
 	}
 
