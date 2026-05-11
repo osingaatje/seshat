@@ -40,7 +40,7 @@ func performRepairs(c *context.Ctx, conf cmd.RepairCmd) *InternalGraph {
 
 		// Connect loose edge ends if option enabled:
 		if conf.RepairOpts.ConnectEdgeEnds {
-			err := tryConnectEdgeEnds(res, e)
+			err := tryConnectEdgeEnds(c, res, e)
 			if err != nil {
 				failedEdgeCorrections[eId] = append(failedEdgeCorrections[eId], err)
 			}
@@ -66,8 +66,12 @@ func performRepairs(c *context.Ctx, conf cmd.RepairCmd) *InternalGraph {
 			errStrings := helper.Map(v, func(e error) string { return e.Error() })
 			fmt.Fprintf(&errMsg, "\nID '%d': [%s]", k, strings.Join(errStrings, ","))
 		}
-		c.LogErr(errMsg.String())
-		return nil
+
+		if conf.RepairOpts.FailOnError {
+			c.LogErr(errMsg.String())
+			return nil
+		} // otherwise, if not striclty fail:
+		c.LogWarn(errMsg.String())
 	}
 
 	return res

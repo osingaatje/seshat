@@ -16,7 +16,14 @@ type VertexVisualProperties struct {
 	// additional stuff for possible visualisation later on:
 	Location               generic.Vector2D `json:"location"`
 	Size                   generic.Vector2D `json:"size"`
-	VertexStyleFillHex     color.RGBA       `json:"fill_col"`
-	VertexStyleStrokeHex   color.RGBA       `json:"stroke_col"`
-	VertexStyleStrokeWidth uint16           `json:"stroke_width"`
+	Shape                  VertexShape
+	VertexStyleFillHex     color.RGBA `json:"fill_col"`
+	VertexStyleStrokeHex   color.RGBA `json:"stroke_col"`
+	VertexStyleStrokeWidth uint16     `json:"stroke_width"`
 }
+
+type VertexShape string
+
+const (
+	VERTEX_SHAPE_RECT VertexShape = "rectangle"
+)

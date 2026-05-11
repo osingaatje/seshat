@@ -121,8 +121,8 @@ func (e *InternalEdge) Copy() *InternalEdge {
 		FromProperties:   e.FromProperties.Copy(),
 		Label:            e.Label.Copy(),
 		ToProperties:     e.ToProperties.Copy(),
-		StyleProperties:  e.StyleProperties,
-		VisualProperties: e.VisualProperties,
+		StyleProperties:  e.StyleProperties.Copy(),
+		VisualProperties: e.VisualProperties.Copy(),
 	}
 	return res
 }

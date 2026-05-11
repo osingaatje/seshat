@@ -8,6 +8,7 @@ import (
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
 	"github.com/osingaatje/seshat/src/driver"
+	utmlConvert "github.com/osingaatje/seshat/src/queryable/convert/utml"
 	"github.com/osingaatje/seshat/types/command"
 	. "github.com/osingaatje/seshat/types/generic"
 	"github.com/osingaatje/seshat/types/graph/intern"
@@ -17,7 +18,7 @@ import (
 
 func TestConvertSpecificFile(t *testing.T) {
 	c := driver.NewContext()
-	parseAndVerify(c, t, "../DATASETS/2025_M2_BIT/q/1/152654.json")
+	parseAndVerify(c, t, "../DATASETS/2025_M2_TCS/q/5/1027516.json")
 }
 
 func TestConvertAllDatasetFiles(t *testing.T) {
@@ -75,13 +76,13 @@ func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string) {
 	rGraph := c.Queries.RepairDiagram.Get("Repair internal graph", command.NewRepairCmdDefOpt(iGraph))
 
 	// DEBUG
-	// dot := c.Queries.DisplayDiagramAsDot.Get("dot", rGraph)
-	// c.LogInfo("%s", dot.String())
+	dot := c.Queries.DisplayDiagramAsDot.Get("dot", rGraph)
+	c.LogInfo("%s", dot.String())
 
 	verifyRepairedDiag(t, uGraph, rGraph)
 }
 
-func verifyConvertedDiag(t *testing.T, utmlGraph *utml.ParseResultUTML, internGraph *intern.InternalGraph) {
+func verifyConvertedDiag(t *testing.T, utmlGraph *ParseResultUTML, internGraph *intern.InternalGraph) {
 	// BASIC CHECKS
 	utmlEdgesNotConnectedToSkippedVertices := helper.Filter(utmlGraph.Edges, func(e ParseResultUTMLEdge) bool {
 		add := true
@@ -150,6 +151,9 @@ func verifyConvertedDiag(t *testing.T, utmlGraph *utml.ParseResultUTML, internGr
 		if iEdge.FromProperties.Label != nil {
 			assert.Equal(t, iEdge.FromProperties.Label.Text, uEdge.StartLabel.Value)
 		}
+
+		assert.Equal(t, iEdge.FromProperties.ArrowStyle, utmlConvert.UTMLArrowStyleToInteral[uEdge.StartStyle], "Start arrow head style should be mapped according to the \"UTMLArrowStyleToInteral\" map!")
+		assert.Equal(t, iEdge.ToProperties.ArrowStyle, utmlConvert.UTMLArrowStyleToInteral[uEdge.EndStyle], "End arrow head style should be mapped according to the \"UTMLArrowStyleToInteral\" map!")
 		// END LABELS
 
 	}

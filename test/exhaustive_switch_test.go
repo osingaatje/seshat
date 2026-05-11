@@ -7,6 +7,6 @@ import (
 	"golang.org/x/tools/go/analysis/analysistest"
 )
 
-func TestExhaustiveTest(t *testing.T) {
+func TestExhaustiveSwitchCaseTest(t *testing.T) {
 	_ = analysistest.Run(t, "../", exhaustive.Analyzer, "./src/...")
 }

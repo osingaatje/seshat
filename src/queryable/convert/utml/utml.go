@@ -17,7 +17,7 @@ import (
 )
 
 // Parsing raw file to UTML
-func parseUTML(c *context.Ctx, filepath string) *ParseResultUTML {
+func ParseUTML(c *context.Ctx, filepath string) *ParseResultUTML {
 	r, err := os.ReadFile(filepath)
 	if err != nil {
 		c.LogErr("Error occurred while reading file! Err='%s'", err.Error())
@@ -38,7 +38,7 @@ func parseUTML(c *context.Ctx, filepath string) *ParseResultUTML {
 }
 
 // Converting to internal representation
-func convertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.InternalGraph {
+func ConvertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.InternalGraph {
 	c.LogPrefixAdd("UTML -> Internal '%s'", filepath.Base(utml.Metadata.Filename))
 	defer /* I love Go */ c.LogPrefixRm("UTML -> Internal '%s'", filepath.Base(utml.Metadata.Filename))
 	if utml == nil {
@@ -146,8 +146,9 @@ func extractVisualProps(n *ParseResultUTMLNode) VertexVisualProperties {
 	res := VertexVisualProperties{
 		Location:               Vector2D{}.New(n.Position),
 		Size:                   Vector2D{X: float64(n.Width), Y: float64(n.Height)},
-		VertexStyleFillHex:     color.RGBA{R: 255, G: 255, B: 255, A: 255}, // transparent white
-		VertexStyleStrokeHex:   color.RGBA{R: 0, G: 0, B: 0, A: 0},         // black
+		Shape:                  VERTEX_SHAPE_RECT,                          // ASSUMPTION: all UTML nodes are squares
+		VertexStyleFillHex:     color.RGBA{R: 255, G: 255, B: 255, A: 255}, // ASSUMPTION: all UTML nodes have a transparent white bg
+		VertexStyleStrokeHex:   color.RGBA{R: 0, G: 0, B: 0, A: 0},         // ASSUMPTION: all UTML nodes have a black border
 		VertexStyleStrokeWidth: 1,
 	}
 
@@ -253,13 +254,14 @@ func _tryAddPath(c *context.Ctx, iE *pr.InternalEdge, e *ParseResultUTMLEdge) er
 
 func extractUTMLEdgeEndProps(e *ParseResultUTMLEdge, start bool) EdgeEndProperties {
 	res := EdgeEndProperties{
-		ArrowStyle: UTMLArrowStyleToInteral[e.StartStyle], // default
+		ArrowStyle: UTMLArrowStyleToInteral[e.StartStyle], // default == start style
 		Label:      nil,
 	}
 
 	var lbl *UTMLEdgeLabel = e.StartLabel
 	if !start {
 		lbl = e.EndLabel
+		res.ArrowStyle = UTMLArrowStyleToInteral[e.EndStyle]
 	}
 
 	if lbl != nil {

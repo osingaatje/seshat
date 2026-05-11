@@ -49,8 +49,8 @@ type EdgeStyleProperties struct {
 	LineStyle EdgeLineStyle `json:"line_style"`
 }
 
-func (s *EdgeStyleProperties) Copy() *EdgeStyleProperties {
-	return &EdgeStyleProperties{
+func (s EdgeStyleProperties) Copy() EdgeStyleProperties {
+	return EdgeStyleProperties{
 		LineStyle: s.LineStyle,
 	}
 }
@@ -59,9 +59,9 @@ type EdgeVisualProperties struct {
 	Path []generic.Vector2D `json:"path"`
 }
 
-func (s *EdgeVisualProperties) Copy() *EdgeVisualProperties {
-	res := &EdgeVisualProperties{
-		Path: nil,
+func (s EdgeVisualProperties) Copy() EdgeVisualProperties {
+	res := EdgeVisualProperties{
+		Path: make([]generic.Vector2D, len(s.Path)),
 	}
 	copy(res.Path, s.Path)
 	return res
