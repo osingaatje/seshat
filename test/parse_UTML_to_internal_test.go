@@ -76,8 +76,8 @@ func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string) {
 	rGraph := c.Queries.RepairDiagram.Get("Repair internal graph", command.NewRepairCmdDefOpt(iGraph))
 
 	// DEBUG
-	dot := c.Queries.DisplayDiagramAsDot.Get("dot", rGraph)
-	c.LogInfo("%s", dot.String())
+	// dot := c.Queries.DisplayDiagramAsDot.Get("dot", rGraph)
+	// c.LogInfo("%s", dot.String())
 
 	verifyRepairedDiag(t, uGraph, rGraph)
 }
