@@ -177,25 +177,4 @@ func _calculateDistanceToLine( /*start of line*/ a *Vector2D /*end of line*/, b 
 	} else {
 		return math.Abs(ba.X*aLoc.Y-ba.Y*aLoc.X) / lenOfEdge, lenOfEdge
 	}
-
-	// calculate distance between the point 'loc(ation)' = (x_0, y_0) and the line lineStart<->lineEnd = (x_1,y_1), (x_2, y_2)
-	// we use this formula: d = | v^ . r | = ( |(x_2 - x_1)*(y_1 - y_0) - (x_1 - x_0)(y_2 - y_1)| ) \ ( \sqrt( (x_2-x_1)^2 + (y_2-y_1)^2 ) )
-
-	// x_0, y_0 := loc.X, loc.Y
-	// x_1, y_1 := lineStart.X, lineStart.Y
-	// x_2, y_2 := lineEnd.X, lineEnd.Y
-	//
-	// lineDx := x_2 - x_1
-	// lineDy := y_2 - y_1
-	//
-	// lenOfEdge := math.Sqrt(math.Pow(lineDx, 2) + math.Pow(lineDy, 2)) // <>---------------<> the length inbetween lineStart and lineEnd
-	// if lenOfEdge == 0 {
-	// return 0, 0
-	// }
-	//
-	// pointToLineDx := x_1 - x_0
-	// pointToLineDy := y_1 - y_0
-	//
-	// topPart := math.Abs((lineDx * pointToLineDy) - (pointToLineDx * lineDy))
-	// return topPart / lenOfEdge, lenOfEdge
 }
