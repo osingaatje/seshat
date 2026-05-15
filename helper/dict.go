@@ -2,12 +2,12 @@ package helper
 
 func Keys[K comparable, V any](m map[K]V) []K {
 	set := map[K]bool{}
-	for k, _ := range m {
+	for k := range m {
 		set[k] = true
 	}
 	res := make([]K, len(m))
 	i := 0
-	for k, _ := range set {
+	for k := range set {
 		res[i] = k
 		i++
 	}
