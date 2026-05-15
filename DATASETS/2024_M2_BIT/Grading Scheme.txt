@@ -1,0 +1,124 @@
+1.	Class Charging Station.
+ 	1 of 1 pt.
+
+2.	Class Charging Port.
+ 	1 of 1 pt.
+
+3.	Association: Charging Station has Charging Ports.
+ 	1 of 1 pt.
+
+4.	Multiplicity: Charging Station has at least one port (1..* but * is also accepted).
+ 	1 of 1 pt.
+
+5.	Multiplicity: Charging Port belongs to one station.
+ 	1 of 1 pt.
+
+6.	Class User.
+(Some students might use the name Account for this class, which is acceptable).
+ 	1 of 1 pt.
+
+7.	Class Vehicle.
+ 	1 of 1 pt.
+
+8.	Association: User owns Vehicle.
+ 	1 of 1 pt.
+
+9.	Multiplicity: User owns at least one Vehicle.
+(1..* but * also accepted)
+ 	1 of 1 pt.
+
+10.	Multiplicity: Vehicle belongs to one User.
+ 	1 of 1 pt.
+
+11.	Class Reservation.
+(Acceptable as an association class as well).
+ 	1 of 1 pt.
+
+12.	Association: User makes Reservation.
+It's possible (and actually more correct) to have the Reservation link with the vehicle rather than the User.
+ 	1 of 1 pt.
+
+13.	Multiplicity: User makes many Reservations (*).
+ 	1 of 1 pt.
+
+14.	Multiplicity: Reservation made by one User.
+ 	1 of 1 pt.
+
+15.	Association: Reservation made for Charging Port.
+ 	1 of 1 pt.
+
+16.	Multiplicity: Reservation made for one Charging Port.
+ 	1 of 1 pt.
+
+17.	Multiplicity: Charging Port has many Reservations.
+ 	1 of 1 pt.
+
+18.	Class Charging Session.
+ 	1 of 1 pt.
+
+19.	Association: Charging Port creates Charging Session.
+ 	1 of 1 pt.
+
+20.	Multiplicity: Charging Port creates many Charing Sessions.
+ 	1 of 1 pt.
+
+21.	Multiplicity: Charging Session is created by one Charging Port.
+ 	1 of 1 pt.
+
+22.	Class: Payment Transaction.
+ 	1 of 1 pt.
+
+23.	Association: Charging Session creates Payment Transaction.
+ 	1 of 1 pt.
+
+24.	Multiplicity: Charging Session creates one Payment Transaction.
+ 	1 of 1 pt.
+
+25.	Multiplicity: Payment Transaction is associated with one Charging Session.
+ 	1 of 1 pt.
+
+26.	Class Payment Method.
+(Some students have this is a super class with subclasses for the actual methods, which is correct).
+ 	1 of 1 pt.
+
+27.	Association: User sets us Payment Method.
+ 	1 of 1 pt.
+
+28.	Multiplicity: User sets up at least one Payment Method (1..* but * accepted)
+ 	1 of 1 pt.
+
+29.	Multiplicity: Payment Method is set up by one User.
+ 	1 of 1 pt.
+
+30.	Association: Transaction linked with Payment Method.
+ 	1 of 1 pt.
+
+31.	Multiplicity: Transaction linked with one Payment Method.
+ 	1 of 1 pt.
+
+32.	Multiplicity: Payment Method is used by many Transactions.
+ 	1 of 1 pt.
+
+33.	Class Load Balancer.
+ 	1 of 1 pt.
+
+34.	Association: Load Balancer manages Charging Station.
+ 	1 of 1 pt.
+
+35.	Multiplicity: Load Balancer manages many Charging Stations.
+ 	1 of 1 pt.
+
+36.	Multiplicity: Charging Station managed by one Load Balancer.
+ 	1 of 1 pt.
+
+37.	Class Maintenance Operator.
+ 	1 of 1 pt.
+
+38.	Association: Maintenance Operator maintains Charging Stations (or Charging Ports but not both).
+ 	1 of 1 pt.
+
+39.	Multiplicity: Maintenance Operator maintains many Stations (or Ports but not both).
+ 	1 of 1 pt.
+
+40.	Multiplicity: Charging Station (or Port) is maintained by one Maintenance Operator.
+ 	1 of 1 pt.
