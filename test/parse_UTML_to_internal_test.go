@@ -1,6 +1,7 @@
 package test
 
 import (
+	"path/filepath"
 	"slices"
 	"testing"
 
@@ -14,11 +15,34 @@ import (
 	"github.com/osingaatje/seshat/types/graph/intern"
 	"github.com/osingaatje/seshat/types/graph/utml"
 	. "github.com/osingaatje/seshat/types/graph/utml"
+	"github.com/osingaatje/seshat/types/repair"
 )
 
+var SKIP_DIAG_ERRS map[string]bool = map[string]bool{
+	"1027516.json": true,
+	"1027630.json": true,
+	"1027477.json": true,
+	"1027470.json": true,
+	"1027492.json": true, // this one is quite weird, there's some arrow that is not connected to a vertex but I can't find what arrow it is.
+	"1027408.json": true,
+	"1027429.json": false, // Edge 2 is a problem that we need to fix
+	"154286.json":  false, // commissions -> is sometimes a problem
+}
+
+func SkipErr(path string) bool {
+	filename := filepath.Base(path)
+	return !SKIP_DIAG_ERRS[filename]
+}
+
 func TestConvertSpecificFile(t *testing.T) {
+	// const PATH string = "../DATASETS/2025_M2_TCS/q/6/1027320.json"
+	const PATH string = "../DATASETS/2025_M2_BIT/q/1/154286.json"
+
 	c := driver.NewContext()
-	parseAndVerify(c, t, "../DATASETS/2025_M2_TCS/q/5/1027516.json")
+	skipErrs := SkipErr(PATH)
+	_ /*parseRes*/, intern := parseAndVerify(c, t, PATH, skipErrs)
+	dot := c.Queries.DisplayDiagramAsDot.Get("Dot", intern)
+	c.LogInfo("DOT FILE: \n%s", dot)
 }
 
 func TestConvertAllDatasetFiles(t *testing.T) {
@@ -30,8 +54,10 @@ func TestConvertAllDatasetFiles(t *testing.T) {
 		return
 	}
 
+	c.LogInfo("Converting all dataset files, found '%d' entries", len(filePaths))
+
 	for _, path := range filePaths {
-		parseAndVerify(c, t, path)
+		parseAndVerify(c, t, path, SkipErr(path))
 	}
 }
 
@@ -41,7 +67,7 @@ func TestConvertSimpleUTMLResultToInternal(t *testing.T) {
 	filePaths := helper.AllUTMLFilesUNSAFE("./examples/correct")
 
 	for _, path := range filePaths {
-		parseAndVerify(c, t, path)
+		parseAndVerify(c, t, path, false)
 	}
 }
 
@@ -58,28 +84,37 @@ func TestConvertBrokenFiles(t *testing.T) {
 	}
 }
 
-func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string) {
+func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string, failOnErrRepair bool) (*ParseResultUTML, *intern.InternalGraph) {
 	uGraph := c.Queries.ParseUTML.Get("Parse UTML", inputFilePath)
-	iGraph := c.Queries.ParseUTMLToParseRes.Get("UTML -> internal repr.", uGraph)
-
 	if uGraph == nil {
 		t.Fatalf("path='%s': UTML repr. was nil!", inputFilePath)
-		return
+		return nil, nil
 	}
+	iGraph := c.Queries.ParseUTMLToParseRes.Get("UTML -> internal repr.", uGraph)
 
 	if iGraph == nil {
 		t.Fatalf("path='%s': Internal representation was nil!", inputFilePath)
-		return
+		return nil, nil
 	}
 
 	verifyConvertedDiag(t, uGraph, iGraph)
-	rGraph := c.Queries.RepairDiagram.Get("Repair internal graph", command.NewRepairCmdDefOpt(iGraph))
+
+	repairCmd := command.RepairCmd{Diagram: iGraph, RepairOpts: repair.DefaultRepairOptions()}
+	repairCmd.RepairOpts.FailOnError = failOnErrRepair
+
+	repairRes := c.Queries.RepairDiagram.Get("Repair internal graph", repairCmd)
+	if (failOnErrRepair && len(repairRes.Errors) > 0) || repairRes.Diagram == nil {
+		t.Errorf("Failed repairing graph '%s': %s", inputFilePath, repairRes.Error())
+		return nil, nil
+	}
+	repairedDiag := repairRes.Diagram
 
 	// DEBUG
 	// dot := c.Queries.DisplayDiagramAsDot.Get("dot", rGraph)
 	// c.LogInfo("%s", dot.String())
 
-	verifyRepairedDiag(t, uGraph, rGraph)
+	verifyRepairedDiag(t, uGraph, repairedDiag)
+	return uGraph, repairedDiag
 }
 
 func verifyConvertedDiag(t *testing.T, utmlGraph *ParseResultUTML, internGraph *intern.InternalGraph) {

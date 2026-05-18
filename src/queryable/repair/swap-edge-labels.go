@@ -140,7 +140,7 @@ func labelDistance(lblPos Vector2D, referencePos Vector2D, scale float64) float6
 }
 
 func swapLabels(c *context.Ctx, label1Txt string, label2Txt string, lbl1 **Label, lbl2 **Label) {
-	c.LogDebug("Swapping labels %s and %s...", label1Txt, label2Txt)
+	// c.LogDebug("Swapping labels %s and %s...", label1Txt, label2Txt)
 
 	if *lbl1 != nil {
 		if *lbl2 != nil {

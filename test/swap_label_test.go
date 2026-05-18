@@ -115,13 +115,14 @@ func parseAndFix(t *testing.T, filePath string) (internal *InternalGraph, fixed 
 	}
 
 	// check repairs: swap labels from and to
-	fixed = c.Queries.RepairDiagram.Get("Repair diagram",
+	repairRes := c.Queries.RepairDiagram.Get("Repair diagram",
 		command.NewRepairCmd(internal, repair.RepairOptions{
 			SwapEdgeLabels: true,
+			FailOnError:    true,
 		}))
-	if fixed == nil {
+	if len(repairRes.Errors) > 0 || repairRes.Diagram == nil {
 		t.Fatal("Failed fixing diagram!")
 		return
 	}
-	return internal, fixed
+	return internal, repairRes.Diagram
 }

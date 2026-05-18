@@ -39,6 +39,10 @@ func ParseUTML(c *context.Ctx, filepath string) *ParseResultUTML {
 
 // Converting to internal representation
 func ConvertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.InternalGraph {
+	if utml == nil {
+		return nil
+	}
+
 	c.LogPrefixAdd("UTML -> Internal '%s'", filepath.Base(utml.Metadata.Filename))
 	defer /* I love Go */ c.LogPrefixRm("UTML -> Internal '%s'", filepath.Base(utml.Metadata.Filename))
 	if utml == nil {
@@ -85,7 +89,7 @@ func ConvertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.InternalGr
 func convertUTMLVertex(c *context.Ctx, index int, u *ParseResultUTML, n *ParseResultUTMLNode) (*pr.InternalVertex, error) {
 	ntype := GetNodeType(n)
 	if slices.Contains(SKIPPED_VERTEX_TYPES, ntype) {
-		c.LogDebug("Skipping vertex '%d' because it has skippable type '%s'", index, ntype)
+		// c.LogDebug("Skipping vertex '%d' because it has skippable type '%s'", index, ntype)
 		return nil, nil
 	}
 
@@ -177,7 +181,7 @@ func convertUTMLEdge(c *context.Ctx, index int, u *ParseResultUTML, e *ParseResu
 		node := u.Nodes[*e.StartNodeId]
 		ntype := GetNodeType(&node)
 		if slices.Contains(SKIPPED_VERTEX_TYPES, ntype) {
-			c.LogDebug("Skipping edge '%d' because its starting node has a skippable type '%s'", index, ntype)
+			// c.LogDebug("Skipping edge '%d' because its starting node has a skippable type '%s'", index, ntype)
 			return nil, nil
 		}
 	}
@@ -189,7 +193,7 @@ func convertUTMLEdge(c *context.Ctx, index int, u *ParseResultUTML, e *ParseResu
 		node := u.Nodes[*e.EndNodeId]
 		ntype := GetNodeType(&node)
 		if slices.Contains(SKIPPED_VERTEX_TYPES, ntype) {
-			c.LogDebug("Skipping edge '%d' because its starting node has a skippable type '%s'", index, ntype)
+			// c.LogDebug("Skipping edge '%d' because its starting node has a skippable type '%s'", index, ntype)
 			return nil, nil
 		}
 	}

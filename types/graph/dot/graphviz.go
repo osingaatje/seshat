@@ -39,7 +39,7 @@ func (g *DotGraph) String() string {
 	res += "\t" + g.EdgeSettings.String()
 
 	for _, n := range g.Nodes {
-		res += "\n\t" + n.String()
+		res += "\n\t" + n.String() + ";"
 	}
 
 	for _, e := range g.Edges {
@@ -56,25 +56,21 @@ type DotNode struct {
 	NodeOpts DotNodeOptions
 }
 
-func (d *DotNode) String() string {
-	res := d.Text
-	res += d.NodeOpts.String()
-	res += ";"
+func (d *DotNode) ToStringNoOpts() string {
+	return "\"" + d.Text + "\""
+}
 
-	return res
+func (d *DotNode) String() string {
+	return d.ToStringNoOpts() + d.NodeOpts.String()
 }
 
 type DotNodeOptions struct {
 	Pos       *Vector2D
 	NoJustify bool
+	Style     string
 }
 
 func (o *DotNodeOptions) String() string {
-	// if everything is absent, return empty str
-	if o.Pos == nil {
-		return ""
-	}
-
 	res := "["
 	elems := []string{}
 	// per case:
@@ -84,6 +80,9 @@ func (o *DotNodeOptions) String() string {
 	if o.NoJustify {
 		elems = append(elems, "nojustify=true")
 	}
+	if o.Style != "" {
+		elems = append(elems, "style=\""+o.Style+"\"")
+	}
 
 	res += strings.Join(elems, ",")
 	res += "]"
@@ -91,40 +90,85 @@ func (o *DotNodeOptions) String() string {
 }
 
 type DotEdge struct {
+	IdText      string
 	FromText    string
 	ToText      string
 	MiddleLabel string  // maps to "label"
 	StartLabel  *string // maps to "taillabel"
 	EndLabel    *string // maps to "headlabel"
+
+	EdgeOpts DotEdgeOptions
 }
 
 func (e *DotEdge) String() string {
 	fromTxt := e.FromText
 	toTxt := e.ToText
 	if e.FromText == "" {
-		fromTxt = "INVALID START VERTEX"
+		fromTxt = "Missing start vertex or edge"
 	}
 	if e.ToText == "" {
-		toTxt = "INVALID END VERTEX"
+		toTxt = "Missing end vertex or edge"
 	}
 
-	res := fmt.Sprintf("%s -- %s", fromTxt, toTxt)
-	if e.StartLabel == nil && e.MiddleLabel == "" && e.EndLabel == nil {
-		return res
+	fromTxt = "\"" + fromTxt + "\""
+	toTxt = "\"" + toTxt + "\""
+
+	// We add a 'ghost' element (vertex) in the center to be able to connect edges to edges.
+	// looks something like this:
+	//  <VERTEX1> ------- (ghost vertex) --------- <VERTEX2>
+	edgeText := e.IdText
+
+	// ghost node mustn't have quotes
+	ghostNode := DotNode{
+		Text: edgeText,
+		NodeOpts: DotNodeOptions{
+			Style: "dotted",
+		},
 	}
+
+	// wrap in qutes for other formatting:
+	edgeText = "\"" + edgeText + "\""
+
+	f := formatEdge(fromTxt, edgeText, e.StartLabel, "", &e.MiddleLabel, e.EdgeOpts)
+	m := ghostNode.String()
+	t := formatEdge(edgeText, toTxt, nil, "", e.EndLabel, e.EdgeOpts)
+
+	return f + "; " + m + "; " + t + ";"
+}
+
+type DotEdgeOptions struct {
+	Style string
+}
+
+func (e DotEdgeOptions) String() string {
+	res := "[" + strings.Join(e.StringNoBrackets(), ",") + "]"
+
+	return res
+}
+func (e DotEdgeOptions) StringNoBrackets() []string {
+	elems := []string{}
+	if e.Style != "" {
+		elems = append(elems, "style=\""+e.Style+"\"")
+	}
+	return elems
+}
+
+func formatEdge(start string, end string, startlbl *string, middlelbl string, endlbl *string, opts DotEdgeOptions) string {
+	res := fmt.Sprintf("%s -- %s", start, end)
 
 	res += "["
-	elems := []string{}
-	if e.StartLabel != nil {
-		elems = append(elems, fmt.Sprintf("taillabel=\"%s\"", *e.StartLabel))
+	elems := opts.StringNoBrackets()
+	if startlbl != nil {
+		elems = append(elems, fmt.Sprintf("taillabel=\"%s\"", *startlbl))
 	}
-	if e.MiddleLabel != "" {
-		elems = append(elems, fmt.Sprintf("label=\"%s\"", e.MiddleLabel))
+	if middlelbl != "" {
+		elems = append(elems, fmt.Sprintf("label=\"%s\"", middlelbl))
 	}
-	if e.EndLabel != nil {
-		elems = append(elems, fmt.Sprintf("headlabel=\"%s\"", *e.EndLabel))
+	if endlbl != nil {
+		elems = append(elems, fmt.Sprintf("headlabel=\"%s\"", *endlbl))
 	}
 	res += strings.Join(elems, ",")
+
 	res += "]"
 
 	return res
@@ -178,6 +222,7 @@ func (s *DotNodeSettings) String() string {
 type DotEdgeSettings struct {
 	Color    string
 	PenWidth *float32
+	Style    string
 }
 
 func (s *DotEdgeSettings) String() string {
@@ -192,6 +237,9 @@ func (s *DotEdgeSettings) String() string {
 	}
 	if s.PenWidth != nil {
 		elems = append(elems, fmt.Sprintf("penwidth=%.2f", *s.PenWidth))
+	}
+	if s.Style != "" {
+		elems = append(elems, fmt.Sprintf("style=\"%s\"", s.Style))
 	}
 	res += strings.Join(elems, ",")
 	res += "];\n"

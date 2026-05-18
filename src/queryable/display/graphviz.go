@@ -43,15 +43,17 @@ func convertInternalToDot(c *context.Ctx, p *InternalGraph) *DotGraph {
 
 func convertNode(v *InternalVertex) DotNode {
 	res := DotNode{
-		Text:     extractTextFromNode(v),
+		Text:     getNodeText(v),
 		NodeOpts: extractNodeOpts(v),
 	}
 
 	return res
 }
-func extractTextFromNode(v *InternalVertex) string {
-	res := fmt.Sprintf("________ (id '%d') %s ________\n", v.Id, v.Title)
+func getNodeText(v *InternalVertex) string {
+	res := fmt.Sprintf("________ (id '%d') %s ________", v.Id, v.Title)
+
 	vals := []string{}
+
 	for key, val := range v.Values {
 		value := val.Value
 		if val.Value != "" {
@@ -62,12 +64,14 @@ func extractTextFromNode(v *InternalVertex) string {
 	slices.Sort(vals) // otherwise the element ordering is random and graphviz doesn't recognise it as the same node
 
 	if len(vals) > 0 {
-		res += strings.Join(vals, "\n")
+		res += "\n" + strings.Join(vals, "\n")
 	}
 
-	res = fmt.Sprintf("\"%s\"", res)
-
 	return res
+}
+
+func getEdgeIdText(e *InternalEdge) string {
+	return fmt.Sprintf("EID '%d'", e.Id)
 }
 
 func extractNodeOpts(v *InternalVertex) DotNodeOptions {
@@ -81,27 +85,35 @@ func extractNodeOpts(v *InternalVertex) DotNodeOptions {
 
 func convertEdge(r *InternalGraph, e *InternalEdge) DotEdge {
 	res := DotEdge{
+		IdText:      getEdgeIdText(e),
 		FromText:    "",
-		MiddleLabel: fmt.Sprintf("(id '%d')", e.Id),
+		MiddleLabel: "",
 		ToText:      "",
-	}
-	if e.FromId == nil {
-		res.FromText = "\"NO STARTING VERTEX\""
-	} else {
-		res.FromText = extractTextFromNode(r.Vertices[*e.FromId])
+
+		EdgeOpts: DotEdgeOptions{
+			Style: EdgeStyleToGraphvizStyle[e.StyleProperties.LineStyle],
+		},
 	}
 
-	if e.ToId == nil {
-		res.ToText = "\"NO ENDING VERTEX\""
-	} else {
-		res.ToText = extractTextFromNode(r.Vertices[*e.ToId])
+	if e.FromId != nil {
+		res.FromText = getNodeText(r.Vertices[*e.FromId])
+	}
+	if e.FromEdgeId != nil {
+		res.FromText = getEdgeIdText(r.Edges[*e.FromEdgeId])
+	}
+
+	if e.ToId != nil {
+		res.ToText = getNodeText(r.Vertices[*e.ToId])
+	}
+	if e.ToEdgeId != nil {
+		res.ToText = getEdgeIdText(r.Edges[*e.ToEdgeId])
 	}
 
 	if e.FromProperties.Label != nil {
 		res.StartLabel = &e.FromProperties.Label.Text
 	}
 	if e.Label != nil {
-		res.MiddleLabel += " " + e.Label.Text
+		res.MiddleLabel = e.Label.Text
 	}
 	if e.ToProperties.Label != nil {
 		res.EndLabel = &e.ToProperties.Label.Text

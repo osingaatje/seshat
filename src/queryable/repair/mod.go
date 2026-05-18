@@ -19,18 +19,19 @@ func FindQueries(c *context.Ctx) {
 	)
 }
 
-func performRepairs(c *context.Ctx, conf cmd.RepairCmd) *InternalGraph {
+func performRepairs(c *context.Ctx, conf cmd.RepairCmd) cmd.RepairResult {
 	c.LogPrefixAdd("Repair '%s'", conf.Diagram.Metadata.Filename)
 	defer c.LogPrefixRm("Repair '%s'", conf.Diagram.Metadata.Filename)
 
 	if conf.Diagram == nil {
-		return nil // identity: repair(nil) = nil
+		return cmd.RepairResult{Diagram: nil, Errors: []error{}} // identity: repair(nil) = nil
 	}
 
-	res := conf.Diagram.Copy() // COPY THE DIAGRAM to avoid changing the original, which would break immutability
+	diag := conf.Diagram.Copy() // COPY THE DIAGRAM to avoid changing the original, which would break immutability
+	errors := []error{}
 
 	failedEdgeCorrections := map[shared.EdgeIdentifier][]error{}
-	for eId, e := range res.Edges {
+	for eId, e := range diag.Edges {
 		failedEdgeCorrections[eId] = []error{}
 
 		// swap edge labels if we detect that a student has dragged them to other spots
@@ -40,13 +41,13 @@ func performRepairs(c *context.Ctx, conf cmd.RepairCmd) *InternalGraph {
 
 		// Connect loose edge ends if option enabled:
 		if conf.RepairOpts.ConnectEdgeEnds {
-			err := tryConnectEdgeEnds(c, res, e)
+			err := tryConnectEdgeEnds(c, diag, e)
 			if err != nil {
 				failedEdgeCorrections[eId] = append(failedEdgeCorrections[eId], err)
 			}
 
 			// SANITY CHECKS:
-			err = verifyEdgesLinkToVertices(res, e)
+			err = verifyEdgesLinkToVertices(diag, e)
 			if err != nil {
 				failedEdgeCorrections[eId] = append(failedEdgeCorrections[eId], err)
 			}
@@ -64,17 +65,24 @@ func performRepairs(c *context.Ctx, conf cmd.RepairCmd) *InternalGraph {
 		fmt.Fprintf(&errMsg, "Repairs failed for edges [%s]", strings.Join(keyStrings, ","))
 		for k, v := range fails {
 			errStrings := helper.Map(v, func(e error) string { return e.Error() })
+
 			fmt.Fprintf(&errMsg, "\nID '%d': [%s]", k, strings.Join(errStrings, ","))
+			for _, errStr := range errStrings {
+				errors = append(errors, fmt.Errorf(errStr))
+			}
 		}
 
+		// Special flag: sets diagram to nil on errors
 		if conf.RepairOpts.FailOnError {
 			c.LogErr(errMsg.String())
-			return nil
-		} // otherwise, if not striclty fail:
-		c.LogWarn(errMsg.String())
+			diag = nil // SET DIAG NIL!!
+		}
 	}
 
-	return res
+	return cmd.RepairResult{
+		Diagram: diag,
+		Errors:  errors,
+	}
 }
 
 func verifyEdgesLinkToVertices(g *InternalGraph, e *InternalEdge) error {

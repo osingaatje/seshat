@@ -124,16 +124,16 @@ func gradeStuff(filename1 string, filename2 string, rubric grade.GradeRubric) (
 	if fixed1 == nil || fixed2 == nil {
 		return nil, nil, nil, fmt.Errorf("%sCould not interpret utml file(s) as parse result", logPrefix)
 	}
-	fixed1 = c.Queries.RepairDiagram.Get("Repair file 1", command.NewRepairCmdDefOpt(fixed1))
-	fixed2 = c.Queries.RepairDiagram.Get("Repair file 2", command.NewRepairCmdDefOpt(fixed2))
-	if fixed1 == nil || fixed2 == nil {
-		return nil, nil, nil, fmt.Errorf("%sCould not repair one or both file(s)", logPrefix)
+	repair1 := c.Queries.RepairDiagram.Get("Repair file 1", command.NewRepairCmdDefOpt(fixed1))
+	repair2 := c.Queries.RepairDiagram.Get("Repair file 2", command.NewRepairCmdDefOpt(fixed2))
+	if len(repair1.Errors) > 0 || len(repair2.Errors) > 0 || repair1.Diagram == nil || repair2.Diagram == nil {
+		return nil, nil, nil, fmt.Errorf("%sCould not repair one or both file(s): file 1 err: \"%s\" --- file 2 err: \"%s\"", logPrefix, repair1.Error(), repair2.Error())
 	}
 
 	grade := c.Queries.GradeDiagram.Get("Grade file 1", command.GradeCmd{
 		Rubric:            &rubric,
-		ReferenceSolution: fixed1,
-		Submission:        fixed2,
+		ReferenceSolution: repair1.Diagram,
+		Submission:        repair2.Diagram,
 	})
 	if grade == nil {
 		return fixed1, fixed2, nil, fmt.Errorf("%sFailed to grade submission", logPrefix)

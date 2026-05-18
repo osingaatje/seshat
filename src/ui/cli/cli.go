@@ -202,23 +202,24 @@ func getReps(c *context.Ctx, inputFile string, graphType g.GraphType) (*utml.Par
 	}
 
 	// FIXED PARSE RESULT
-	fixed := c.Queries.RepairDiagram.Get("Repair internal repr.", command.NewRepairCmdDefOpt(
+	repairRes := c.Queries.RepairDiagram.Get("Repair internal repr.", command.NewRepairCmdDefOpt(
 		parseres,
 	))
-	if fixed == nil {
+	if len(repairRes.Errors) > 0 || repairRes.Diagram == nil {
 		return utml, parseres, nil, c.LogErrAndReturn("Failed fixing diagram '%s'!", inputFile)
 	}
+	fixedDiag := repairRes.Diagram
 	if graphType == g.InternalRep {
-		return utml, fixed, nil, nil
+		return utml, fixedDiag, nil, nil
 	}
 
 	if graphType == g.DotFile {
-		dot := c.Queries.DisplayDiagramAsDot.Get("Internal -> .dot", fixed)
+		dot := c.Queries.DisplayDiagramAsDot.Get("Internal -> .dot", fixedDiag)
 		if dot == nil {
-			return utml, fixed, nil, c.LogErrAndReturn("Could not convert '%s' from internal to .dot file", inputFile)
+			return utml, fixedDiag, nil, c.LogErrAndReturn("Could not convert '%s' from internal to .dot file", inputFile)
 		}
 
-		return utml, fixed, dot, nil
+		return utml, fixedDiag, dot, nil
 	}
 
 	return nil, nil, nil, c.LogErrAndReturn("Unknown graphtype requested: %s", graphType)

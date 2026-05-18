@@ -29,11 +29,13 @@ func TestConnectEdgeToOtherEdge(t *testing.T) {
 		t.Fatal("Failed to parse internal repr.")
 		return
 	}
-	internal = c.Queries.RepairDiagram.Get("Fix internal rep.", command.NewRepairCmdDefOpt(internal))
-	if internal == nil {
+	repairRes := c.Queries.RepairDiagram.Get("Fix internal rep.", command.NewRepairCmdDefOpt(internal))
+	if len(repairRes.Errors) > 0 || repairRes.Diagram == nil {
 		t.Fatal("Failed to repair internal repr.")
 		return
 	}
+	internal = repairRes.Diagram
+
 	//debug conversion to .dot file:
 	// dot := c.Queries.DisplayDiagramAsDot.Get("dot", internal)
 	// if dot == nil {

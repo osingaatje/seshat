@@ -3,6 +3,7 @@ package intern
 import (
 	"fmt"
 
+	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/types/graph/shared"
 	. "github.com/osingaatje/seshat/types/graph/shared"
 )
@@ -28,6 +29,17 @@ type InternalGraph struct {
 
 	Vertices map[VertexIdentifier]*InternalVertex `json:"vertices"`
 	Edges    map[EdgeIdentifier]*InternalEdge     `json:"edges"`
+}
+
+func (g *InternalGraph) Json() []byte {
+	if g == nil {
+		return nil
+	}
+	jbytes, err := helper.MarshalJSON(*g)
+	if err != nil {
+		panic(err)
+	}
+	return jbytes
 }
 
 func (p *InternalGraph) Copy() *InternalGraph {

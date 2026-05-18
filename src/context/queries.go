@@ -22,7 +22,7 @@ type Queries struct {
 	ParseUTMLToParseRes *Query[*ParseResultUTML, *InternalGraph]
 
 	DisplayDiagramAsDot *Query[*InternalGraph, *DotGraph]
-	RepairDiagram       *Query[RepairCmd /* parse result + config */, *InternalGraph]
+	RepairDiagram       *Query[RepairCmd /* parse result + config */, RepairResult]
 
 	GradeDiagram                     *Query[GradeCmd, *GradeCalculation]
 	SyntacticMatch                   *Query[MatchStringCmd, int]
