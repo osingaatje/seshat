@@ -32,7 +32,7 @@ func (d DotGraph) New(name string) DotGraph {
 }
 
 func (g *DotGraph) String() string {
-	res := "graph " + g.Name + " {\n"
+	res := "digraph " + g.Name + " {\n"
 
 	res += g.GraphSettings.String()
 	res += "\t" + g.NodeSettings.String()
@@ -128,47 +128,57 @@ func (e *DotEdge) String() string {
 
 	// wrap in qutes for other formatting:
 	edgeText = "\"" + edgeText + "\""
+	firstPartEdgeOpts := e.EdgeOpts
+	secondPartEdgeOpts := e.EdgeOpts
+	firstPartEdgeOpts.EndShape = ""
+	secondPartEdgeOpts.StartShape = ""
 
-	f := formatEdge(fromTxt, edgeText, e.StartLabel, "", &e.MiddleLabel, e.EdgeOpts)
+	f := formatEdge(fromTxt, edgeText, e.StartLabel, "", &e.MiddleLabel, firstPartEdgeOpts)
 	m := ghostNode.String()
-	t := formatEdge(edgeText, toTxt, nil, "", e.EndLabel, e.EdgeOpts)
+	t := formatEdge(edgeText, toTxt, nil, "", e.EndLabel, secondPartEdgeOpts)
 
 	return f + "; " + m + "; " + t + ";"
 }
 
 type DotEdgeOptions struct {
-	Style string
-}
-
-func (e DotEdgeOptions) String() string {
-	res := "[" + strings.Join(e.StringNoBrackets(), ",") + "]"
-
-	return res
-}
-func (e DotEdgeOptions) StringNoBrackets() []string {
-	elems := []string{}
-	if e.Style != "" {
-		elems = append(elems, "style=\""+e.Style+"\"")
-	}
-	return elems
+	StartShape string
+	Style      string
+	EndShape   string
 }
 
 func formatEdge(start string, end string, startlbl *string, middlelbl string, endlbl *string, opts DotEdgeOptions) string {
-	res := fmt.Sprintf("%s -- %s", start, end)
+	res := fmt.Sprintf("%s -> %s", start, end)
 
-	res += "["
-	elems := opts.StringNoBrackets()
-	if startlbl != nil {
+	elems := []string{}
+	if startlbl != nil && (*startlbl) != "" {
 		elems = append(elems, fmt.Sprintf("taillabel=\"%s\"", *startlbl))
 	}
 	if middlelbl != "" {
 		elems = append(elems, fmt.Sprintf("label=\"%s\"", middlelbl))
 	}
-	if endlbl != nil {
+	if endlbl != nil && (*endlbl) != "" {
 		elems = append(elems, fmt.Sprintf("headlabel=\"%s\"", *endlbl))
 	}
-	res += strings.Join(elems, ",")
 
+	// regular edge options
+	if opts.Style != "" {
+		elems = append(elems, "style=\""+opts.Style+"\"")
+	}
+
+	arrowheadEndshape := opts.EndShape
+	if arrowheadEndshape == "" {
+		arrowheadEndshape = "none"
+	}
+	elems = append(elems, fmt.Sprintf("arrowhead=\"%s\"", arrowheadEndshape))
+
+	if opts.StartShape != "" && opts.StartShape != "none" {
+		// according to graphviz docs we use 'dir=both' in combination with 'arrowtail=...' (https://graphviz.org/docs/attrs/arrowtail/)
+		elems = append(elems, fmt.Sprintf("arrowtail=\"%s\"", opts.StartShape))
+		elems = append(elems, "dir=\"both\"")
+	}
+
+	res += "["
+	res += strings.Join(elems, ",")
 	res += "]"
 
 	return res

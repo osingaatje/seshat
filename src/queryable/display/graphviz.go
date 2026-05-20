@@ -91,7 +91,9 @@ func convertEdge(r *InternalGraph, e *InternalEdge) DotEdge {
 		ToText:      "",
 
 		EdgeOpts: DotEdgeOptions{
-			Style: EdgeStyleToGraphvizStyle[e.StyleProperties.LineStyle],
+			StartShape: ArrowStyleToGraphvizStyle[e.FromProperties.ArrowStyle],
+			EndShape:   ArrowStyleToGraphvizStyle[e.ToProperties.ArrowStyle],
+			Style:      EdgeStyleToGraphvizStyle[e.StyleProperties.LineStyle],
 		},
 	}
 

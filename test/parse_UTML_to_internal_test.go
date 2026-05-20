@@ -40,9 +40,9 @@ func TestConvertSpecificFile(t *testing.T) {
 
 	c := driver.NewContext()
 	skipErrs := SkipErr(PATH)
-	_ /*parseRes*/, intern := parseAndVerify(c, t, PATH, skipErrs)
-	dot := c.Queries.DisplayDiagramAsDot.Get("Dot", intern)
-	c.LogInfo("DOT FILE: \n%s", dot)
+	_ /*parseRes*/, _ /* internal rep. */ = parseAndVerify(c, t, PATH, skipErrs)
+	// dot := c.Queries.DisplayDiagramAsDot.Get("Dot", intern)
+	// c.LogInfo("DOT FILE: \n%s", dot)
 }
 
 func TestConvertAllDatasetFiles(t *testing.T) {
