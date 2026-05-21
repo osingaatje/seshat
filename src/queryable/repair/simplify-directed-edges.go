@@ -61,6 +61,9 @@ func simplifyDirectedEdges(c *context.Ctx, g *InternalGraph) error {
 			}
 
 			for edgePartsIndex, edgeIds := range newSimplifiedEdgeParts {
+				if len(edgeIds) > 10000 {
+					c.LogWarn("The edge list is getting quite large...")
+				}
 				if !progress[edgePartsIndex] {
 					continue
 				}
@@ -81,12 +84,12 @@ func simplifyDirectedEdges(c *context.Ctx, g *InternalGraph) error {
 					}
 
 					// SANITY CHECKS
-					edge := g.Edges[e]
-					if ArrowStyleIsDirected(edge.FromProperties.ArrowStyle) || ArrowStyleIsDirected(edge.ToProperties.ArrowStyle) {
+					edg := g.Edges[e]
+					if ArrowStyleIsDirected(edg.FromProperties.ArrowStyle) || ArrowStyleIsDirected(edg.ToProperties.ArrowStyle) {
 						skipMessages = append(skipMessages, fmt.Sprintf("An arrow of edge '%d' was directed, so we cannot combine this entire series of edges", e))
 						break
 					}
-					if edge.StyleProperties.LineStyle != lineStyle {
+					if edg.StyleProperties.LineStyle != lineStyle {
 						skipMessages = append(skipMessages, fmt.Sprintf("Edge '%d' has a different line style, so we cannot combine this entire series of edges", e))
 						break
 					}
@@ -98,9 +101,14 @@ func simplifyDirectedEdges(c *context.Ctx, g *InternalGraph) error {
 				}
 
 				// delete already discovered edges
-				for _, ind := range alreadyDiscoveredEdgeIndices {
-					discoveredEdgeIds = slices.Delete(discoveredEdgeIds, ind, ind+1)
+				newDiscoveredEdgeIds := []EdgeIdentifier{}
+				for i, id := range discoveredEdgeIds {
+					if slices.Contains(alreadyDiscoveredEdgeIndices, i) {
+						continue
+					}
+					newDiscoveredEdgeIds = append(newDiscoveredEdgeIds, id)
 				}
+				discoveredEdgeIds = newDiscoveredEdgeIds
 
 				// if len(discoveredVertexIds) > 1 {
 				//									 [V2]
@@ -112,6 +120,9 @@ func simplifyDirectedEdges(c *context.Ctx, g *InternalGraph) error {
 				}
 
 				// for each edge connection, add a new possible edge
+				if len(discoveredEdgeIds) == 0 {
+					progress[edgePartsIndex] = false
+				}
 				for edgeIndex, e := range discoveredEdgeIds {
 					edge := g.Edges[e]
 					if edgeIndex == 0 {
@@ -123,7 +134,7 @@ func simplifyDirectedEdges(c *context.Ctx, g *InternalGraph) error {
 						}
 
 						// for the first explored connection, add it to the existing arrow.
-						newSimplifiedEdgeParts[edgeIndex] = append(newSimplifiedEdgeParts[edgeIndex], e)
+						newSimplifiedEdgeParts[edgePartsIndex] = append(newSimplifiedEdgeParts[edgePartsIndex], e)
 						progress[edgePartsIndex] = true
 
 					} else {
