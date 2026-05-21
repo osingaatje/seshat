@@ -1,0 +1,681 @@
+<svg width="2944pt" height="2555pt" viewBox="0.00 0.00 2944.00 2555.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 2551.2)">
+<title>parse_result</title>
+<polygon fill="white" stroke="none" points="-4,4 -4,-2551.2 2940.43,-2551.2 2940.43,4 -4,4"/>
+<!-- ________ (id &#39;9&#39;) Record ________
+RecordID : int (private) -->
+<g id="node1" class="node">
+<title>________ (id '9') Record ________
+RecordID : int (private)</title>
+<polygon fill="none" stroke="black" points="1835.04,-41.6 1620.35,-41.6 1620.35,0 1835.04,0 1835.04,-41.6"/>
+<text xml:space="preserve" text-anchor="middle" x="1727.69" y="-25" font-family="Times,serif" font-size="14.00">________ (id '9') Record ________</text>
+<text xml:space="preserve" text-anchor="middle" x="1727.69" y="-8.2" font-family="Times,serif" font-size="14.00">RecordID : int (private)</text>
+</g>
+<!-- ________ (id &#39;2&#39;) Dedicated team ________
+DedicatedTeamID : int (private) -->
+<g id="node2" class="node">
+<title>________ (id '2') Dedicated team ________
+DedicatedTeamID : int (private)</title>
+<polygon fill="none" stroke="black" points="634.55,-2331.2 372.84,-2331.2 372.84,-2289.6 634.55,-2289.6 634.55,-2331.2"/>
+<text xml:space="preserve" text-anchor="middle" x="503.69" y="-2314.6" font-family="Times,serif" font-size="14.00">________ (id '2') Dedicated team ________</text>
+<text xml:space="preserve" text-anchor="middle" x="503.69" y="-2297.8" font-family="Times,serif" font-size="14.00">DedicatedTeamID : int (private)</text>
+</g>
+<!-- EID &#39;3&#39; -->
+<g id="node26" class="node">
+<title>EID '3'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="908.36,-2328.4 853.49,-2328.4 853.49,-2292.4 908.36,-2292.4 908.36,-2328.4"/>
+<text xml:space="preserve" text-anchor="middle" x="880.93" y="-2306.2" font-family="Times,serif" font-size="14.00">EID '3'</text>
+</g>
+<!-- ________ (id &#39;2&#39;) Dedicated team ________
+DedicatedTeamID : int (private)&#45;&gt;EID &#39;3&#39; -->
+<g id="edge9" class="edge">
+<title>________ (id '2') Dedicated team ________
+DedicatedTeamID : int (private)-&gt;EID '3'</title>
+<path fill="none" stroke="black" d="M634.84,-2310.4C713.76,-2310.4 807.52,-2310.4 853.17,-2310.4"/>
+<text xml:space="preserve" text-anchor="middle" x="821.23" y="-2314.6" font-family="Times,serif" font-size="14.00">&lt;- made by</text>
+<text xml:space="preserve" text-anchor="middle" x="631.34" y="-2314.6" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- EID &#39;8&#39; -->
+<g id="node32" class="node">
+<title>EID '8'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="752.83,-2170.04 697.96,-2170.04 697.96,-2134.04 752.83,-2134.04 752.83,-2170.04"/>
+<text xml:space="preserve" text-anchor="middle" x="725.39" y="-2147.84" font-family="Times,serif" font-size="14.00">EID '8'</text>
+</g>
+<!-- ________ (id &#39;2&#39;) Dedicated team ________
+DedicatedTeamID : int (private)&#45;&gt;EID &#39;8&#39; -->
+<g id="edge21" class="edge">
+<title>________ (id '2') Dedicated team ________
+DedicatedTeamID : int (private)-&gt;EID '8'</title>
+<path fill="none" stroke="black" d="M533.13,-2289.37C576.83,-2258.16 658.15,-2200.07 699.62,-2170.45"/>
+<text xml:space="preserve" text-anchor="middle" x="682.26" y="-2174.65" font-family="Times,serif" font-size="14.00">has -&gt;</text>
+<text xml:space="preserve" text-anchor="middle" x="529.63" y="-2293.57" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- EID &#39;5&#39; -->
+<g id="node39" class="node">
+<title>EID '5'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="615.78,-2015.56 560.91,-2015.56 560.91,-1979.56 615.78,-1979.56 615.78,-2015.56"/>
+<text xml:space="preserve" text-anchor="middle" x="588.34" y="-1993.36" font-family="Times,serif" font-size="14.00">EID '5'</text>
+</g>
+<!-- ________ (id &#39;2&#39;) Dedicated team ________
+DedicatedTeamID : int (private)&#45;&gt;EID &#39;5&#39; -->
+<g id="edge35" class="edge">
+<title>________ (id '2') Dedicated team ________
+DedicatedTeamID : int (private)-&gt;EID '5'</title>
+<path fill="none" stroke="black" d="M509.38,-2289.39C525.06,-2231.44 568.73,-2070.05 583.44,-2015.7"/>
+<text xml:space="preserve" text-anchor="middle" x="535.95" y="-2019.9" font-family="Times,serif" font-size="14.00">&lt;- participates in</text>
+<text xml:space="preserve" text-anchor="middle" x="498.88" y="-2293.59" font-family="Times,serif" font-size="14.00">1..*</text>
+</g>
+<!-- ________ (id &#39;10&#39;) Resources ________
+Available : boolean (private) -->
+<g id="node3" class="node">
+<title>________ (id '10') Resources ________
+Available : boolean (private)</title>
+<polygon fill="none" stroke="black" points="2336.69,-1935.2 2097.89,-1935.2 2097.89,-1893.6 2336.69,-1893.6 2336.69,-1935.2"/>
+<text xml:space="preserve" text-anchor="middle" x="2217.29" y="-1918.6" font-family="Times,serif" font-size="14.00">________ (id '10') Resources ________</text>
+<text xml:space="preserve" text-anchor="middle" x="2217.29" y="-1901.8" font-family="Times,serif" font-size="14.00">Available : boolean (private)</text>
+</g>
+<!-- EID &#39;26&#39; -->
+<g id="node22" class="node">
+<title>EID '26'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="1857.16,-1765.31 1795.29,-1765.31 1795.29,-1729.31 1857.16,-1729.31 1857.16,-1765.31"/>
+<text xml:space="preserve" text-anchor="middle" x="1826.23" y="-1743.11" font-family="Times,serif" font-size="14.00">EID '26'</text>
+</g>
+<!-- ________ (id &#39;10&#39;) Resources ________
+Available : boolean (private)&#45;&gt;EID &#39;26&#39; -->
+<g id="edge1" class="edge">
+<title>________ (id '10') Resources ________
+Available : boolean (private)-&gt;EID '26'</title>
+<path fill="none" stroke="black" d="M2167.76,-1893.24C2086.07,-1858.33 1925.36,-1789.67 1857.57,-1760.7"/>
+</g>
+<!-- EID &#39;27&#39; -->
+<g id="node27" class="node">
+<title>EID '27'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="2545.7,-1761.9 2483.83,-1761.9 2483.83,-1725.9 2545.7,-1725.9 2545.7,-1761.9"/>
+<text xml:space="preserve" text-anchor="middle" x="2514.77" y="-1739.7" font-family="Times,serif" font-size="14.00">EID '27'</text>
+</g>
+<!-- ________ (id &#39;10&#39;) Resources ________
+Available : boolean (private)&#45;&gt;EID &#39;27&#39; -->
+<g id="edge11" class="edge">
+<title>________ (id '10') Resources ________
+Available : boolean (private)-&gt;EID '27'</title>
+<path fill="none" stroke="black" d="M2254.37,-1893.15C2313.55,-1859.23 2428.32,-1793.44 2483.57,-1761.78"/>
+</g>
+<!-- EID &#39;24&#39; -->
+<g id="node37" class="node">
+<title>EID '24'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="2204.4,-1760.73 2142.53,-1760.73 2142.53,-1724.73 2204.4,-1724.73 2204.4,-1760.73"/>
+<text xml:space="preserve" text-anchor="middle" x="2173.46" y="-1738.53" font-family="Times,serif" font-size="14.00">EID '24'</text>
+</g>
+<!-- ________ (id &#39;10&#39;) Resources ________
+Available : boolean (private)&#45;&gt;EID &#39;24&#39; -->
+<g id="edge31" class="edge">
+<title>________ (id '10') Resources ________
+Available : boolean (private)-&gt;EID '24'</title>
+<path fill="none" stroke="black" d="M2211.92,-1893.35C2203.25,-1859.42 2186.35,-1793.19 2178.15,-1761.07"/>
+</g>
+<!-- EID &#39;25&#39; -->
+<g id="node38" class="node">
+<title>EID '25'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="2385.49,-1762.63 2323.62,-1762.63 2323.62,-1726.63 2385.49,-1726.63 2385.49,-1762.63"/>
+<text xml:space="preserve" text-anchor="middle" x="2354.55" y="-1740.43" font-family="Times,serif" font-size="14.00">EID '25'</text>
+</g>
+<!-- ________ (id &#39;10&#39;) Resources ________
+Available : boolean (private)&#45;&gt;EID &#39;25&#39; -->
+<g id="edge33" class="edge">
+<title>________ (id '10') Resources ________
+Available : boolean (private)-&gt;EID '25'</title>
+<path fill="none" stroke="black" d="M2234.4,-1893.24C2261.57,-1859.64 2314.11,-1794.65 2339.75,-1762.94"/>
+</g>
+<!-- EID &#39;28&#39; -->
+<g id="node43" class="node">
+<title>EID '28'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="2056.34,-1758.96 1994.47,-1758.96 1994.47,-1722.96 2056.34,-1722.96 2056.34,-1758.96"/>
+<text xml:space="preserve" text-anchor="middle" x="2025.4" y="-1736.76" font-family="Times,serif" font-size="14.00">EID '28'</text>
+</g>
+<!-- ________ (id &#39;10&#39;) Resources ________
+Available : boolean (private)&#45;&gt;EID &#39;28&#39; -->
+<g id="edge41" class="edge">
+<title>________ (id '10') Resources ________
+Available : boolean (private)-&gt;EID '28'</title>
+<path fill="none" stroke="black" d="M2193.76,-1893.13C2155.73,-1858.76 2081.42,-1791.59 2045.62,-1759.24"/>
+</g>
+<!-- ________ (id &#39;19&#39;) CloudService ________
+CloiudServiceID : int (private) -->
+<g id="node4" class="node">
+<title>________ (id '19') CloudService ________
+CloiudServiceID : int (private)</title>
+<polygon fill="none" stroke="black" points="2936.43,-1596.8 2678.96,-1596.8 2678.96,-1555.2 2936.43,-1555.2 2936.43,-1596.8"/>
+<text xml:space="preserve" text-anchor="middle" x="2807.69" y="-1580.2" font-family="Times,serif" font-size="14.00">________ (id '19') CloudService ________</text>
+<text xml:space="preserve" text-anchor="middle" x="2807.69" y="-1563.4" font-family="Times,serif" font-size="14.00">CloiudServiceID : int (private)</text>
+</g>
+<!-- ________ (id &#39;17&#39;) VirtualMachine ________
+VirtualMachineID : int (private) -->
+<g id="node5" class="node">
+<title>________ (id '17') VirtualMachine ________
+VirtualMachineID : int (private)</title>
+<polygon fill="none" stroke="black" points="2265.84,-1596.8 1995.95,-1596.8 1995.95,-1555.2 2265.84,-1555.2 2265.84,-1596.8"/>
+<text xml:space="preserve" text-anchor="middle" x="2130.89" y="-1580.2" font-family="Times,serif" font-size="14.00">________ (id '17') VirtualMachine ________</text>
+<text xml:space="preserve" text-anchor="middle" x="2130.89" y="-1563.4" font-family="Times,serif" font-size="14.00">VirtualMachineID : int (private)</text>
+</g>
+<!-- ________ (id &#39;7&#39;) Developer ________
+DeveloperID : int (private) -->
+<g id="node6" class="node">
+<title>________ (id '7') Developer ________
+DeveloperID : int (private)</title>
+<polygon fill="none" stroke="black" points="1433.57,-329.6 1201.01,-329.6 1201.01,-288 1433.57,-288 1433.57,-329.6"/>
+<text xml:space="preserve" text-anchor="middle" x="1317.29" y="-313" font-family="Times,serif" font-size="14.00">________ (id '7') Developer ________</text>
+<text xml:space="preserve" text-anchor="middle" x="1317.29" y="-296.2" font-family="Times,serif" font-size="14.00">DeveloperID : int (private)</text>
+</g>
+<!-- EID &#39;11&#39; -->
+<g id="node41" class="node">
+<title>EID '11'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="1767.75,-279.33 1705.88,-279.33 1705.88,-243.33 1767.75,-243.33 1767.75,-279.33"/>
+<text xml:space="preserve" text-anchor="middle" x="1736.82" y="-257.13" font-family="Times,serif" font-size="14.00">EID '11'</text>
+</g>
+<!-- ________ (id &#39;7&#39;) Developer ________
+DeveloperID : int (private)&#45;&gt;EID &#39;11&#39; -->
+<g id="edge43" class="edge">
+<title>________ (id '7') Developer ________
+DeveloperID : int (private)-&gt;EID '11'</title>
+<path fill="none" stroke="black" d="M1433.88,-295.61C1526.26,-285.16 1648.9,-271.28 1705.61,-264.87"/>
+<text xml:space="preserve" text-anchor="middle" x="1677.76" y="-269.07" font-family="Times,serif" font-size="14.00">attends -&gt;</text>
+<text xml:space="preserve" text-anchor="middle" x="1423.38" y="-299.81" font-family="Times,serif" font-size="14.00">1..*</text>
+</g>
+<!-- ________ (id &#39;4&#39;) Member ________
+MemberID : int (private) -->
+<g id="node7" class="node">
+<title>________ (id '4') Member ________
+MemberID : int (private)</title>
+<polygon fill="none" stroke="black" points="780.14,-1719.2 558.45,-1719.2 558.45,-1677.6 780.14,-1677.6 780.14,-1719.2"/>
+<text xml:space="preserve" text-anchor="middle" x="669.29" y="-1702.6" font-family="Times,serif" font-size="14.00">________ (id '4') Member ________</text>
+<text xml:space="preserve" text-anchor="middle" x="669.29" y="-1685.8" font-family="Times,serif" font-size="14.00">MemberID : int (private)</text>
+</g>
+<!-- EID &#39;21&#39; -->
+<g id="node25" class="node">
+<title>EID '21'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="1033.79,-1260.89 971.92,-1260.89 971.92,-1224.89 1033.79,-1224.89 1033.79,-1260.89"/>
+<text xml:space="preserve" text-anchor="middle" x="1002.85" y="-1238.69" font-family="Times,serif" font-size="14.00">EID '21'</text>
+</g>
+<!-- ________ (id &#39;4&#39;) Member ________
+MemberID : int (private)&#45;&gt;EID &#39;21&#39; -->
+<g id="edge7" class="edge">
+<title>________ (id '4') Member ________
+MemberID : int (private)-&gt;EID '21'</title>
+<path fill="none" stroke="black" d="M684.71,-1677.34C741.22,-1600.18 936.41,-1333.63 989.46,-1261.19"/>
+<text xml:space="preserve" text-anchor="middle" x="952.08" y="-1265.39" font-family="Times,serif" font-size="14.00">becomes a -&gt;</text>
+<text xml:space="preserve" text-anchor="middle" x="681.21" y="-1681.54" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- EID &#39;6&#39; -->
+<g id="node31" class="node">
+<title>EID '6'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="479.19,-1560.49 424.32,-1560.49 424.32,-1524.49 479.19,-1524.49 479.19,-1560.49"/>
+<text xml:space="preserve" text-anchor="middle" x="451.75" y="-1538.29" font-family="Times,serif" font-size="14.00">EID '6'</text>
+</g>
+<!-- ________ (id &#39;4&#39;) Member ________
+MemberID : int (private)&#45;&gt;EID &#39;6&#39; -->
+<g id="edge19" class="edge">
+<title>________ (id '4') Member ________
+MemberID : int (private)-&gt;EID '6'</title>
+<path fill="none" stroke="black" d="M639.95,-1677.37C597.04,-1646.62 517.87,-1589.88 477.25,-1560.77"/>
+<text xml:space="preserve" text-anchor="middle" x="459.89" y="-1564.97" font-family="Times,serif" font-size="14.00">&lt;- has</text>
+<text xml:space="preserve" text-anchor="middle" x="629.45" y="-1681.57" font-family="Times,serif" font-size="14.00">0..1</text>
+</g>
+<!-- EID &#39;10&#39; -->
+<g id="node35" class="node">
+<title>EID '10'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="1024.12,-1021.83 962.25,-1021.83 962.25,-985.83 1024.12,-985.83 1024.12,-1021.83"/>
+<text xml:space="preserve" text-anchor="middle" x="993.19" y="-999.63" font-family="Times,serif" font-size="14.00">EID '10'</text>
+</g>
+<!-- ________ (id &#39;4&#39;) Member ________
+MemberID : int (private)&#45;&gt;EID &#39;10&#39; -->
+<g id="edge27" class="edge">
+<title>________ (id '4') Member ________
+MemberID : int (private)-&gt;EID '10'</title>
+<path fill="none" stroke="black" d="M679.16,-1677.23C727.56,-1573.45 939.29,-1119.41 984.62,-1022.19"/>
+<text xml:space="preserve" text-anchor="middle" x="942.58" y="-1026.39" font-family="Times,serif" font-size="14.00">classified as -&gt;</text>
+<text xml:space="preserve" text-anchor="middle" x="668.66" y="-1681.43" font-family="Times,serif" font-size="14.00">0..*</text>
+</g>
+<!-- EID &#39;7&#39; -->
+<g id="node40" class="node">
+<title>EID '7'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="445.89,-1418.98 391.03,-1418.98 391.03,-1382.98 445.89,-1382.98 445.89,-1418.98"/>
+<text xml:space="preserve" text-anchor="middle" x="418.46" y="-1396.78" font-family="Times,serif" font-size="14.00">EID '7'</text>
+</g>
+<!-- ________ (id &#39;4&#39;) Member ________
+MemberID : int (private)&#45;&gt;EID &#39;7&#39; -->
+<g id="edge37" class="edge">
+<title>________ (id '4') Member ________
+MemberID : int (private)-&gt;EID '7'</title>
+<path fill="none" stroke="black" d="M651.66,-1677.49C604.82,-1621.95 477.9,-1471.47 433.81,-1419.18"/>
+<text xml:space="preserve" text-anchor="middle" x="416.45" y="-1423.38" font-family="Times,serif" font-size="14.00">&lt;- has</text>
+<text xml:space="preserve" text-anchor="middle" x="641.16" y="-1681.69" font-family="Times,serif" font-size="14.00">0..1</text>
+</g>
+<!-- ________ (id &#39;15&#39;) SoftwareLicense ________
+SoftwareLicenseID : int (private) -->
+<g id="node8" class="node">
+<title>________ (id '15') SoftwareLicense ________
+SoftwareLicenseID : int (private)</title>
+<polygon fill="none" stroke="black" points="1562.96,-1596.8 1287.63,-1596.8 1287.63,-1555.2 1562.96,-1555.2 1562.96,-1596.8"/>
+<text xml:space="preserve" text-anchor="middle" x="1425.29" y="-1580.2" font-family="Times,serif" font-size="14.00">________ (id '15') SoftwareLicense ________</text>
+<text xml:space="preserve" text-anchor="middle" x="1425.29" y="-1563.4" font-family="Times,serif" font-size="14.00">SoftwareLicenseID : int (private)</text>
+</g>
+<!-- ________ (id &#39;0&#39;) Client ________
+ClientID : int (private) -->
+<g id="node9" class="node">
+<title>________ (id '0') Client ________
+ClientID : int (private)</title>
+<polygon fill="none" stroke="black" points="1011.13,-2547.2 802.65,-2547.2 802.65,-2505.6 1011.13,-2505.6 1011.13,-2547.2"/>
+<text xml:space="preserve" text-anchor="middle" x="906.89" y="-2530.6" font-family="Times,serif" font-size="14.00">________ (id '0') Client ________</text>
+<text xml:space="preserve" text-anchor="middle" x="906.89" y="-2513.8" font-family="Times,serif" font-size="14.00">ClientID : int (private)</text>
+</g>
+<!-- EID &#39;1&#39; -->
+<g id="node24" class="node">
+<title>EID '1'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="1113.63,-2436.82 1058.76,-2436.82 1058.76,-2400.82 1113.63,-2400.82 1113.63,-2436.82"/>
+<text xml:space="preserve" text-anchor="middle" x="1086.2" y="-2414.62" font-family="Times,serif" font-size="14.00">EID '1'</text>
+</g>
+<!-- ________ (id &#39;0&#39;) Client ________
+ClientID : int (private)&#45;&gt;EID &#39;1&#39; -->
+<g id="edge5" class="edge">
+<title>________ (id '0') Client ________
+ClientID : int (private)-&gt;EID '1'</title>
+<path fill="none" stroke="black" d="M942.32,-2505.15C976.41,-2484.69 1027.25,-2454.19 1058.48,-2435.45"/>
+<text xml:space="preserve" text-anchor="middle" x="1016.62" y="-2439.65" font-family="Times,serif" font-size="14.00">commisions -&gt;</text>
+<text xml:space="preserve" text-anchor="middle" x="931.82" y="-2509.35" font-family="Times,serif" font-size="14.00">0..1</text>
+</g>
+<!-- ________ (id &#39;6&#39;) TeamLead ________
+TeamLeadID : int (private) -->
+<g id="node10" class="node">
+<title>________ (id '6') TeamLead ________
+TeamLeadID : int (private)</title>
+<polygon fill="none" stroke="black" points="1074.35,-2007.2 840.24,-2007.2 840.24,-1965.6 1074.35,-1965.6 1074.35,-2007.2"/>
+<text xml:space="preserve" text-anchor="middle" x="957.29" y="-1990.6" font-family="Times,serif" font-size="14.00">________ (id '6') TeamLead ________</text>
+<text xml:space="preserve" text-anchor="middle" x="957.29" y="-1973.8" font-family="Times,serif" font-size="14.00">TeamLeadID : int (private)</text>
+</g>
+<!-- EID &#39;9&#39; -->
+<g id="node23" class="node">
+<title>EID '9'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="838.15,-1857.82 783.28,-1857.82 783.28,-1821.82 838.15,-1821.82 838.15,-1857.82"/>
+<text xml:space="preserve" text-anchor="middle" x="810.71" y="-1835.62" font-family="Times,serif" font-size="14.00">EID '9'</text>
+</g>
+<!-- ________ (id &#39;6&#39;) TeamLead ________
+TeamLeadID : int (private)&#45;&gt;EID &#39;9&#39; -->
+<g id="edge3" class="edge">
+<title>________ (id '6') TeamLead ________
+TeamLeadID : int (private)-&gt;EID '9'</title>
+<path fill="none" stroke="black" d="M936.29,-1965.4C907.48,-1936.58 856.16,-1885.27 828.9,-1858.01"/>
+<text xml:space="preserve" text-anchor="middle" x="811.35" y="-1862.21" font-family="Times,serif" font-size="14.00">&lt;- is a</text>
+<text xml:space="preserve" text-anchor="middle" x="932.79" y="-1969.6" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- ________ (id &#39;11&#39;) Allocation ________
+AllocationID : int (private) -->
+<g id="node11" class="node">
+<title>________ (id '11') Allocation ________
+AllocationID : int (private)</title>
+<polygon fill="none" stroke="black" points="1437.47,-1251.2 1197.12,-1251.2 1197.12,-1209.6 1437.47,-1209.6 1437.47,-1251.2"/>
+<text xml:space="preserve" text-anchor="middle" x="1317.29" y="-1234.6" font-family="Times,serif" font-size="14.00">________ (id '11') Allocation ________</text>
+<text xml:space="preserve" text-anchor="middle" x="1317.29" y="-1217.8" font-family="Times,serif" font-size="14.00">AllocationID : int (private)</text>
+</g>
+<!-- EID &#39;22&#39; -->
+<g id="node28" class="node">
+<title>EID '22'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="1740.18,-1460.44 1678.31,-1460.44 1678.31,-1424.44 1740.18,-1424.44 1740.18,-1460.44"/>
+<text xml:space="preserve" text-anchor="middle" x="1709.25" y="-1438.24" font-family="Times,serif" font-size="14.00">EID '22'</text>
+</g>
+<!-- ________ (id &#39;11&#39;) Allocation ________
+AllocationID : int (private)&#45;&gt;EID &#39;22&#39; -->
+<g id="edge13" class="edge">
+<title>________ (id '11') Allocation ________
+AllocationID : int (private)-&gt;EID '22'</title>
+<path fill="none" stroke="black" d="M1356.31,-1251.51C1434.05,-1293.56 1606.9,-1387.07 1677.89,-1425.47"/>
+<text xml:space="preserve" text-anchor="middle" x="1638.56" y="-1429.67" font-family="Times,serif" font-size="14.00">&lt;- assigned to</text>
+<text xml:space="preserve" text-anchor="middle" x="1352.81" y="-1255.71" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- EID &#39;23&#39; -->
+<g id="node30" class="node">
+<title>EID '23'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="1359.14,-1022.78 1297.28,-1022.78 1297.28,-986.78 1359.14,-986.78 1359.14,-1022.78"/>
+<text xml:space="preserve" text-anchor="middle" x="1328.21" y="-1000.58" font-family="Times,serif" font-size="14.00">EID '23'</text>
+</g>
+<!-- ________ (id &#39;11&#39;) Allocation ________
+AllocationID : int (private)&#45;&gt;EID &#39;23&#39; -->
+<g id="edge17" class="edge">
+<title>________ (id '11') Allocation ________
+AllocationID : int (private)-&gt;EID '23'</title>
+<path fill="none" stroke="black" d="M1318.32,-1209.17C1320.45,-1165.19 1325.31,-1064.73 1327.32,-1023.23"/>
+<text xml:space="preserve" text-anchor="middle" x="1280.42" y="-1027.43" font-family="Times,serif" font-size="14.00">carried out by -&gt;</text>
+<text xml:space="preserve" text-anchor="middle" x="1314.82" y="-1213.37" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- ________ (id &#39;14&#39;) Profile ________
+EmploymentDate : Date (private) -->
+<g id="node12" class="node">
+<title>________ (id '14') Profile ________
+EmploymentDate : Date (private)</title>
+<polygon fill="none" stroke="black" points="346.97,-1409.6 127.61,-1409.6 127.61,-1368 346.97,-1368 346.97,-1409.6"/>
+<text xml:space="preserve" text-anchor="middle" x="237.29" y="-1393" font-family="Times,serif" font-size="14.00">________ (id '14') Profile ________</text>
+<text xml:space="preserve" text-anchor="middle" x="237.29" y="-1376.2" font-family="Times,serif" font-size="14.00">EmploymentDate : Date (private)</text>
+</g>
+<!-- ________ (id &#39;1&#39;) Project ________
+budget : int (private) -->
+<g id="node13" class="node">
+<title>________ (id '1') Project ________
+budget : int (private)</title>
+<polygon fill="none" stroke="black" points="1373.85,-2331.2 1159.94,-2331.2 1159.94,-2289.6 1373.85,-2289.6 1373.85,-2331.2"/>
+<text xml:space="preserve" text-anchor="middle" x="1266.89" y="-2314.6" font-family="Times,serif" font-size="14.00">________ (id '1') Project ________</text>
+<text xml:space="preserve" text-anchor="middle" x="1266.89" y="-2297.8" font-family="Times,serif" font-size="14.00">budget : int (private)</text>
+</g>
+<!-- EID &#39;2&#39; -->
+<g id="node29" class="node">
+<title>EID '2'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="1586.92,-2328.4 1532.05,-2328.4 1532.05,-2292.4 1586.92,-2292.4 1586.92,-2328.4"/>
+<text xml:space="preserve" text-anchor="middle" x="1559.49" y="-2306.2" font-family="Times,serif" font-size="14.00">EID '2'</text>
+</g>
+<!-- ________ (id &#39;1&#39;) Project ________
+budget : int (private)&#45;&gt;EID &#39;2&#39; -->
+<g id="edge15" class="edge">
+<title>________ (id '1') Project ________
+budget : int (private)-&gt;EID '2'</title>
+<path fill="none" stroke="black" d="M1374.18,-2310.4C1430.78,-2310.4 1495.77,-2310.4 1531.79,-2310.4"/>
+<text xml:space="preserve" text-anchor="middle" x="1514.43" y="-2314.6" font-family="Times,serif" font-size="14.00">has -&gt;</text>
+<text xml:space="preserve" text-anchor="middle" x="1370.68" y="-2314.6" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- EID &#39;13&#39; -->
+<g id="node33" class="node">
+<title>EID '13'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="1777.4,-2128.58 1715.53,-2128.58 1715.53,-2092.58 1777.4,-2092.58 1777.4,-2128.58"/>
+<text xml:space="preserve" text-anchor="middle" x="1746.46" y="-2106.38" font-family="Times,serif" font-size="14.00">EID '13'</text>
+</g>
+<!-- ________ (id &#39;1&#39;) Project ________
+budget : int (private)&#45;&gt;EID &#39;13&#39; -->
+<g id="edge23" class="edge">
+<title>________ (id '1') Project ________
+budget : int (private)-&gt;EID '13'</title>
+<path fill="none" stroke="black" d="M1317.76,-2289.2C1417.08,-2247.82 1634.15,-2157.38 1715.15,-2123.62"/>
+<text xml:space="preserve" text-anchor="middle" x="1695.07" y="-2127.82" font-family="Times,serif" font-size="14.00">uses -&gt;</text>
+<text xml:space="preserve" text-anchor="middle" x="1314.26" y="-2293.4" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- ________ (id &#39;5&#39;) Role ________
+nameOfTheRole : String (private) -->
+<g id="node14" class="node">
+<title>________ (id '5') Role ________
+nameOfTheRole : String (private)</title>
+<polygon fill="none" stroke="black" points="268.35,-1121.6 62.24,-1121.6 62.24,-1080 268.35,-1080 268.35,-1121.6"/>
+<text xml:space="preserve" text-anchor="middle" x="165.29" y="-1105" font-family="Times,serif" font-size="14.00">________ (id '5') Role ________</text>
+<text xml:space="preserve" text-anchor="middle" x="165.29" y="-1088.2" font-family="Times,serif" font-size="14.00">nameOfTheRole : String (private)</text>
+</g>
+<!-- ________ (id &#39;16&#39;) Workstation ________
+WorkStationID : int (private) -->
+<g id="node15" class="node">
+<title>________ (id '16') Workstation ________
+WorkStationID : int (private)</title>
+<polygon fill="none" stroke="black" points="2024.62,-1350.81 1774.16,-1350.81 1774.16,-1309.21 2024.62,-1309.21 2024.62,-1350.81"/>
+<text xml:space="preserve" text-anchor="middle" x="1899.39" y="-1334.21" font-family="Times,serif" font-size="14.00">________ (id '16') Workstation ________</text>
+<text xml:space="preserve" text-anchor="middle" x="1899.39" y="-1317.41" font-family="Times,serif" font-size="14.00">WorkStationID : int (private)</text>
+</g>
+<!-- ________ (id &#39;12&#39;) Deliverable ________
+type : String (private) -->
+<g id="node16" class="node">
+<title>________ (id '12') Deliverable ________
+type : String (private)</title>
+<polygon fill="none" stroke="black" points="1980.57,-2331.2 1734.02,-2331.2 1734.02,-2289.6 1980.57,-2289.6 1980.57,-2331.2"/>
+<text xml:space="preserve" text-anchor="middle" x="1857.29" y="-2314.6" font-family="Times,serif" font-size="14.00">________ (id '12') Deliverable ________</text>
+<text xml:space="preserve" text-anchor="middle" x="1857.29" y="-2297.8" font-family="Times,serif" font-size="14.00">type : String (private)</text>
+</g>
+<!-- ________ (id &#39;3&#39;) Internal information ________
+teamName : String (private) -->
+<g id="node17" class="node">
+<title>________ (id '3') Internal information ________
+teamName : String (private)</title>
+<polygon fill="none" stroke="black" points="287.39,-1956.8 0,-1956.8 0,-1915.2 287.39,-1915.2 287.39,-1956.8"/>
+<text xml:space="preserve" text-anchor="middle" x="143.69" y="-1940.2" font-family="Times,serif" font-size="14.00">________ (id '3') Internal information ________</text>
+<text xml:space="preserve" text-anchor="middle" x="143.69" y="-1923.4" font-family="Times,serif" font-size="14.00">teamName : String (private)</text>
+</g>
+<!-- EID &#39;4&#39; -->
+<g id="node34" class="node">
+<title>EID '4'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="351.53,-2141.62 296.67,-2141.62 296.67,-2105.62 351.53,-2105.62 351.53,-2141.62"/>
+<text xml:space="preserve" text-anchor="middle" x="324.1" y="-2119.42" font-family="Times,serif" font-size="14.00">EID '4'</text>
+</g>
+<!-- ________ (id &#39;3&#39;) Internal information ________
+teamName : String (private)&#45;&gt;EID &#39;4&#39; -->
+<g id="edge25" class="edge">
+<title>________ (id '3') Internal information ________
+teamName : String (private)-&gt;EID '4'</title>
+<path fill="none" stroke="black" d="M164.04,-1957.16C199.7,-1994.25 272.9,-2070.37 306.51,-2105.33"/>
+<text xml:space="preserve" text-anchor="middle" x="289.15" y="-2109.53" font-family="Times,serif" font-size="14.00">&lt;- has</text>
+<text xml:space="preserve" text-anchor="middle" x="160.54" y="-1961.36" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- ________ (id &#39;18&#39;) TestingDevice ________
+TestingDeviceID : int (private) -->
+<g id="node18" class="node">
+<title>________ (id '18') TestingDevice ________
+TestingDeviceID : int (private)</title>
+<polygon fill="none" stroke="black" points="2622.34,-1596.8 2359.45,-1596.8 2359.45,-1555.2 2622.34,-1555.2 2622.34,-1596.8"/>
+<text xml:space="preserve" text-anchor="middle" x="2490.89" y="-1580.2" font-family="Times,serif" font-size="14.00">________ (id '18') TestingDevice ________</text>
+<text xml:space="preserve" text-anchor="middle" x="2490.89" y="-1563.4" font-family="Times,serif" font-size="14.00">TestingDeviceID : int (private)</text>
+</g>
+<!-- ________ (id &#39;13&#39;) BasicInformation ________
+name : String (private) -->
+<g id="node19" class="node">
+<title>________ (id '13') BasicInformation ________
+name : String (private)</title>
+<polygon fill="none" stroke="black" points="448.91,-2547.2 169.68,-2547.2 169.68,-2505.6 448.91,-2505.6 448.91,-2547.2"/>
+<text xml:space="preserve" text-anchor="middle" x="309.29" y="-2530.6" font-family="Times,serif" font-size="14.00">________ (id '13') BasicInformation ________</text>
+<text xml:space="preserve" text-anchor="middle" x="309.29" y="-2513.8" font-family="Times,serif" font-size="14.00">name : String (private)</text>
+</g>
+<!-- EID &#39;0&#39; -->
+<g id="node36" class="node">
+<title>EID '0'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="636.8,-2544.4 581.93,-2544.4 581.93,-2508.4 636.8,-2508.4 636.8,-2544.4"/>
+<text xml:space="preserve" text-anchor="middle" x="609.36" y="-2522.2" font-family="Times,serif" font-size="14.00">EID '0'</text>
+</g>
+<!-- ________ (id &#39;13&#39;) BasicInformation ________
+name : String (private)&#45;&gt;EID &#39;0&#39; -->
+<g id="edge29" class="edge">
+<title>________ (id '13') BasicInformation ________
+name : String (private)-&gt;EID '0'</title>
+<path fill="none" stroke="black" d="M449.22,-2526.4C499.34,-2526.4 550.97,-2526.4 581.6,-2526.4"/>
+<text xml:space="preserve" text-anchor="middle" x="564.24" y="-2530.6" font-family="Times,serif" font-size="14.00">&lt;- has</text>
+<text xml:space="preserve" text-anchor="middle" x="445.72" y="-2530.6" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- ________ (id &#39;20&#39;) ResponsiblePerson ________
+DateOfAllocation : Date (private) -->
+<g id="node20" class="node">
+<title>________ (id '20') ResponsiblePerson ________
+DateOfAllocation : Date (private)</title>
+<polygon fill="none" stroke="black" points="1482.8,-804.8 1194.99,-804.8 1194.99,-763.2 1482.8,-763.2 1482.8,-804.8"/>
+<text xml:space="preserve" text-anchor="middle" x="1338.89" y="-788.2" font-family="Times,serif" font-size="14.00">________ (id '20') ResponsiblePerson ________</text>
+<text xml:space="preserve" text-anchor="middle" x="1338.89" y="-771.4" font-family="Times,serif" font-size="14.00">DateOfAllocation : Date (private)</text>
+</g>
+<!-- ________ (id &#39;8&#39;) TrainingSessions ________
+title : String (private) -->
+<g id="node21" class="node">
+<title>________ (id '8') TrainingSessions ________
+title : String (private)</title>
+<polygon fill="none" stroke="black" points="2295.04,-329.6 2024.34,-329.6 2024.34,-288 2295.04,-288 2295.04,-329.6"/>
+<text xml:space="preserve" text-anchor="middle" x="2159.69" y="-313" font-family="Times,serif" font-size="14.00">________ (id '8') TrainingSessions ________</text>
+<text xml:space="preserve" text-anchor="middle" x="2159.69" y="-296.2" font-family="Times,serif" font-size="14.00">title : String (private)</text>
+</g>
+<!-- EID &#39;26&#39;&#45;&gt;________ (id &#39;15&#39;) SoftwareLicense ________
+SoftwareLicenseID : int (private) -->
+<g id="edge2" class="edge">
+<title>EID '26'-&gt;________ (id '15') SoftwareLicense ________
+SoftwareLicenseID : int (private)</title>
+<path fill="none" stroke="black" d="M1795.1,-1734.01C1725.92,-1704.45 1558.91,-1633.09 1475.07,-1597.27"/>
+</g>
+<!-- EID &#39;9&#39;&#45;&gt;________ (id &#39;4&#39;) Member ________
+MemberID : int (private) -->
+<g id="edge4" class="edge">
+<title>EID '9'-&gt;________ (id '4') Member ________
+MemberID : int (private)</title>
+<path fill="none" stroke="black" d="M792.23,-1821.33C766.02,-1795.13 718.2,-1747.3 690.56,-1719.66"/>
+<text xml:space="preserve" text-anchor="middle" x="687.06" y="-1723.86" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- EID &#39;1&#39;&#45;&gt;________ (id &#39;1&#39;) Project ________
+budget : int (private) -->
+<g id="edge6" class="edge">
+<title>EID '1'-&gt;________ (id '1') Project ________
+budget : int (private)</title>
+<path fill="none" stroke="black" d="M1114.03,-2402.12C1145.62,-2383.17 1197.18,-2352.23 1231.57,-2331.59"/>
+<text xml:space="preserve" text-anchor="middle" x="1221.07" y="-2335.79" font-family="Times,serif" font-size="14.00">1..*</text>
+</g>
+<!-- EID &#39;21&#39;&#45;&gt;________ (id &#39;20&#39;) ResponsiblePerson ________
+DateOfAllocation : Date (private) -->
+<g id="edge8" class="edge">
+<title>EID '21'-&gt;________ (id '20') ResponsiblePerson ________
+DateOfAllocation : Date (private)</title>
+<path fill="none" stroke="black" d="M1016.23,-1224.62C1069.52,-1151.86 1266.46,-882.91 1323.39,-805.17"/>
+<text xml:space="preserve" text-anchor="middle" x="1319.89" y="-809.37" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- EID &#39;3&#39;&#45;&gt;________ (id &#39;1&#39;) Project ________
+budget : int (private) -->
+<g id="edge10" class="edge">
+<title>EID '3'-&gt;________ (id '1') Project ________
+budget : int (private)</title>
+<path fill="none" stroke="black" d="M908.69,-2310.4C960.45,-2310.4 1074.23,-2310.4 1159.75,-2310.4"/>
+<text xml:space="preserve" text-anchor="middle" x="1156.25" y="-2314.6" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- EID &#39;27&#39;&#45;&gt;________ (id &#39;19&#39;) CloudService ________
+CloiudServiceID : int (private) -->
+<g id="edge12" class="edge">
+<title>EID '27'-&gt;________ (id '19') CloudService ________
+CloiudServiceID : int (private)</title>
+<path fill="none" stroke="black" d="M2546.12,-1725.93C2600.58,-1694.71 2712.4,-1630.62 2770.62,-1597.25"/>
+</g>
+<!-- EID &#39;22&#39;&#45;&gt;________ (id &#39;10&#39;) Resources ________
+Available : boolean (private) -->
+<g id="edge14" class="edge">
+<title>EID '22'-&gt;________ (id '10') Resources ________
+Available : boolean (private)</title>
+<path fill="none" stroke="black" d="M1728.85,-1460.65C1808.73,-1534.85 2109.4,-1814.16 2194.64,-1893.35"/>
+<text xml:space="preserve" text-anchor="middle" x="2191.14" y="-1897.55" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- EID &#39;2&#39;&#45;&gt;________ (id &#39;12&#39;) Deliverable ________
+type : String (private) -->
+<g id="edge16" class="edge">
+<title>EID '2'-&gt;________ (id '12') Deliverable ________
+type : String (private)</title>
+<path fill="none" stroke="black" d="M1587.24,-2310.4C1620.81,-2310.4 1679.58,-2310.4 1733.74,-2310.4"/>
+<text xml:space="preserve" text-anchor="middle" x="1723.24" y="-2314.6" font-family="Times,serif" font-size="14.00">0..1</text>
+</g>
+<!-- EID &#39;23&#39;&#45;&gt;________ (id &#39;20&#39;) ResponsiblePerson ________
+DateOfAllocation : Date (private) -->
+<g id="edge18" class="edge">
+<title>EID '23'-&gt;________ (id '20') ResponsiblePerson ________
+DateOfAllocation : Date (private)</title>
+<path fill="none" stroke="black" d="M1329.1,-986.34C1331.07,-945.61 1335.79,-848.19 1337.87,-805.11"/>
+<text xml:space="preserve" text-anchor="middle" x="1334.37" y="-809.31" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- EID &#39;6&#39;&#45;&gt;________ (id &#39;14&#39;) Profile ________
+EmploymentDate : Date (private) -->
+<g id="edge20" class="edge">
+<title>EID '6'-&gt;________ (id '14') Profile ________
+EmploymentDate : Date (private)</title>
+<path fill="none" stroke="black" d="M426.31,-1524.26C386.37,-1495.63 309.15,-1440.29 266.82,-1409.96"/>
+<text xml:space="preserve" text-anchor="middle" x="256.32" y="-1414.16" font-family="Times,serif" font-size="14.00">0..1</text>
+</g>
+<!-- EID &#39;8&#39;&#45;&gt;________ (id &#39;6&#39;) TeamLead ________
+TeamLeadID : int (private) -->
+<g id="edge22" class="edge">
+<title>EID '8'-&gt;________ (id '6') TeamLead ________
+TeamLeadID : int (private)</title>
+<path fill="none" stroke="black" d="M751.1,-2133.68C794.49,-2102.69 882.03,-2040.16 927.83,-2007.44"/>
+<text xml:space="preserve" text-anchor="middle" x="924.33" y="-2011.64" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- EID &#39;13&#39;&#45;&gt;________ (id &#39;10&#39;) Resources ________
+Available : boolean (private) -->
+<g id="edge24" class="edge">
+<title>EID '13'-&gt;________ (id '10') Resources ________
+Available : boolean (private)</title>
+<path fill="none" stroke="black" d="M1777.72,-2097.56C1857.41,-2064.35 2068.76,-1976.29 2166.46,-1935.58"/>
+<text xml:space="preserve" text-anchor="middle" x="2155.96" y="-1939.78" font-family="Times,serif" font-size="14.00">1..*</text>
+</g>
+<!-- EID &#39;4&#39;&#45;&gt;________ (id &#39;2&#39;) Dedicated team ________
+DedicatedTeamID : int (private) -->
+<g id="edge26" class="edge">
+<title>EID '4'-&gt;________ (id '2') Dedicated team ________
+DedicatedTeamID : int (private)</title>
+<path fill="none" stroke="black" d="M341.65,-2141.87C375.1,-2176.66 447.82,-2252.29 483.34,-2289.23"/>
+<text xml:space="preserve" text-anchor="middle" x="479.84" y="-2293.43" font-family="Times,serif" font-size="14.00">1</text>
+</g>
+<!-- EID &#39;10&#39;&#45;&gt;________ (id &#39;7&#39;) Developer ________
+DeveloperID : int (private) -->
+<g id="edge28" class="edge">
+<title>EID '10'-&gt;________ (id '7') Developer ________
+DeveloperID : int (private)</title>
+<path fill="none" stroke="black" d="M1001.69,-985.59C1046.93,-888.57 1259.17,-433.43 1307.49,-329.82"/>
+<text xml:space="preserve" text-anchor="middle" x="1296.99" y="-334.02" font-family="Times,serif" font-size="14.00">1..*</text>
+</g>
+<!-- EID &#39;0&#39;&#45;&gt;________ (id &#39;0&#39;) Client ________
+ClientID : int (private) -->
+<g id="edge30" class="edge">
+<title>EID '0'-&gt;________ (id '0') Client ________
+ClientID : int (private)</title>
+<path fill="none" stroke="black" d="M637.09,-2526.4C674.59,-2526.4 743.58,-2526.4 802.41,-2526.4"/>
+<text xml:space="preserve" text-anchor="middle" x="791.91" y="-2530.6" font-family="Times,serif" font-size="14.00">1..*</text>
+</g>
+<!-- EID &#39;24&#39;&#45;&gt;________ (id &#39;17&#39;) VirtualMachine ________
+VirtualMachineID : int (private) -->
+<g id="edge32" class="edge">
+<title>EID '24'-&gt;________ (id '17') VirtualMachine ________
+VirtualMachineID : int (private)</title>
+<path fill="none" stroke="black" d="M2168.74,-1724.25C2160.78,-1693.05 2144.71,-1630.11 2136.3,-1597.18"/>
+</g>
+<!-- EID &#39;25&#39;&#45;&gt;________ (id &#39;18&#39;) TestingDevice ________
+TestingDeviceID : int (private) -->
+<g id="edge34" class="edge">
+<title>EID '25'-&gt;________ (id '18') TestingDevice ________
+TestingDeviceID : int (private)</title>
+<path fill="none" stroke="black" d="M2369.4,-1726.26C2394.87,-1694.76 2446.73,-1630.62 2473.72,-1597.25"/>
+</g>
+<!-- EID &#39;5&#39;&#45;&gt;________ (id &#39;4&#39;) Member ________
+MemberID : int (private) -->
+<g id="edge36" class="edge">
+<title>EID '5'-&gt;________ (id '4') Member ________
+MemberID : int (private)</title>
+<path fill="none" stroke="black" d="M593.29,-1979.3C607.5,-1926.78 648.42,-1775.53 663.57,-1719.56"/>
+<text xml:space="preserve" text-anchor="middle" x="653.07" y="-1723.76" font-family="Times,serif" font-size="14.00">1..*</text>
+</g>
+<!-- EID &#39;7&#39;&#45;&gt;________ (id &#39;5&#39;) Role ________
+nameOfTheRole : String (private) -->
+<g id="edge38" class="edge">
+<title>EID '7'-&gt;________ (id '5') Role ________
+nameOfTheRole : String (private)</title>
+<path fill="none" stroke="black" d="M403,-1382.66C358.56,-1329.96 230.57,-1178.2 183.2,-1122.03"/>
+<text xml:space="preserve" text-anchor="middle" x="172.7" y="-1126.23" font-family="Times,serif" font-size="14.00">0..1</text>
+</g>
+<!-- EID &#39;11&#39;&#45;&gt;________ (id &#39;8&#39;) TrainingSessions ________
+title : String (private) -->
+<g id="edge44" class="edge">
+<title>EID '11'-&gt;________ (id '8') TrainingSessions ________
+title : String (private)</title>
+<path fill="none" stroke="black" d="M1767.91,-264.83C1821.32,-270.82 1933.48,-283.41 2024.17,-293.59"/>
+<text xml:space="preserve" text-anchor="middle" x="2013.67" y="-297.79" font-family="Times,serif" font-size="14.00">1..*</text>
+</g>
+<!-- EID &#39;12&#39; -->
+<g id="node42" class="node">
+<title>EID '12'</title>
+<polygon fill="none" stroke="black" stroke-dasharray="1,5" points="1762.78,-149.3 1700.91,-149.3 1700.91,-113.3 1762.78,-113.3 1762.78,-149.3"/>
+<text xml:space="preserve" text-anchor="middle" x="1731.85" y="-127.1" font-family="Times,serif" font-size="14.00">EID '12'</text>
+</g>
+<!-- EID &#39;11&#39;&#45;&gt;EID &#39;12&#39; -->
+<g id="edge39" class="edge">
+<title>EID '11'-&gt;EID '12'</title>
+<path fill="none" stroke="black" stroke-dasharray="1,5" d="M1736.12,-242.98C1735.17,-218.2 1733.49,-174.3 1732.55,-149.56"/>
+</g>
+<!-- EID &#39;12&#39;&#45;&gt;________ (id &#39;9&#39;) Record ________
+RecordID : int (private) -->
+<g id="edge40" class="edge">
+<title>EID '12'-&gt;________ (id '9') Record ________
+RecordID : int (private)</title>
+<path fill="none" stroke="black" stroke-dasharray="1,5" d="M1731.16,-113.06C1730.42,-93.44 1729.25,-62.31 1728.48,-41.71"/>
+</g>
+<!-- EID &#39;28&#39;&#45;&gt;________ (id &#39;16&#39;) Workstation ________
+WorkStationID : int (private) -->
+<g id="edge42" class="edge">
+<title>EID '28'-&gt;________ (id '16') Workstation ________
+WorkStationID : int (private)</title>
+<path fill="none" stroke="black" d="M2019.74,-1722.51C1999.08,-1655.11 1927.76,-1422.54 1905.85,-1351.07"/>
+</g>
+</g>
+</svg>
