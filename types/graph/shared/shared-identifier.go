@@ -46,6 +46,10 @@ type Label struct {
 	Location generic.Vector2D `json:"location"`
 }
 
+func (l *Label) HasText() bool {
+	return l != nil && l.Text != ""
+}
+
 func (l *Label) Copy() *Label {
 	if l == nil {
 		return nil

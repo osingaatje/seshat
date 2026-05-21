@@ -24,7 +24,7 @@ func (e EdgeEndProperties) ToInternal() (props InternalEdgeEndProperties, err er
 		ArrowStyle:   e.ArrowStyle,
 		Multiplicity: nil,
 	}
-	if e.Label != nil {
+	if e.Label.HasText() {
 		mult, ok := multiplicity.GetMultiplicity(e.Label.Text)
 		if !ok {
 			return props, fmt.Errorf("Could not parse multiplicity '%s'", e.Label.Text)
@@ -37,10 +37,7 @@ func (e EdgeEndProperties) ToInternal() (props InternalEdgeEndProperties, err er
 func (p EdgeEndProperties) Copy() EdgeEndProperties {
 	res := EdgeEndProperties{
 		ArrowStyle: p.ArrowStyle,
-		Label:      nil, // since it's a pointer we need to carefully copy it
-	}
-	if p.Label != nil {
-		res.Label = p.Label.Copy()
+		Label:      p.Label.Copy(), // since it's a pointer we need to carefully copy it
 	}
 	return res
 }

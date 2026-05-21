@@ -34,8 +34,9 @@ func simplifyDirectedEdges(c *context.Ctx, g *InternalGraph) error {
 	// Filter on the directed edge ends that could start a combined edge
 	directedEdgeEnds := helper.FilterMap(g.Edges, func(id EdgeIdentifier, e *InternalEdge) bool {
 		// [V]<---[E] or [E]--->[V]
-		return (ArrowStyleIsDirected(e.FromProperties.ArrowStyle) && e.FromId != nil && e.FromEdgeId == nil && e.ToId == nil && e.ToEdgeId != nil) ||
-			(e.FromId == nil && e.FromEdgeId != nil && ArrowStyleIsDirected(e.ToProperties.ArrowStyle) && e.ToId != nil && e.ToEdgeId == nil)
+		return ((ArrowStyleIsDirected(e.FromProperties.ArrowStyle) && e.FromId != nil && e.FromEdgeId == nil && e.ToId == nil && e.ToEdgeId != nil) ||
+			(e.FromId == nil && e.FromEdgeId != nil && ArrowStyleIsDirected(e.ToProperties.ArrowStyle) && e.ToId != nil && e.ToEdgeId == nil)) &&
+			((e.FromId == nil) != (e.ToId == nil)) //..but it must not be a direct inheritance, there must be a starting or ending EDGE connection
 	})
 
 	// nothing to do
@@ -101,9 +102,11 @@ func simplifyDirectedEdges(c *context.Ctx, g *InternalGraph) error {
 					discoveredEdgeIds = slices.Delete(discoveredEdgeIds, ind, ind+1)
 				}
 
-				if len(discoveredVertexIds) > 1 {
-					panic("I thought we were looking for edge-to-vertex connections? Something is wrong with connectionsToEdge")
-				}
+				// if len(discoveredVertexIds) > 1 {
+				//									 [V2]
+				// this is the situation where [V1]<---|
+				// 									 [V3]
+				// }
 				if len(discoveredVertexIds) > 0 { // if we've hit a vertex after the first edge, we know that this edge cannot be explored anymore.
 					progress[edgePartsIndex] = false
 				}
@@ -113,8 +116,8 @@ func simplifyDirectedEdges(c *context.Ctx, g *InternalGraph) error {
 					edge := g.Edges[e]
 					if edgeIndex == 0 {
 						// we cannot combine an edge connected to a vertex, with a label on the edge-connected side (i.e. [V]----<lbl>--*----....), but otherwise ([V]<lbl>----*---...) it is allowed
-						if edge.Label != nil || (edge.FromId != nil && edge.ToProperties.Label != nil) ||
-							(edge.ToId != nil && edge.FromProperties.Label != nil) {
+						if edge.Label.HasText() || (edge.FromId != nil && edge.ToProperties.Label.HasText()) ||
+							(edge.ToId != nil && edge.FromProperties.Label.HasText()) {
 							// progress[edgePartsIndex] = false
 							return fmt.Errorf("Cannot simplify edges: edge '%d' has a start/middle/end label", e)
 						}
@@ -173,72 +176,54 @@ func simplifyDirectedEdges(c *context.Ctx, g *InternalGraph) error {
 				oldEdges[eId] = true
 			}
 
-			firstEdge := g.Edges[eIds[0]]
-			firstEdgeFlipped := false
-			firstId := firstEdge.FromId
-			if firstId == nil {
-				firstId = firstEdge.ToId
-				firstEdgeFlipped = true
+			// check special scenario where this occurs:
+			// 	       [V2]
+			// [V1]<----|
+			// 	       [V3]
+			// ... in this case, we want to make TWO edges
+			fEdge := g.Edges[eIds[0]]
+			tEdge := g.Edges[eIds[len(eIds)-1]]
+
+			doubleEdge := false
+			if fEdge.FromId != nil && fEdge.ToId != nil { // from edge is the on with an arrow
+				panic("This scenario shouldn't occur?")
 			}
-			if firstId == nil {
-				panic("Cannot have an edge with only edge connections!! BUG in algorithm")
+			if tEdge.FromId != nil && tEdge.ToId != nil {
+				doubleEdge = true
 			}
 
-			lastEdge := g.Edges[eIds[len(eIds)-1]]
-			lastId := lastEdge.FromId
-			if lastId == nil {
-				lastId = lastEdge.ToId
-			}
-			if lastId == nil {
-				panic("Cannot have an edge with only edge connections!! BUG in algorithm")
-			}
+			if doubleEdge { // special case of two paths resulting from one node
+				tEdge1 := tEdge.Copy()
+				tEdge1.FromId = nil
+				tEdge2 := tEdge.Copy()
+				tEdge2.ToId = nil
+				slices.Reverse(tEdge2.VisualProperties.Path)
 
-			combinedEdge := InternalEdge{
-				Id:             g.NewEdgeId(),
-				FromId:         firstId,
-				ToId:           lastId,
-				FromProperties: firstEdge.FromProperties.Copy(),
-				ToProperties:   lastEdge.ToProperties.Copy(),
-				// explicitly no label
-				Label:           nil,
-				StyleProperties: lastEdge.StyleProperties,
-				VisualProperties: EdgeVisualProperties{
-					Path: nil,
-				},
-			}
-
-			newPath := slices.Clone(firstEdge.VisualProperties.Path)
-			if firstEdgeFlipped {
-				slices.Reverse(newPath)
-			}
-
-			// make the combined path by going one by one FROM first edge 0 TO last edge
-			for i, eId := range eIds {
-				if i == 0 {
-					continue // was already added in initialisation
-				}
-				e := g.Edges[eId]
-				path := slices.Clone(e.VisualProperties.Path)
-				// check if we need to flip the path (edges may be constructed in both directions, so ---e[i+1-->e[i] or <---e[i+1]----e[i])
-				if e.ToEdgeId != nil && (*e.ToEdgeId) == eIds[i-1] {
-					slices.Reverse(path)
-				}
-
-				for i, vec := range path {
-					//skip starting vector because we don't want a zig-zag path
-					if i == 0 {
-						continue
+				edges1 := helper.Map(eIds, func(e EdgeIdentifier) *InternalEdge {
+					if e == tEdge.Id {
+						return tEdge1
 					}
-					if newPath[len(newPath)-1] == vec {
-						continue
+					return g.Edges[e]
+				})
+				edges2 := helper.Map(eIds, func(e EdgeIdentifier) *InternalEdge {
+					if e == tEdge.Id {
+						return tEdge2
 					}
-					newPath = append(newPath, vec)
-				}
-			}
-			combinedEdge.VisualProperties.Path = newPath
+					return g.Edges[e]
+				})
 
-			// add it to the graph:
-			g.Edges[combinedEdge.Id] = &combinedEdge
+				combinedEdge1Id := g.NewEdgeId()
+				combinedEdge2Id := combinedEdge1Id + 1
+
+				combinedEdge1, combinedEdge2 := _combineEdges(combinedEdge1Id, edges1), _combineEdges(combinedEdge2Id, edges2)
+				g.Edges[combinedEdge1.Id] = combinedEdge1
+				g.Edges[combinedEdge2.Id] = combinedEdge2
+
+			} else { // normal case
+				edges := helper.Map(eIds, func(e EdgeIdentifier) *InternalEdge { return g.Edges[e] })
+				combinedEdge := _combineEdges(g.NewEdgeId(), edges)
+				g.Edges[combinedEdge.Id] = combinedEdge
+			}
 		}
 	}
 
@@ -248,4 +233,76 @@ func simplifyDirectedEdges(c *context.Ctx, g *InternalGraph) error {
 	}
 
 	return nil
+}
+
+func _combineEdges(newEdgeId EdgeIdentifier, edges []*InternalEdge) *InternalEdge {
+	firstEdge := edges[0]
+	firstEdgeFlipped := false
+	firstId := firstEdge.FromId
+	firstProps := firstEdge.FromProperties
+	if firstId == nil {
+		firstId = firstEdge.ToId
+		firstEdgeFlipped = true
+		firstProps = firstEdge.ToProperties
+	}
+	if firstId == nil {
+		panic("Cannot have an edge with only edge connections!! BUG in algorithm")
+	}
+
+	lastEdge := edges[len(edges)-1]
+	lastId := lastEdge.FromId
+	lastProps := lastEdge.FromProperties
+	if lastId == nil {
+		lastId = lastEdge.ToId
+		lastProps = lastEdge.ToProperties
+	}
+	if lastId == nil {
+		panic("Cannot have an edge with only edge connections!! BUG in algorithm")
+	}
+	combinedEdge := InternalEdge{
+		Id:             newEdgeId,
+		FromEdgeId:     nil,
+		ToEdgeId:       nil,
+		FromId:         firstId,
+		ToId:           lastId,
+		FromProperties: firstProps.Copy(),
+		ToProperties:   lastProps.Copy(),
+		// explicitly no label
+		Label:           nil,
+		StyleProperties: lastEdge.StyleProperties,
+		VisualProperties: EdgeVisualProperties{
+			Path: nil,
+		},
+	}
+
+	newPath := slices.Clone(firstEdge.VisualProperties.Path)
+	if firstEdgeFlipped {
+		slices.Reverse(newPath)
+	}
+
+	// make the combined path by going one by one FROM first edge 0 TO last edge
+	for i, e := range edges {
+		if i == 0 {
+			continue // was already added in initialisation
+		}
+		path := slices.Clone(e.VisualProperties.Path)
+		// check if we need to flip the path (edges may be constructed in both directions, so ---e[i+1-->e[i] or <---e[i+1]----e[i])
+		prevE := edges[i-1]
+		if e.ToEdgeId != nil && (*e.ToEdgeId) == prevE.Id {
+			slices.Reverse(path)
+		}
+
+		for i, vec := range path {
+			//skip starting vector because we don't want a zig-zag path
+			if i == 0 {
+				continue
+			}
+			if newPath[len(newPath)-1] == vec {
+				continue
+			}
+			newPath = append(newPath, vec)
+		}
+	}
+	combinedEdge.VisualProperties.Path = newPath
+	return &combinedEdge
 }

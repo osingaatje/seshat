@@ -5,8 +5,8 @@ const DISTANCE_PERC_THRESHOLD float64 = 0.35
 const DIST_INF float64 = 999999999999
 
 // for RepairOpts.ConnectEdgEnds
-const LINE_CLOSENESS_PERCENT uint8 = 8   // NOTE: From ANY point in the edge - 0-255%, 100% is the full length of the edge
-const VERTEX_CLOSENESS_PERCENT uint8 = 6 // NOTE: From the BORDER of the vertex - 0-255%, 100% = length of edge of the vertex
+const LINE_CLOSENESS_PERCENT uint8 = 8    // NOTE: From ANY point in the edge - 0-255%, 100% is the full length of the edge
+const VERTEX_CLOSENESS_PERCENT uint8 = 10 // NOTE: From the BORDER of the vertex - 0-255%, 100% = length of edge of the vertex
 
 type RepairOptions struct {
 	/*
