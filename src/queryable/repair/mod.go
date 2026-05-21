@@ -54,28 +54,30 @@ func performRepairs(c *context.Ctx, conf cmd.RepairCmd) cmd.RepairResult {
 		}
 	}
 
-	fails := helper.FilterMap(failedEdgeCorrections, func(_ shared.EdgeIdentifier, errs []error) bool {
+	if conf.RepairOpts.SimplifyDirectedEdges {
+		err := simplifyDirectedEdges(c, diag)
+		if err != nil {
+			errors = append(errors, err)
+		}
+	}
+
+	edgeCorrectionFails := helper.FilterMap(failedEdgeCorrections, func(_ shared.EdgeIdentifier, errs []error) bool {
 		return len(errs) > 0
 	})
-	if len(fails) > 0 {
-		keys := helper.Keys(fails)
-		keyStrings := helper.Map(keys, func(k shared.EdgeIdentifier) string { return fmt.Sprintf("%d", k) })
-
-		var errMsg strings.Builder
-		fmt.Fprintf(&errMsg, "Repairs failed for edges [%s]", strings.Join(keyStrings, ","))
-		for k, v := range fails {
+	if len(edgeCorrectionFails) > 0 {
+		for k, v := range edgeCorrectionFails {
 			errStrings := helper.Map(v, func(e error) string { return e.Error() })
-
-			fmt.Fprintf(&errMsg, "\nID '%d': [%s]", k, strings.Join(errStrings, ","))
-			for _, errStr := range errStrings {
-				errors = append(errors, fmt.Errorf(errStr))
-			}
+			errors = append(errors, fmt.Errorf("\nID '%d': [%s]", k, strings.Join(errStrings, ",")))
 		}
 
 		// Special flag: sets diagram to nil on errors
 		if conf.RepairOpts.FailOnError {
-			c.LogErr(errMsg.String())
-			diag = nil // SET DIAG NIL!!
+			errMsg := strings.Join(
+				helper.Map(errors, func(e error) string { return e.Error() }),
+				",",
+			)
+			c.LogErr(errMsg)
+			diag = nil
 		}
 	}
 

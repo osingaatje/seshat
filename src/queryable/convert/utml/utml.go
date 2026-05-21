@@ -11,7 +11,7 @@ import (
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/generic"
-	pr "github.com/osingaatje/seshat/types/graph/intern"
+	"github.com/osingaatje/seshat/types/graph/intern"
 	. "github.com/osingaatje/seshat/types/graph/shared"
 	. "github.com/osingaatje/seshat/types/graph/utml"
 )
@@ -38,19 +38,16 @@ func ParseUTML(c *context.Ctx, filepath string) *ParseResultUTML {
 }
 
 // Converting to internal representation
-func ConvertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.InternalGraph {
-	if utml == nil {
-		return nil
-	}
-
-	c.LogPrefixAdd("UTML -> Internal '%s'", filepath.Base(utml.Metadata.Filename))
-	defer /* I love Go */ c.LogPrefixRm("UTML -> Internal '%s'", filepath.Base(utml.Metadata.Filename))
+func ConvertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *intern.InternalGraph {
 	if utml == nil {
 		c.LogErr("Nil UTML parse result when converting to generic ParseResult.")
 		return nil
 	}
 
-	res := pr.NewParseResult()
+	c.LogPrefixAdd("UTML -> Internal '%s'", filepath.Base(utml.Metadata.Filename))
+	defer /* I love Go */ c.LogPrefixRm("UTML -> Internal '%s'", filepath.Base(utml.Metadata.Filename))
+
+	res := intern.NewInternalGraph()
 	res.Metadata = utml.Metadata.Copy() // don't forget to add metadata such as filename!
 
 	for i, n := range utml.Nodes {
@@ -86,7 +83,7 @@ func ConvertUTMLToParseRes(c *context.Ctx, utml *ParseResultUTML) *pr.InternalGr
 	return res
 }
 
-func convertUTMLVertex(c *context.Ctx, index int, u *ParseResultUTML, n *ParseResultUTMLNode) (*pr.InternalVertex, error) {
+func convertUTMLVertex(c *context.Ctx, index int, u *ParseResultUTML, n *ParseResultUTMLNode) (*intern.InternalVertex, error) {
 	ntype := GetNodeType(n)
 	if slices.Contains(SKIPPED_VERTEX_TYPES, ntype) {
 		// c.LogDebug("Skipping vertex '%d' because it has skippable type '%s'", index, ntype)
@@ -97,7 +94,7 @@ func convertUTMLVertex(c *context.Ctx, index int, u *ParseResultUTML, n *ParseRe
 	extractedVals := extractUTMLVals(n)
 	extractedVisualProps := extractVisualProps(n)
 
-	return &pr.InternalVertex{
+	return &intern.InternalVertex{
 		Id:               VertexIdentifier(index), // location in the original UTML array
 		Title:            n.Text,
 		Properties:       extractedProps,
@@ -167,7 +164,7 @@ func extractVisualProps(n *ParseResultUTMLNode) VertexVisualProperties {
 	return res
 }
 
-func convertUTMLEdge(c *context.Ctx, index int, u *ParseResultUTML, e *ParseResultUTMLEdge) (*pr.InternalEdge, error) {
+func convertUTMLEdge(c *context.Ctx, index int, u *ParseResultUTML, e *ParseResultUTMLEdge) (*intern.InternalEdge, error) {
 	if e.StartNodeId != nil && *e.StartNodeId < 0 || e.EndNodeId != nil && *e.EndNodeId < 0 {
 		c.LogErr("FromId or ToId have non-uint64 values for ")
 	}
@@ -199,7 +196,7 @@ func convertUTMLEdge(c *context.Ctx, index int, u *ParseResultUTML, e *ParseResu
 	}
 
 	// regular conversion stuff
-	res := pr.InternalEdge{
+	res := intern.InternalEdge{
 		Id:               EdgeIdentifier(index),
 		FromId:           NewVertexIdentifierInt(e.StartNodeId), // nodeId = location in the array
 		ToId:             NewVertexIdentifierInt(e.EndNodeId),   // nodeId = location in the array
@@ -220,7 +217,7 @@ func convertUTMLEdge(c *context.Ctx, index int, u *ParseResultUTML, e *ParseResu
 	return &res, nil
 }
 
-func _tryAddPath(c *context.Ctx, iE *pr.InternalEdge, e *ParseResultUTMLEdge) error {
+func _tryAddPath(c *context.Ctx, iE *intern.InternalEdge, e *ParseResultUTMLEdge) error {
 	path := []Vector2D{{}, {}} //always start with start/end
 
 	for isStart, pos := range map[bool]UTMLEdgeXYOrOffsetPosition{
@@ -278,7 +275,7 @@ func extractUTMLEdgeEndProps(e *ParseResultUTMLEdge, start bool) EdgeEndProperti
 	return res
 }
 
-func finaliseEdgeProperties(c *context.Ctx, utml *ParseResultUTML, res *pr.InternalGraph) error {
+func finaliseEdgeProperties(c *context.Ctx, utml *ParseResultUTML, res *intern.InternalGraph) error {
 	for uEID, uE := range utml.Edges {
 		nFromId := uE.StartNodeId
 		nToId := uE.EndNodeId
@@ -368,7 +365,7 @@ func _addEdgeStartEndLocation(
 	nFrom *ParseResultUTMLNode,
 	nTo *ParseResultUTMLNode,
 	e *ParseResultUTMLEdge,
-	res *pr.InternalEdge) error {
+	res *intern.InternalEdge) error {
 	if e == nil || res == nil {
 		panic("you stupid?")
 	}
@@ -426,7 +423,7 @@ func _addEdgeStartEndLocation(
 func _addLocationToLabel(
 	uE *ParseResultUTMLEdge,
 	uL *UTMLEdgeLabel,
-	iE *pr.InternalEdge,
+	iE *intern.InternalEdge,
 	labelPos EdgeLabelPos,
 	resL *Label) {
 	if uE == nil || uL == nil || resL == nil {

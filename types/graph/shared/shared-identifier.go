@@ -7,7 +7,9 @@ import (
 type VertexIdentifier uint32
 type EdgeIdentifier uint32
 
+const MAX_VERT_ID = VertexIdentifier(1<<32 - 2)
 const INVALID_VERT_ID = VertexIdentifier(1<<32 - 1)
+const MAX_EDGE_ID = EdgeIdentifier(1<<32 - 2)
 const INVALID_EDGE_ID = EdgeIdentifier(1<<32 - 1)
 
 func NewVertexIdentifierInt(nId *int) *VertexIdentifier {

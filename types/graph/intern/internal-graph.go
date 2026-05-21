@@ -47,7 +47,7 @@ func (p *InternalGraph) Copy() *InternalGraph {
 		return nil
 	}
 
-	res := NewParseResult()
+	res := NewInternalGraph()
 	res.Metadata = p.Metadata.Copy()
 
 	for k, v := range p.Vertices {
@@ -59,7 +59,7 @@ func (p *InternalGraph) Copy() *InternalGraph {
 	return res
 }
 
-func NewParseResult() *InternalGraph {
+func NewInternalGraph() *InternalGraph {
 	res := InternalGraph{}
 	res.Vertices = map[VertexIdentifier]*InternalVertex{}
 	res.Edges = map[EdgeIdentifier]*InternalEdge{}
@@ -68,6 +68,14 @@ func NewParseResult() *InternalGraph {
 
 func (g *InternalGraph) Empty() bool {
 	return len(g.Edges) == 0 && len(g.Vertices) == 0
+}
+
+func (g *InternalGraph) NewEdgeId() EdgeIdentifier {
+	maxEId := helper.MaxKey(g.Edges)
+	if maxEId == shared.MAX_EDGE_ID {
+		panic("Somehow we exhausted the entire spectrum of Edge Identifiers... nice job.")
+	}
+	return maxEId + 1
 }
 
 type InternalVertex struct {
@@ -115,7 +123,7 @@ type InternalEdge struct {
 	Label          *Label            `json:"label,omitempty"` // for ex.: "teaches >"
 	ToProperties   EdgeEndProperties `json:"toProperties"`
 
-	StyleProperties  EdgeStyleProperties  `json:"styleProperties"` // general properties such as edge label text etc.
+	StyleProperties  EdgeStyleProperties  `json:"styleProperties"` // general properties such as line style etc.
 	VisualProperties EdgeVisualProperties `json:"visualProperties"`
 }
 
@@ -169,6 +177,43 @@ func (g *InternalGraph) VerticesConnect(v1 VertexIdentifier, v2 VertexIdentifier
 		}
 	}
 	return res, len(res) > 0
+}
+
+/*
+ * Explores which edges and vertices are connected to a certain edge
+ */
+func (g *InternalGraph) ConnectionsForEdge(id EdgeIdentifier) ([]VertexIdentifier, []EdgeIdentifier) {
+	e, ok := g.Edges[id]
+	if !ok {
+		panic("Input a valid edge ID you moron!")
+	}
+
+	verts := map[VertexIdentifier]bool{}
+	edges := map[EdgeIdentifier]bool{}
+
+	if e.FromId != nil {
+		verts[*e.FromId] = true
+	}
+	if e.ToId != nil {
+		verts[*e.ToId] = true
+	}
+	if e.FromEdgeId != nil {
+		edges[*e.FromEdgeId] = true
+	}
+	if e.ToEdgeId != nil {
+		edges[*e.ToEdgeId] = true
+	}
+
+	// now explore 1st degree indirect connections (an edge that is directly connected to our input edge)
+	for eId, e := range g.Edges {
+		if e.FromEdgeId != nil && (*e.FromEdgeId) == id {
+			edges[eId] = true
+		}
+		if e.ToEdgeId != nil && (*e.ToEdgeId) == id {
+			edges[eId] = true
+		}
+	}
+	return helper.Keys(verts), helper.Keys(edges)
 }
 
 // get all connected edges in a subgraph gsub

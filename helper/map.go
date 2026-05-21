@@ -1,5 +1,18 @@
 package helper
 
+func MaxKey[K ~int | ~int64 | ~int32 | ~uint32 | ~uint64, V any](m map[K]V) K {
+	var max K
+	for max = range m {
+		break
+	}
+	for n := range m {
+		if n > max {
+			max = n
+		}
+	}
+	return max
+}
+
 func AnyMap[K comparable](m map[K]bool) bool {
 	for _, v := range m {
 		if v {

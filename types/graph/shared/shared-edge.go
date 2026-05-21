@@ -78,6 +78,23 @@ const (
 	ArrowStyleHollowDiamond
 )
 
+func ArrowStyleIsDirected(a ArrowStyleVariant) bool {
+	switch a {
+	case ArrowStyleNoArrow:
+		return false
+	case ArrowStyleArrow:
+		return true
+	case ArrowStyleHollowArrow:
+		return true
+	case ArrowStyleFilledDiamond:
+		return true
+	case ArrowStyleHollowDiamond:
+		return true
+		// add new arrow styles here
+	}
+	panic("Unknown arrow style!!! Bug in code fix pls")
+}
+
 type EdgeLineStyle int
 
 const (

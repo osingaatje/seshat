@@ -65,9 +65,9 @@ func getAlternativeSolutions(c *context.Ctx, cmd GradeCmd) (
 		}
 
 		// fix this ID.
-		refMMU := NewParseResult()
+		refMMU := NewInternalGraph()
 		refMMU.Vertices[refId] = cmd.ReferenceSolution.Vertices[refId]
-		subMMU := NewParseResult()
+		subMMU := NewInternalGraph()
 		subMMU.Vertices[highestScoreId] = cmd.Submission.Vertices[highestScoreId]
 
 		minimalUnits[refMMU] = subMMU
