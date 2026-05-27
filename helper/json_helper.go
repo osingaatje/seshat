@@ -9,6 +9,16 @@ import (
 const INDENT_PREFIX = ""
 const INDENT_STR = "  "
 
+// Remarshals JSON, ensuring sorted keys
+func RemarshalJSON(bytes []byte) ([]byte, error) {
+	var jsObj any
+	err := json.Unmarshal(bytes, &jsObj)
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(jsObj)
+}
+
 func IndentJSON(fileContents []byte) ([]byte, error) {
 	compact := new(bytes.Buffer)
 	// first compact it

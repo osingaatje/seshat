@@ -17,14 +17,18 @@ func AllUTMLFilesUNSAFE(dirname string) []string {
 }
 
 func AllUTMLFiles(path string) ([]string, error) {
-	return AllFiles(path, "*.utml", "*.json")
+	return AllFiles(path, "**/*.utml", "**/*.json")
 }
 
 const DATASET_DIR = "../DATASETS"
-const DATASET_FILE_GLOB = "**/*.json"
+
+var DATASET_FILE_GLOBS = []string{
+	"**/q/**/*.json",
+	"**/q/**/*.utml",
+}
 
 func AllDatasetFiles() ([]string, error) {
-	return AllFiles(DATASET_DIR, DATASET_FILE_GLOB)
+	return AllFiles(DATASET_DIR, DATASET_FILE_GLOBS...)
 }
 
 // Supports the double-star syntax in GLOB ("**/*.go" for example)
