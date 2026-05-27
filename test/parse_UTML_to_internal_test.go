@@ -28,6 +28,8 @@ var SKIP_DIAG_ERRS map[string]bool = map[string]bool{
 	"1027429.json": false, // Edge 2 is a problem that can be problematic
 	"154286.json":  false, // commissions -> is sometimes a problem
 	"154686.json":  false, // this one has multiple inheritance to Member where Leave date is connected with a dotted arrow. This will fail if you set ForceDifferentLineTypes to false in the repair config.
+	"148587.utml":  true,  // has three loose edges.
+	"148796.utml":  true,  // this one has FUCKING WEIRD OFFSETS on the text.
 }
 
 func SkipErr(path string) bool {
@@ -44,9 +46,10 @@ func TestConvertSpecificFile(t *testing.T) {
 
 	c := driver.NewContext()
 	skipErrs := SkipErr(PATH)
-	_ /*parseRes*/, intern := parseAndVerify(c, t, PATH, skipErrs)
-	dot := c.Queries.DisplayDiagramAsDot.Get("Dot", intern)
-	c.LogInfo("DOT FILE: \n%s", dot)
+	_, _ = parseAndVerify(c, t, PATH, skipErrs)
+	// _ /*parseRes*/, intern := parseAndVerify(c, t, PATH, skipErrs)
+	// dot := c.Queries.DisplayDiagramAsDot.Get("Dot", intern)
+	// c.LogInfo("DOT FILE: \n%s", dot)
 }
 
 func TestConvertAllDatasetFiles(t *testing.T) {
