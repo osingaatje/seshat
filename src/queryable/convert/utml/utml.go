@@ -119,7 +119,7 @@ func extractUTMLVertexProperties(n *ParseResultUTMLNode) VertexProperties {
 	return res
 }
 
-var fallbackAttrRegex = regexp.MustCompile("^([^:]*)(:([^=]+))?(=(.+))?$") // <name>(:type)(=default)
+var fallbackAttrRegex = regexp.MustCompile("^([^:]*)(:([^=]*))?(=(.*))?$") // <name>(:type)(=default)
 
 func extractUTMLVals(c *context.Ctx, nodeId int, n *ParseResultUTMLNode) (title string, vals map[string]ParsedValue) {
 	res := map[string]ParsedValue{}
@@ -164,8 +164,11 @@ func extractUTMLVals(c *context.Ctx, nodeId int, n *ParseResultUTMLNode) (title 
 			}
 
 			match := fallbackAttrRegex.FindAllStringSubmatch(val, 10)
-			if len(match) == 0 || len(match[0]) <= 1 || match[0][1] == "" {
+			if len(match) == 0 || len(match[0]) <= 1 {
 				c.LogWarn("Skipping value '%s' in node '%d' text, because it did not match a possible vertex attribute", val, nodeId)
+				continue
+			}
+			if match[0][0] == "" { // empty newline matched
 				continue
 			}
 			if len(match) > 1 {
