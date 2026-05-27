@@ -46,16 +46,18 @@ type ParseResultUTMLEdge struct {
 	StartPosition UTMLEdgeXYOrOffsetPosition `json:"startPosition"` // indicates either an offset to the node (StartNodeId) or an absolute position
 	EndPosition   UTMLEdgeXYOrOffsetPosition `json:"endPosition"`   // indicates either an offset to the node (EndNodeId) or absolute pos.
 
-	StartLabel      *UTMLEdgeLabel     `json:"startLabel,omitempty"`  // text
-	MiddleLabel     *UTMLEdgeLabel     `json:"middleLabel,omitempty"` // text
-	EndLabel        *UTMLEdgeLabel     `json:"endLabel,omitempty"`    // text
-	StartStyle      UTMLArrowHeadStyle `json:"startStyle"`            // arrow head style?
-	EndStyle        UTMLArrowHeadStyle `json:"endStyle"`              // arrow head style?
-	LineStyle       UTMLLineStyle      `json:"lineStyle"`             // line styling
-	LineType        int                `json:"lineType"`              // line styling
-	MiddlePositions []UTMLXY           `json:"middlePositions"`       // no clue what this is
-	StartNodeId     *int               `json:"startNodeId,omitempty"` // node pointer
-	EndNodeId       *int               `json:"endNodeId,omitempty"`   // node pointer
+	StartLabel            *UTMLEdgeLabel     `json:"startLabel,omitempty"`            // text
+	MiddleLabel           *UTMLEdgeLabel     `json:"middleLabel,omitempty"`           // text
+	EndLabel              *UTMLEdgeLabel     `json:"endLabel,omitempty"`              // text
+	StartStyle            UTMLArrowHeadStyle `json:"startStyle"`                      // arrow head style?
+	EndStyle              UTMLArrowHeadStyle `json:"endStyle"`                        // arrow head style?
+	LineStyle             UTMLLineStyle      `json:"lineStyle"`                       // line styling
+	LineType              UTMLLineType       `json:"lineType"`                        // line styling
+	MiddlePositions       []UTMLXY           `json:"middlePositions"`                 // no clue what this is
+	StartNodeId           *int               `json:"startNodeId,omitempty"`           // node pointer
+	EndNodeId             *int               `json:"endNodeId,omitempty"`             // node pointer
+	UserMiddlePointOffset *UTMLXY            `json:"userMiddlePointOffset,omitempty"` // IGNORED - useless old value from utml.utwente.nl
+	SetMiddlePoint        *bool              `json:"setMiddlePoint,omitempty"`        // IGNORED - useless old value from utml.utwente.nl
 }
 
 func (p ParseResultUTMLEdge) Hash() int { // at least 32 bits in size so shifting 16-bit vals should be fine.
@@ -71,15 +73,27 @@ func (p ParseResultUTMLEdge) Hash() int { // at least 32 bits in size so shiftin
 type UTMLLineStyle int
 
 const (
-	UTMLLineStyleFilled UTMLLineStyle = 0
-	UTMLLineStyleDotted               = iota
+	UTMLLineStyleFilled UTMLLineStyle = iota // 0
+	UTMLLineStyleDotted
 	UTMLLineStyleDashed
+)
+
+type UTMLLineType int
+
+const (
+	UTMLLinetypeArc UTMLLineType = iota // 0
+	UTMLLinetypeLine
+	UTMLLinetypeFaultTreeLine
+	UTMLLinetypeInitArrow
+	UTMLLinetypeMessage
+	UTMLLinetypeAssociation
+	UTMLLinetypeSimple
 )
 
 type UTMLArrowHeadStyle int
 
 const (
-	UTMLArrowStyleNone UTMLArrowHeadStyle = iota
+	UTMLArrowStyleNone UTMLArrowHeadStyle = iota // 0
 	UTMLArrowStyleSmallFilledArrow
 	UTMLArrowStyleFilledDiamond
 	UTMLArrowStyleUnfilledDiamond
@@ -91,7 +105,7 @@ type ParseResultUTMLNode struct {
 	Width           int    `json:"width"`
 	Height          int    `json:"height"`
 	Position        UTMLXY `json:"position"`
-	Text            string `json:"text"`
+	Text            string `json:"text"` // in old version ("utml.utwente.nl") this contains all the attributes and methods.
 	HasDoubleBorder bool   `json:"hasDoubleBorder"`
 	StyleObject     *struct {
 		Fill          string  `json:"fill"`
@@ -103,6 +117,8 @@ type ParseResultUTMLNode struct {
 	ClassType  *string             `json:"classType,omitempty"`
 	Attributes []UTMLFieldOrMethod `json:"attributes"`
 	Methods    []UTMLFieldOrMethod `json:"methods"`
+
+	FirstLine *int `json:"firstLine,omitempty"` // deprecated attribute from "utml.utwente.nl", dictates which line has a bottom border. Completely usless and will be ignored.
 }
 
 type UTMLEdgeLabel struct {

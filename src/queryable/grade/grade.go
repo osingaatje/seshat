@@ -12,6 +12,15 @@ import (
 )
 
 func gradeDiag(c *context.Ctx, cmd command.GradeCmd) *GradeCalculation {
+	if cmd.Rubric == nil || cmd.ReferenceSolution == nil || cmd.Submission == nil {
+		forFileName := ""
+		if cmd.ReferenceSolution != nil {
+			forFileName = " for solution: " + cmd.ReferenceSolution.Metadata.Filename
+		}
+		c.LogErr("Grader config, rubric, reference solution or submission was missing%s, returning nothing...", forFileName)
+		return nil
+	}
+
 	c.LogPrefixAdd("grade '%s'", cmd.Submission.Metadata.Filename)
 	defer c.LogPrefixRm("grade '%s'", cmd.Submission.Metadata.Filename)
 
@@ -129,14 +138,14 @@ func gradeVertex(c *context.Ctx, cmd command.GradeCmd, res *GradeCalculation, re
 
 func calculateVertexTypeScore(c *context.Ctx, cmd command.GradeCmd, refV *InternalVertex, subV *InternalVertex) Grade {
 	return syntacticSemanticMatch(c,
-		refV.Properties.Type, subV.Properties.Type,
+		refV.Properties.Type, subV.Properties.Type, cmd.Rubric.GraderConfig.ClassContentSimilarity,
 		cmd.Rubric.Scores.VertexTypeScore,
 	)
 }
 
 func calculateVertexTitleScore(c *context.Ctx, cmd command.GradeCmd, refV *InternalVertex, subV *InternalVertex) Grade {
 	return syntacticSemanticMatch(c,
-		refV.Title, subV.Title,
+		refV.Title, subV.Title, cmd.Rubric.GraderConfig.ClassContentSimilarity,
 		cmd.Rubric.Scores.VertexTitleScore,
 	)
 }
@@ -175,7 +184,7 @@ func calcalateVertexAttrScores(c *context.Ctx, cmd command.GradeCmd, refV *Inter
 }
 
 func calculateVertexAttrTypeScore(c *context.Ctx, cmd command.GradeCmd, refType string, subType string) Grade {
-	return syntacticSemanticMatch(c, refType, subType, cmd.Rubric.Scores.VertexTypeScore)
+	return syntacticSemanticMatch(c, refType, subType, cmd.Rubric.GraderConfig.ClassContentSimilarity, cmd.Rubric.Scores.VertexTypeScore)
 }
 func calculateVertexAttrVisScore(c *context.Ctx, cmd command.GradeCmd, refVisibility ValuePropVisibilityVar, subVisibility ValuePropVisibilityVar) Grade {
 	return formatPresentOrAbsenceGrade(refVisibility == subVisibility, cmd.Rubric.Scores.VertexTypeScore, GradeReasonIncorrect(string(refVisibility)))
@@ -226,7 +235,7 @@ func calculateEdgeLabelScore(c *context.Ctx, cmd command.GradeCmd, refLbl *Label
 		}
 	}
 
-	return syntacticSemanticMatch(c, refLbl.Text, actLbl.Text, cmd.Rubric.Scores.EdgeLabelScore)
+	return syntacticSemanticMatch(c, refLbl.Text, actLbl.Text, cmd.Rubric.GraderConfig.ClassContentSimilarity, cmd.Rubric.Scores.EdgeLabelScore)
 }
 
 func calculateEdgeEndScore(c *context.Ctx, cmd command.GradeCmd, refEdge *InternalEdge, subEdge *InternalEdge, ref EdgeEndProperties, act EdgeEndProperties) Grade {
@@ -293,8 +302,12 @@ func mappingScore(
 	return score
 }
 
-func syntacticSemanticMatch(c *context.Ctx, ref string, act string, score RubricScoring) Grade {
-	matchCmd := command.MatchStringCmd{Ref: ref, Act: act}
+func syntacticSemanticMatch(c *context.Ctx, ref string, act string, semanticCertaintyThreshold float64, score RubricScoring) Grade {
+	matchCmd := command.MatchStringCmd{
+		Ref: ref,
+		Act: act,
+	}
+
 	syntacticSimilarity := c.Queries.SyntacticMatch.Get("Syntactic similarity", matchCmd)
 	semanticSimilarity := c.Queries.SemanticMatchSentenceTransformer.Get("Semantic similarity", matchCmd)
 
@@ -305,7 +318,7 @@ func syntacticSemanticMatch(c *context.Ctx, ref string, act string, score Rubric
 
 	return formatPresentOrAbsenceGradeWithCorrectMsg(
 		syntacticSimilarity < SYNTACTIC_DISTANCE_THRESHOLD ||
-			semanticSimilarity.Score > COSINE_SIMILARITY_THRESHOLD,
+			semanticSimilarity.Score > semanticCertaintyThreshold,
 		score,
 		GRADE_REASON_EQUAL,
 		GRADE_REASON_ABSENT_OR_INCORRECT,

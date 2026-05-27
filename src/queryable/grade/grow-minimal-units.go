@@ -60,7 +60,7 @@ func getAlternativeSolutions(c *context.Ctx, cmd GradeCmd) (
 		}
 
 		// skip unsimilar vertices
-		if smallestSyntacticDistance > SYNTACTIC_DISTANCE_THRESHOLD && highestSemanticMiniScore < COSINE_SIMILARITY_THRESHOLD {
+		if smallestSyntacticDistance > SYNTACTIC_DISTANCE_THRESHOLD && highestSemanticMiniScore < cmd.Rubric.GraderConfig.ClassContentSimilarity {
 			continue
 		}
 
@@ -396,7 +396,7 @@ func getPotentialMatchingVertices(c *context.Ctx, cmd GradeCmd) (
 
 			semanticMiniLM[refId][subId] = resMini.Score
 			//semanticWordNet[refId][subId] = resWordNet.Score
-			if resMini.Score >= COSINE_SIMILARITY_THRESHOLD { //|| resWordNet.Score >= WORDNET_SIMILARITY_THRESHOLD {
+			if resMini.Score >= cmd.Rubric.GraderConfig.ClassContentSimilarity { //|| resWordNet.Score >= WORDNET_SIMILARITY_THRESHOLD {
 				if _, ok := potentialMatches[refId]; !ok {
 					potentialMatches[refId] = map[VertexIdentifier]bool{}
 				}

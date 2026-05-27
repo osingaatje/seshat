@@ -6,8 +6,6 @@ import (
 	. "github.com/osingaatje/seshat/types/command"
 )
 
-const COSINE_SIMILARITY_THRESHOLD float64 = 0.7 // [0-1]
-
 func semanticSimilarityMiniLM(c *context.Ctx, in MatchStringCmd) MatchStringRes {
 	r, err := sentencetransformer.CompareSentences(c, []string{in.Ref, in.Act})
 	if err != nil {

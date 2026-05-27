@@ -5,8 +5,8 @@ const DISTANCE_PERC_THRESHOLD float64 = 0.35
 const DIST_INF float64 = 999999999999
 
 // for RepairOpts.ConnectEdgEnds
-const LINE_CLOSENESS_PERCENT uint8 = 8    // NOTE: From ANY point in the edge - 0-255%, 100% is the full length of the edge
-const VERTEX_CLOSENESS_PERCENT uint8 = 10 // NOTE: From the BORDER of the vertex - 0-255%, 100% = length of edge of the vertex
+const LINE_CLOSENESS_PERCENT uint8 = 15   // NOTE: From ANY point in the edge - 0-255%, 100% is the full length of the edge
+const VERTEX_CLOSENESS_PERCENT uint8 = 15 // NOTE: From the BORDER of the vertex - 0-255%, 100% = length of edge of the vertex
 
 type RepairOptions struct {
 	/*
@@ -26,7 +26,7 @@ type RepairOptions struct {
 	              ^
 				   \________[V3]
 	*/
-	SimplifyDirectedEdges bool
+	SimplifyDirectedEdges RepairSimplifyEdgesConfig
 
 	// if any reparations fail, whether to return a 'nil' result and log errors etc. (TRUE), or whether to only report errors and not scream (FALSE).
 	FailOnError bool
@@ -34,9 +34,17 @@ type RepairOptions struct {
 
 func DefaultRepairOptions() RepairOptions {
 	return RepairOptions{
-		SwapEdgeLabels:        true,
-		ConnectEdgeEnds:       true,
-		SimplifyDirectedEdges: true,
-		FailOnError:           false,
+		SwapEdgeLabels:  true,
+		ConnectEdgeEnds: true,
+		SimplifyDirectedEdges: RepairSimplifyEdgesConfig{
+			Enable:                           true,
+			ForceSimplifyDifferentEdgesTypes: true,
+		},
+		FailOnError: false,
 	}
+}
+
+type RepairSimplifyEdgesConfig struct {
+	Enable                           bool
+	ForceSimplifyDifferentEdgesTypes bool
 }

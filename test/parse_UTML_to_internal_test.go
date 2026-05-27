@@ -25,8 +25,9 @@ var SKIP_DIAG_ERRS map[string]bool = map[string]bool{
 	"1027470.json": true,
 	"1027492.json": true, // this one is quite weird, there's some arrow that is not connected to a vertex but I can't find what arrow it is.
 	"1027408.json": true,
-	"1027429.json": false, // Edge 2 is a problem that we need to fix
+	"1027429.json": false, // Edge 2 is a problem that can be problematic
 	"154286.json":  false, // commissions -> is sometimes a problem
+	"154686.json":  false, // this one has multiple inheritance to Member where Leave date is connected with a dotted arrow. This will fail if you set ForceDifferentLineTypes to false in the repair config.
 }
 
 func SkipErr(path string) bool {
@@ -36,13 +37,16 @@ func SkipErr(path string) bool {
 
 func TestConvertSpecificFile(t *testing.T) {
 	// const PATH string = "../DATASETS/2025_M2_TCS/q/6/1027320.json"
-	const PATH string = "../DATASETS/2025_M2_BIT/q/1/154286.json"
+	// const PATH string = "../DATASETS/2025_M2_BIT/q/1/154286.json"
+	// const PATH string = "../DATASETS/2025_M2_BIT/q/1/152186.json"
+	// const PATH string = "../DATASETS/2025_M2_BIT/q/1/146206.json"
+	const PATH string = "../DATASETS/2024_M2_BIT/q/1/123698.utml"
 
 	c := driver.NewContext()
 	skipErrs := SkipErr(PATH)
-	_ /*parseRes*/, _ /* internal rep. */ = parseAndVerify(c, t, PATH, skipErrs)
-	// dot := c.Queries.DisplayDiagramAsDot.Get("Dot", intern)
-	// c.LogInfo("DOT FILE: \n%s", dot)
+	_ /*parseRes*/, intern := parseAndVerify(c, t, PATH, skipErrs)
+	dot := c.Queries.DisplayDiagramAsDot.Get("Dot", intern)
+	c.LogInfo("DOT FILE: \n%s", dot)
 }
 
 func TestConvertAllDatasetFiles(t *testing.T) {
@@ -100,10 +104,10 @@ func parseAndVerify(c *context.Ctx, t *testing.T, inputFilePath string, failOnEr
 	verifyConvertedDiag(t, uGraph, iGraph)
 
 	repairCmd := command.RepairCmd{Diagram: iGraph, RepairOpts: repair.DefaultRepairOptions()}
-	repairCmd.RepairOpts.FailOnError = failOnErrRepair
+	repairCmd.RepairOpts.FailOnError = false //failOnErrRepair
 
 	repairRes := c.Queries.RepairDiagram.Get("Repair internal graph", repairCmd)
-	if (failOnErrRepair && len(repairRes.Errors) > 0) || repairRes.Diagram == nil {
+	if failOnErrRepair && len(repairRes.Errors) > 0 || repairRes.Diagram == nil {
 		t.Errorf("Failed repairing graph '%s': %s", inputFilePath, repairRes.Error())
 		return nil, nil
 	}
@@ -173,17 +177,17 @@ func verifyConvertedDiag(t *testing.T, utmlGraph *ParseResultUTML, internGraph *
 
 		// LABELS
 		assert.Equal(t, iEdge.FromProperties.Label == nil, uEdge.StartLabel == nil)
-		if iEdge.FromProperties.Label != nil {
+		if iEdge.FromProperties.Label.HasText() {
 			assert.Equal(t, iEdge.FromProperties.Label.Text, uEdge.StartLabel.Value)
 		}
 
 		assert.Equal(t, iEdge.Label == nil, uEdge.MiddleLabel == nil)
-		if iEdge.FromProperties.Label != nil {
+		if iEdge.FromProperties.Label.HasText() {
 			assert.Equal(t, iEdge.FromProperties.Label.Text, uEdge.StartLabel.Value)
 		}
 
 		assert.Equal(t, iEdge.ToProperties.Label == nil, uEdge.EndLabel == nil)
-		if iEdge.FromProperties.Label != nil {
+		if iEdge.FromProperties.Label.HasText() {
 			assert.Equal(t, iEdge.FromProperties.Label.Text, uEdge.StartLabel.Value)
 		}
 

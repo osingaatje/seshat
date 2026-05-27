@@ -54,8 +54,8 @@ func performRepairs(c *context.Ctx, conf cmd.RepairCmd) cmd.RepairResult {
 		}
 	}
 
-	if conf.RepairOpts.SimplifyDirectedEdges {
-		err := simplifyDirectedEdges(c, diag)
+	if conf.RepairOpts.SimplifyDirectedEdges.Enable {
+		err := simplifyDirectedEdges(c, diag, conf.RepairOpts.SimplifyDirectedEdges)
 		if err != nil {
 			errors = append(errors, err)
 		}

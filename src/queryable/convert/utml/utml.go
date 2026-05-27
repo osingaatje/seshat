@@ -6,7 +6,9 @@ import (
 	"image/color"
 	"os"
 	"path/filepath"
+	"regexp"
 	"slices"
+	"strings"
 
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
@@ -91,7 +93,7 @@ func convertUTMLVertex(c *context.Ctx, index int, u *ParseResultUTML, n *ParseRe
 	}
 
 	extractedProps := extractUTMLVertexProperties(n)
-	extractedVals := extractUTMLVals(n)
+	extractedVals := extractUTMLVals(c, index, n)
 	extractedVisualProps := extractVisualProps(n)
 
 	return &intern.InternalVertex{
@@ -117,7 +119,9 @@ func extractUTMLVertexProperties(n *ParseResultUTMLNode) VertexProperties {
 	return res
 }
 
-func extractUTMLVals(n *ParseResultUTMLNode) map[string]ParsedValue {
+var fallbackAttrRegex = regexp.MustCompile("^[^:]*(:([^=]+))?(=(.+))?$") // <name>(:type)(=default)
+
+func extractUTMLVals(c *context.Ctx, nodeId int, n *ParseResultUTMLNode) map[string]ParsedValue {
 	res := map[string]ParsedValue{}
 
 	for _, a := range n.Attributes {
@@ -137,6 +141,36 @@ func extractUTMLVals(n *ParseResultUTMLNode) map[string]ParsedValue {
 				Visibility: UTMLVisibilityToInternalVisibility[m.Visibility],
 				Type:       m.Type,
 			},
+		}
+	}
+
+	// EDGE CASE: old UTML representations ("utml.utwente.nl") have all their attributes and methods inside of the "text" attribute.
+	if strings.ContainsRune(n.Text, '\n') && len(n.Attributes) == 0 && len(n.Methods) == 0 && n.FirstLine != nil {
+		// alternative parsing: split on newline, figure out whether they mean an attribute
+		if n.FirstLine != nil && (*n.FirstLine) != 0 {
+			c.LogWarn("Ignoring 'firstLine' attribute for vertex '%d' (decides under which newline the thick class-name-separator line gets placed (0 is default)", nodeId)
+		}
+		values := strings.SplitSeq(n.Text, "\n")
+		for val := range values {
+			match := fallbackAttrRegex.FindAllStringSubmatch(val, 10)
+			if len(match) == 0 {
+				c.LogWarn("Skipping value '%s' in node '%d' text, because it did not match a possible vertex attribute", val, nodeId)
+				continue
+			}
+
+			name := strings.TrimSpace(match[0][0])
+			v := ParsedValue{
+				Value: "",
+				Properties: ValueProperties{
+					Visibility: VisibilityUnknown, // TODO Possibly fix this by also matching characters such as '+', '-', '~', etc.
+					Type:       "",
+				},
+			}
+			if len(match) > 1 {
+				v.Properties.Type = match[1][0]
+			}
+
+			res[name] = v
 		}
 	}
 

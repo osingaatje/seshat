@@ -2,13 +2,14 @@ package cli
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 
 	"github.com/osingaatje/seshat/helper"
 	"github.com/osingaatje/seshat/src/context"
 	"github.com/osingaatje/seshat/types/command"
 	g "github.com/osingaatje/seshat/types/generic"
-	. "github.com/osingaatje/seshat/types/grade"
+	"github.com/osingaatje/seshat/types/grade"
 
 	"github.com/alecthomas/kong"
 	displaygraph "github.com/osingaatje/seshat/types/graph/dot"
@@ -118,26 +119,38 @@ func exportManyFunc[E any](basedir string, names []string, objs []E, exportFunc 
 // cmd GRADE
 type GradeCmd struct {
 	GradingScheme       string `name:"scheme" required:"" help:"Grading Scheme to use (JSON file)"`
-	ReferenceSubmission string `arg:"" required:"" name:"reference" help:"Reference submission (.utml file)"`
-	SubmissionDir       string `arg:"" required:"" name:"submission_directory" help:"Submission directory (containing .utml files)"`
+	ReferenceSubmission string `name:"solution" help:"Reference submission (.utml file)"`
+	SubmissionDir       string `name:"submission-dir" help:"Submission directory (containing .utml files)"`
+	ResultsDir          string `name:"results-dir" help:"Which directory to write resulting files to"`
 }
 
 func (cmd *GradeCmd) Run(c *context.Ctx) error {
-	c.LogErr("TODO load grading rubric/scheme from command")
-	rubric := GradeRubric{}
+	rubric := grade.GradeRubric{}
+	dat, err := os.ReadFile(cmd.GradingScheme)
+	if err != nil {
+		return c.LogErrAndReturn("Could not load grading scheme from path '%s': %s", cmd.GradingScheme, err.Error())
+	}
+	err = helper.UnmarshalJSON(dat, &rubric)
+	if err != nil {
+		return c.LogErrAndReturn("Incorrect grading rubric at '%s': %s", cmd.GradingScheme, err.Error())
+	}
 
 	allSubmissions, err := helper.AllUTMLFiles(cmd.SubmissionDir)
 	if err != nil {
-		return c.LogErrAndReturn("%s", err.Error())
+		return c.LogErrAndReturn("Error loading UTML files from directory '%s': %s", cmd.SubmissionDir, err.Error())
 	}
 
-	_, refRep, _, errRef := getReps(c, cmd.ReferenceSubmission, g.InternalRep)
-	if errRef != nil {
-		return c.LogErrAndReturn("Could not parse Reference Submission: %s", errRef.Error())
+	_, refRep, _, err := getReps(c, cmd.ReferenceSubmission, g.InternalRep)
+	if err != nil {
+		return c.LogErrAndReturn("Could not parse Reference Submission: %s", err.Error())
 	}
 
-	results := map[string]*GradeCalculation{}
+	err = os.MkdirAll(cmd.ResultsDir, os.ModePerm)
+	if err != nil {
+		return c.LogErrAndReturn("Could not verify/make results directory")
+	}
 
+	var submissionErr error = nil
 	for _, f := range allSubmissions {
 		_, submissionRep, _, err := getReps(c, f, g.InternalRep)
 		if err != nil {
@@ -149,11 +162,26 @@ func (cmd *GradeCmd) Run(c *context.Ctx) error {
 			ReferenceSolution: refRep,
 			Submission:        submissionRep,
 		})
-		results[f] = res
+
+		if res == nil {
+			submissionErr = c.LogErrAndReturn("Could not grade diagram '%s'!", f)
+			continue
+		}
+		jsonBytes, err := helper.MarshalJSON(res)
+		if err != nil {
+			submissionErr = c.LogErrAndReturn("Could not marshal '%s' to JSON: %s", f, err.Error())
+			continue
+		}
+		gradingFilename := filepath.Join(cmd.ResultsDir, f+"-grade.json")
+
+		err = os.WriteFile(gradingFilename, jsonBytes, os.ModePerm)
+		if err != nil {
+			submissionErr = c.LogErrAndReturn("Could not write grading config '%s': %s", gradingFilename, err.Error())
+			continue
+		}
 	}
 
-	c.LogErr("TODO do something with results")
-	return nil
+	return submissionErr
 }
 
 // end GRADE

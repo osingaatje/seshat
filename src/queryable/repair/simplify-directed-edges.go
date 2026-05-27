@@ -9,6 +9,7 @@ import (
 	"github.com/osingaatje/seshat/src/context"
 	. "github.com/osingaatje/seshat/types/graph/intern"
 	. "github.com/osingaatje/seshat/types/graph/shared"
+	"github.com/osingaatje/seshat/types/repair"
 )
 
 /*
@@ -30,7 +31,7 @@ import (
  *                      \___[V4]
  *  (note that because of ASCII limitations, we have changed the path locations. Ideally, the simplification preserves the locations)
  */
-func simplifyDirectedEdges(c *context.Ctx, g *InternalGraph) error {
+func simplifyDirectedEdges(c *context.Ctx, g *InternalGraph, conf repair.RepairSimplifyEdgesConfig) error {
 	// Filter on the directed edge ends that could start a combined edge
 	directedEdgeEnds := helper.FilterMap(g.Edges, func(id EdgeIdentifier, e *InternalEdge) bool {
 		// [V]<---[E] or [E]--->[V]
@@ -62,7 +63,7 @@ func simplifyDirectedEdges(c *context.Ctx, g *InternalGraph) error {
 
 			for edgePartsIndex, edgeIds := range newSimplifiedEdgeParts {
 				if len(edgeIds) > 10000 {
-					c.LogWarn("The edge list is getting quite large...")
+					c.LogWarn("The edge list is getting quite large... this is probably a bug in the program, unless you've got massive diagrams")
 				}
 				if !progress[edgePartsIndex] {
 					continue
@@ -89,7 +90,7 @@ func simplifyDirectedEdges(c *context.Ctx, g *InternalGraph) error {
 						skipMessages = append(skipMessages, fmt.Sprintf("An arrow of edge '%d' was directed, so we cannot combine this entire series of edges", e))
 						break
 					}
-					if edg.StyleProperties.LineStyle != lineStyle {
+					if edg.StyleProperties.LineStyle != lineStyle && !conf.ForceSimplifyDifferentEdgesTypes {
 						skipMessages = append(skipMessages, fmt.Sprintf("Edge '%d' has a different line style, so we cannot combine this entire series of edges", e))
 						break
 					}

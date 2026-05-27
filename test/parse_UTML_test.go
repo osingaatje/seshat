@@ -3,6 +3,7 @@ package test
 import (
 	"os"
 	"regexp"
+	"slices"
 	"strings"
 	"testing"
 
@@ -13,7 +14,7 @@ import (
 )
 
 func TestUTMLParseALLDATASETS(t *testing.T) {
-	VerifyParsingForFiles(t, helper.DATASET_DIR, helper.DATASET_FILE_GLOB) // uses 'double-star' GLOB syntax, supported by my matching function. Not in default Go!
+	VerifyParsingForFiles(t, "") // uses 'double-star' GLOB syntax, supported by my matching function. Not in default Go!
 }
 
 // Tests whether the parsed and JSONified file and the formatted input file is literally, to the character, the exact same.
@@ -23,16 +24,22 @@ func TestUTMLParseSimple(t *testing.T) {
 
 /********* CODE FOR MATCHING JSON DIFFS FOR PARSE RESULTS - IGNORING CERTAIN PROPERTIES *********/
 // matches + or - "property": ...null/[]/"value" in JSON a.k.a. the diffed properties
-var matchJSONDiffProperty = regexp.MustCompile(`[+-]\s+\"(.+)\":\s*(.+)\s*\n`) //`^\s*[+-]\s*\"(.+)\":\s*(.+)$`)
-var matchIgnoredProperty = func(match []string) bool {
+var matchJSONDiffProperty = regexp.MustCompile(`([+-])\s+\"(.+)\":\s*(.+)\s*\n`) //`^\s*[+-]\s*\"(.+)\":\s*(.+)$`)
+var ignoredProps []string = []string{
+	"attributes", "methods",
+}
+var ignoredPropValues []string = []string{
+	"null", "[]",
+}
+var matchProperty = func(match []string) (add bool, name string, value string) {
 	// match: [entire string, attr, value (+ comma sometimes)]
-	if len(match) != 3 {
+	if len(match) != 4 {
 		panic("REGEX MATCH INCORRECT WITH VALIDATING fUNCITON")
 	}
-	match[2] = strings.TrimSuffix(match[2], ",")
+	match[3] = strings.TrimSuffix(match[3], ",")
 
 	// we ignore 'null'/'[]' diffs for 'attributes' or 'methods'
-	return (match[1] == "attributes" || match[1] == "methods") && (match[2] == "null" || match[2] == "[]")
+	return match[0] == "+", match[2], match[3]
 }
 
 /************************************************************************************************/
@@ -42,7 +49,9 @@ func VerifyParsingForFiles(t *testing.T, dir string, globs ...string) {
 
 	var filepaths []string
 	var err error
-	if len(globs) == 0 {
+	if dir == "" && len(globs) == 0 {
+		filepaths, err = helper.AllDatasetFiles()
+	} else if len(globs) == 0 {
 		filepaths, err = helper.AllUTMLFiles(dir)
 	} else {
 		filepaths, err = helper.AllFiles(dir, globs...)
@@ -61,6 +70,11 @@ func VerifyParsingForFiles(t *testing.T, dir string, globs ...string) {
 			return
 		}
 
+		// expectedJson, err := helper.RemarshalJSON(fileContents)
+		// if err != nil {
+		// 	t.Errorf("Could not remarshal JSON for file '%s' (to ensure sorted keys etc. Err=%s", path, err.Error())
+		// 	return
+		// }
 		expectedJson, err := helper.IndentJSON(fileContents)
 		if err != nil {
 			t.Errorf("Could not indent JSON for file '%s', err=%s", path, err.Error())
@@ -80,6 +94,11 @@ func VerifyParsingForFiles(t *testing.T, dir string, globs ...string) {
 			t.Error("Could not marshal UTML parse result")
 			return
 		}
+		// resJSONBytes, err = helper.RemarshalJSON(resJSONBytes)
+		// if err != nil {
+		// 	t.Error("Could not REmarshal UTML parse result")
+		// 	return
+		// }
 		resJSONBytes, err = helper.IndentJSON(resJSONBytes)
 		if err != nil {
 			t.Error("Could not indent UTML parse result")
@@ -93,18 +112,25 @@ func VerifyParsingForFiles(t *testing.T, dir string, globs ...string) {
 			diffStr := string(diffs)
 			propertyMatches := matchJSONDiffProperty.FindAllStringSubmatch(diffStr, 1000)
 
-			hasRelevantDiff := false
+			differentProps := []string{}
 			for _, m := range propertyMatches {
-				if !matchIgnoredProperty(m) {
-					hasRelevantDiff = true
-					break
+				_, prop, val := matchProperty(m)
+
+				if slices.Contains(ignoredProps, prop) && slices.Contains(ignoredPropValues, val) {
+					continue
 				}
+				// NON-IGNORED VALUES - skip if the value appears an even number of times (because of reordering, for ex.: "+attribute: val ..... -attribute: val")
+				if i := slices.Index(differentProps, prop); i >= 0 {
+					differentProps = slices.Delete(differentProps, i, i+1)
+					continue
+				}
+				differentProps = append(differentProps, prop)
 			}
-			if !hasRelevantDiff {
+			if len(differentProps) == 0 {
 				continue
 			}
 
-			assert.Fail(t, "Difference found in parsing:", diffStr)
+			assert.Fail(t, "Different fields ["+strings.Join(differentProps, ",")+"] found in parsing: "+diffStr)
 		}
 	}
 }
