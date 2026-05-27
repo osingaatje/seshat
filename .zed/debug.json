@@ -57,9 +57,10 @@
     "envFile": "${ZED_WORKTREE_ROOT}/.env",
     "args": [
       "grade",
-      "--in=DATASETS/2025_M2_BIT/q/1/121464.json",
-      "--out=./",
-      "--type=dot",
+      "--scheme=DATASETS/2024_M2_BIT/exampleGraderConfig.json",
+      "--solution=DATASETS/2024_M2_BIT/bestGuessSampleSolution.utml",
+      "--submission-dir=DATASETS/2024_M2_BIT/q/1",
+      "--results-dir=DATASETS/2024_M2_BIT/results",
     ],
   },
 ]
