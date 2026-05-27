@@ -46,4 +46,20 @@
       "--type=dot",
     ],
   },
+  {
+    "label": "Grade DATASET 2024 BIT",
+    "adapter": "Delve",
+    "request": "launch",
+    "mode": "debug",
+    "program": "${ZED_WORKTREE_ROOT}/src/ui/cli/main/main.go",
+    "buildFlags": [],
+    "cwd": "${ZED_WORKTREE_ROOT}",
+    "envFile": "${ZED_WORKTREE_ROOT}/.env",
+    "args": [
+      "grade",
+      "--in=DATASETS/2025_M2_BIT/q/1/121464.json",
+      "--out=./",
+      "--type=dot",
+    ],
+  },
 ]
