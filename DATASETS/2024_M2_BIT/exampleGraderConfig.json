@@ -1,0 +1,65 @@
+{
+  "ilos": {},
+
+  "grader_config": {
+    "semantic_certainty": 0.7
+  },
+
+  "scores": {
+    "vertex": {
+      "present": 1,
+      "absent/incorrect": -0.5,
+      "superfluous": 0
+    },
+    "vertex_title": {
+      "present": 1,
+      "absent/incorrect": -0.5,
+      "superfluous": 0
+    },
+    "vertex_type": {
+      "present": 1,
+      "absent/incorrect": -0.5,
+      "superfluous": 0
+    },
+    "vertex_visibility": {
+      "present": 1,
+      "absent/incorrect": -0.5,
+      "superfluous": 0
+    },
+    "vertex_attribute": {
+      "present": 1,
+      "absent/incorrect": -0.5,
+      "superfluous": 0
+    },
+    "vertex_attribute_type": {
+      "present": 1,
+      "absent/incorrect": -0.5,
+      "superfluous": 0
+    },
+    "vertex_attribute_visibility": {
+      "present": 1,
+      "absent/incorrect": -0.5,
+      "superfluous": 0
+    },
+    "edge": {
+      "present": 1,
+      "absent/incorrect": -0.5,
+      "superfluous": 0
+    },
+    "edge_type": {
+      "present": 1,
+      "absent/incorrect": -0.5,
+      "superfluous": 0
+    },
+    "edge_association_label": {
+      "present": 1,
+      "absent/incorrect": -0.5,
+      "superfluous": 0
+    },
+    "edge_middle_label": {
+      "present": 1,
+      "absent/incorrect": -0.5,
+      "superfluous": 0
+    }
+  }
+}
