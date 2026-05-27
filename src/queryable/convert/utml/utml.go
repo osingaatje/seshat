@@ -93,12 +93,12 @@ func convertUTMLVertex(c *context.Ctx, index int, u *ParseResultUTML, n *ParseRe
 	}
 
 	extractedProps := extractUTMLVertexProperties(n)
-	extractedVals := extractUTMLVals(c, index, n)
+	name, extractedVals := extractUTMLVals(c, index, n)
 	extractedVisualProps := extractVisualProps(n)
 
 	return &intern.InternalVertex{
 		Id:               VertexIdentifier(index), // location in the original UTML array
-		Title:            n.Text,
+		Title:            name,
 		Properties:       extractedProps,
 		Values:           extractedVals,
 		VisualProperties: extractedVisualProps,
@@ -119,9 +119,9 @@ func extractUTMLVertexProperties(n *ParseResultUTMLNode) VertexProperties {
 	return res
 }
 
-var fallbackAttrRegex = regexp.MustCompile("^[^:]*(:([^=]+))?(=(.+))?$") // <name>(:type)(=default)
+var fallbackAttrRegex = regexp.MustCompile("^([^:]*)(:([^=]+))?(=(.+))?$") // <name>(:type)(=default)
 
-func extractUTMLVals(c *context.Ctx, nodeId int, n *ParseResultUTMLNode) map[string]ParsedValue {
+func extractUTMLVals(c *context.Ctx, nodeId int, n *ParseResultUTMLNode) (title string, vals map[string]ParsedValue) {
 	res := map[string]ParsedValue{}
 
 	for _, a := range n.Attributes {
@@ -144,21 +144,35 @@ func extractUTMLVals(c *context.Ctx, nodeId int, n *ParseResultUTMLNode) map[str
 		}
 	}
 
+	name := n.Text
+
 	// EDGE CASE: old UTML representations ("utml.utwente.nl") have all their attributes and methods inside of the "text" attribute.
-	if strings.ContainsRune(n.Text, '\n') && len(n.Attributes) == 0 && len(n.Methods) == 0 && n.FirstLine != nil {
+	if (strings.ContainsRune(n.Text, '\n') || strings.Contains(n.Text, "\\n")) && len(n.Attributes) == 0 && len(n.Methods) == 0 && n.FirstLine != nil {
 		// alternative parsing: split on newline, figure out whether they mean an attribute
 		if n.FirstLine != nil && (*n.FirstLine) != 0 {
 			c.LogWarn("Ignoring 'firstLine' attribute for vertex '%d' (decides under which newline the thick class-name-separator line gets placed (0 is default)", nodeId)
 		}
-		values := strings.SplitSeq(n.Text, "\n")
+
+		TXT := strings.ReplaceAll(n.Text, "\\n", "\n")
+		values := strings.SplitSeq(TXT, "\n")
+		i := -1
 		for val := range values {
-			match := fallbackAttrRegex.FindAllStringSubmatch(val, 10)
-			if len(match) == 0 {
-				c.LogWarn("Skipping value '%s' in node '%d' text, because it did not match a possible vertex attribute", val, nodeId)
+			i++
+			if i == 0 {
+				name = val
 				continue
 			}
 
-			name := strings.TrimSpace(match[0][0])
+			match := fallbackAttrRegex.FindAllStringSubmatch(val, 10)
+			if len(match) == 0 || len(match[0]) <= 1 || match[0][1] == "" {
+				c.LogWarn("Skipping value '%s' in node '%d' text, because it did not match a possible vertex attribute", val, nodeId)
+				continue
+			}
+			if len(match) > 1 {
+				c.LogWarn("Multiple possible regex matches for attribute '%s' of node '%d'.Text", val, nodeId)
+			}
+
+			name := strings.TrimSpace(match[0][1])
 			v := ParsedValue{
 				Value: "",
 				Properties: ValueProperties{
@@ -166,15 +180,15 @@ func extractUTMLVals(c *context.Ctx, nodeId int, n *ParseResultUTMLNode) map[str
 					Type:       "",
 				},
 			}
-			if len(match) > 1 {
-				v.Properties.Type = match[1][0]
+			if len(match[0]) > 3 && match[0][3] != "" {
+				v.Properties.Type = strings.TrimSpace(match[0][3])
 			}
 
 			res[name] = v
 		}
 	}
 
-	return res
+	return name, res
 }
 
 func extractVisualProps(n *ParseResultUTMLNode) VertexVisualProperties {
